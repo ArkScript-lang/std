@@ -1,0 +1,67 @@
+# (([List]index)
+# !List
+# \forEach Iterate over a given list and run a given function on every element.
+# \forEach The original list is left unmodified. Example:
+# `
+# (import "List.ark")
+# (let collection [1 2 5 12])
+# (let new (forEach collection (fun (element) {
+#     (print element)
+# })))
+# `
+# @_L the list to iterate over
+# @_func the function to call on each element
+# author: https://github.com/SuperFola
+# )
+(let forEach (fun (_L _func) {
+    (mut _index 0)
+    (while (< _index (len _L)) {
+        (mut _element (@ _L _index))
+        (_func _element)
+        (set _index (+ 1 _index))
+    })
+}))
+
+# (([List]index)
+# !List
+# \product Iterate over a given list and multiply all the elements with the others.
+# \product The original list is left unmodified. Example:
+# `
+# (import "List.ark")
+# (let collection [1 2 5 12])
+# (let p (product collection))  # => 120
+# `
+# @_L the list to iterate over
+# author: https://github.com/FrenchMasterSword
+# )
+(let product (fun (_L) {
+    (mut _index 0)
+    (mut _output 1)
+    (while (< _index (len _L)) {
+        (set _output (* _output (@ _L _index)))
+        (set _index (+ 1 _index))
+    })
+    _output
+}))
+
+# (([List]index)
+# !List
+# \sum Iterate over a given list and sum all the elements.
+# \sum The original list is left unmodified. Example:
+# `
+# (import "List.ark")
+# (let collection [1 2 5 12])
+# (let p (sum collection))  # => 20
+# `
+# @_L the list to iterate over
+# author: https://github.com/FrenchMasterSword
+# )
+(let sum (fun (_L) {
+    (mut _index 0)
+    (mut _output 0)
+    (while (< _index (len _L)) {
+        (set _output (+ _output (@ _L _index)))
+        (set _index (+ 1 _index))
+    })
+    _output
+}))
