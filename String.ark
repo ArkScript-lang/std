@@ -1,16 +1,16 @@
 # (([String]index)
 # !String
-# \toLowerCase Reverse a string.
-# \toLowerCase The original string is left unmodified. Example:
+# \string:toLower Reverse a string.
+# \string:toLower The original string is left unmodified. Example:
 # `
 # (import "String.ark")
 # (let message "HeLLo World, I like cheese")
-# (let new (toLowerCase message))  # => hello world, i like cheese
+# (let new (string:toLower message))  # => hello world, i like cheese
 # `
 # @_string the string to make lowercase
 # author: https://github.com/Natendrtfm
 # )
-(let toLowerCase (fun (text) {
+(let string:toLower (fun (text) {
     (mut _index 0)
     (mut _e "")
     (mut _output "")
@@ -68,17 +68,17 @@
 
 # (([String]index)
 # !String
-# \toUpperCase Reverse a string.
-# \toUpperCase The original string is left unmodified. Example:
+# \string:toUpper Reverse a string.
+# \string:toUpper The original string is left unmodified. Example:
 # `
 # (import "String.ark")
 # (let message "hello world, I like cheese")
-# (let new (toUpperCase message))  # => HELLO WORLD, I LIKE CHEESE
+# (let new (string:toUpper message))  # => HELLO WORLD, I LIKE CHEESE
 # `
 # @_string the string to make uppercase
 # author: https://github.com/Natendrtfm
 # )
-(let toUpperCase (fun (_string) {
+(let string:toUpper (fun (_string) {
     (mut _index 0)
     (mut _e "")
     (mut _output "")
@@ -137,41 +137,41 @@
 
 # (([String]index)
 # !String
-# \reverseStr Reverse a string.
-# \reverseStr The original string is left unmodified. Example:
+# \string:reverse Reverse a string.
+# \string:reverse The original string is left unmodified. Example:
 # `
 # (import "String.ark")
 # (let message "hello world, I like goats")
-# (let reversed (reverseStr message))  # => staog ekil I ,dlrow olleh
+# (let reversed (string:reverse message))  # => staog ekil I ,dlrow olleh
 # `
 # @_string the string to reverse
 # author: https://github.com/Natendrtfm
 # )
-(let reverseStr (fun (_string) {
+(let string:reverse (fun (_string) {
     (mut _index (- (len _string) 1))
-    (mut returnedString "")
+    (mut _returnedString "")
     (while (> _index -1) {
-        (set returnedString (+ returnedString (@ _string _index)))
+        (set _returnedString (+ _returnedString (@ _string _index)))
         (set _index (- _index 1))
     })
-    returnedString
+    _returnedString
 }))
 
 # (([String]index)
 # !String
-# \sliceStr Get a slice of a given string, from a given index with a given length
-# \sliceStr The original string is left unmodified. Example:
+# \string:slice Get a slice of a given string, from a given index with a given length
+# \string:slice The original string is left unmodified. Example:
 # `
 # (import "String.ark")
 # (let message "hello world, I like goats")
-# (let slice (sliceStr message 6 4))  # => worl
+# (let slice (string:slice message 6 4))  # => worl
 # `
 # @_string the string to get a slice of
 # @_startingIndex the index in the string where to start slicing
 # @_length the length of the slice
 # author: https://github.com/Natendrtfm
 # )
-(let sliceStr (fun (_string _startingIndex _length) {
+(let string:slice (fun (_string _startingIndex _length) {
     (assert (>= _length 1) "slice length must be greater or equal to 1")
     (assert (and (>= _startingIndex 0) (< _startingIndex (len _string))) "slice start index must be in range [0, string length[")
 
@@ -188,18 +188,18 @@
 
 # (([String]index)
 # !String
-# \split Split a string in multiple substrings in a list, given a separator (single character)
-# \split Returns a list of strings. Example :
+# \string:split Split a string in multiple substrings in a list, given a separator (single character)
+# \string:split Returns a list of strings. Example :
 # `
 # (import "String.ark")
 # (let message "hello world, I like boats")
-# (let splitted (split message " "))
+# (let splitted (string:split message " "))
 # `
 # @_string the string to split
 # @_separator the separator to use for splitting (single char)
 # author: https://github.com/Natendrtfm
 # )
-(let split (fun (_string _separator) {
+(let string:split (fun (_string _separator) {
     (assert (!= "" _separator) "Separator of split can not be empty")
     (assert (= 1 (len _separator)) "Separator length must be equal to 1")
     (mut _index 0)
