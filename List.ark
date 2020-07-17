@@ -67,7 +67,7 @@
 }))
 
 # @author: https://github.com/rstefanic
-(let list:drop (fun (_n _L) {
+(let list:drop (fun (_L _n) {
     (mut _index _n)
     (mut _output [])
     (while (< _index (len _L)) {
@@ -78,7 +78,7 @@
 }))
 
 # @author: https://github.com/rstefanic
-(let list:dropWhile (fun (_f _L) {
+(let list:dropWhile (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
     (mut _continue true)
@@ -94,7 +94,7 @@
 }))
 
 # @author: https://github.com/rstefanic
-(let list:filter (fun (_f _L) {
+(let list:filter (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
     (while (< _index (len _L)) {
@@ -106,7 +106,7 @@
 }))
 
 # @author: https://github.com/rstefanic
-(let list:map (fun (_f _L) {
+(let list:map (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
     (while (< _index (len _L)) {
@@ -117,7 +117,7 @@
 }))
 
 # @author: https://github.com/FrenchMasterSword
-(let list:reduce (fun (_f _L) {
+(let list:reduce (fun (_L _f) {
     (mut _index 1)
     (mut _output (@ _L 0))
     (while (< _index (len _L)) {
@@ -128,7 +128,7 @@
 }))
 
 # @author: https://github.com/rstefanic
-(let list:take (fun (_n _L) {
+(let list:take (fun (_L _n) {
     (mut _index 0)
     (mut _output [])
     (while (and (< _index _n) (< _index (len _L))) {
@@ -139,7 +139,7 @@
 }))
 
 # @author: https://github.com/rstefanic
-(let list:takeWhile (fun (_f _L) {
+(let list:takeWhile (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
     (mut _continue true)
