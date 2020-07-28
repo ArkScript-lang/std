@@ -19,7 +19,7 @@
     (if (> _a _b) _a _b)))
 
 # @author: https://github.com/SuperFola
-(let math:pow (fun (x _a) (exp (* _a (ln x)))))
+(let math:pow (fun (x _a) (math:exp (* _a (math:ln x)))))
 
 # @author: https://github.com/SuperFola
-(let math:sqrt (fun (x) (exp (* 0.5 (ln x)))))
+(let math:sqrt (fun (x) (math:exp (* 0.5 (math:ln x)))))
