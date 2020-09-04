@@ -1,3 +1,12 @@
+###
+# @meta Range
+# @brief
+# @details
+# ---
+# ---
+# @param
+# @author https://github.com/SuperFola
+###
 (let range (fun (_a _b) {
     (let asList (fun () {
         # _a and _b are going to be captured by the caller
@@ -19,6 +28,15 @@
     })
 }))
 
+###
+# @meta Range
+# @brief
+# @details
+# ---
+# ---
+# @param
+# @author https://github.com/SuperFola
+###
 (let range:forEach (fun (_r _f) {
     (mut _val (_r))
     (while (not (nil?_ val)) {
@@ -27,6 +45,15 @@
     })
 }))
 
+###
+# @meta Range
+# @brief
+# @details
+# ---
+# ---
+# @param
+# @author https://github.com/SuperFola
+###
 (let range:filter (fun (_range _fun) {
     (mut _value (_range))
     (mut _output [])
@@ -38,6 +65,15 @@
     _output
 }))
 
+###
+# @meta Range
+# @brief
+# @details
+# ---
+# ---
+# @param
+# @author https://github.com/SuperFola
+###
 (let range:map (fun (_range _fun) {
     (mut _value (_range))
     (mut _output [])
@@ -49,6 +85,15 @@
     _output
 }))
 
+###
+# @meta Range
+# @brief
+# @details
+# ---
+# ---
+# @param
+# @author https://github.com/SuperFola
+###
 (let range:reduce (fun (_range _fun) {
     (mut _output (_range))
     (mut _last (_range))
