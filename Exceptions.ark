@@ -1,6 +1,45 @@
-(import "Functional.ark")
+###
+# @meta Exceptions
+# @brief throw takes a value as its argument and return it to be used by try
+# ---
+# (let error (throw "cannot divide by zero"))
+# ---
+# @param _x the value to return
+# @author https://github.com/SuperFola
+###
+(let throw (fun (_x)
+    (fun (_injl _injr &_x) (_injl _x))
+))
 
-(let throw left)
-(let return right)
+###
+# @meta Exceptions
+# @brief returns takes a value as its argument and return it to be used by try
+# ---
+# (let value (return (/ 1 x)))
+# ---
+# @param _x the value to return
+# @author https://github.com/SuperFola
+###
+(let return (fun (_y)
+    (fun (_injl _injr &_y) (_injr _y))
+))
+
+###
+# @meta Exceptions
+# @brief takes a value either returned by throw or return and apply a given on it if it's an error or not
+# ---
+# (let invert (fun (x)
+#     (if (= x 0)
+#         (throw "cannot divide by zero")
+#         (return (/ 1 x)))))
+# (try (invert 0)
+#     (fun (inverted) (print inverted))
+#     (fun (err) (print err)))
+# ---
+# @param _either the value to test
+# @param _continue the success handler
+# @param _handle the error handler
+# @author https://github.com/SuperFola
+###
 (let try (fun (_either _continue _handle)
     (_either _handle _continue)))

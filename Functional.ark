@@ -1,14 +1,58 @@
-# @author: https://github.com/rstefanic
+###
+# @meta Functional
+# @brief compose function calls
+# ---
+# (let foo (fun (a) (* a a)))
+# (let bar (fun (b) (+ b b)))
+# (let composed (compose foo bar))
+# (print (composed 12))  # return value is (12 + 12) * (12 + 12)
+# ---
+# @param _f the first function
+# @param _g the second function
+# @author https://github.com/rstefanic
+###
 (let compose (fun (_f _g)
     (fun (_y &_f &_g) (_f (_g _y)))))
 
+###
+# @meta Functional
+# @brief take a value as its argument and return a function taking 2 arguments which will call the first function on the value
+# ---
+# (let val (left 12))
+# (val (fun (x) (print x " i am called")) (fun (x) (print x " i am NOT called")))
+# ---
+# @param _x the value
+# @author https://github.com/SuperFola
+###
 (let left (fun (_x)
     (fun (_injl _injr &_x) (_injl _x))
 ))
+
+###
+# @meta Functional
+# @brief take a value as its argument and return a function taking 2 arguments which will call the second function on the value
+# ---
+# (let val (right 12))
+# (val (fun (x) (print x " i am NOT called")) (fun (x) (print x " i am called")))
+# ---
+# @param _y the value
+# @author https://github.com/SuperFola
+###
 (let right (fun (_y)
     (fun (_injl _injr &_y) (_injr _y))
 ))
 
-# @author: https://github.com/rstefanic
+###
+# @meta Functional
+# @brief flip arguments of a function
+# @details returns a function taking 1 argument: the second argument of the function to flip
+# ---
+# (let foo (fun (a b) (- a b)))
+# ((flip foo 14) 12) # will call (foo 12 14) instead of (foo 14 12)
+# ---
+# @param _f the function
+# @param _a the first argument
+# @author https://github.com/rstefanic
+###
 (let flip (fun (_f _a)
     (fun (_b &_f &_a) (_f _b _a))))

@@ -1,18 +1,18 @@
-# (([List]index)
-# !List
-# \list:forEach Iterate over a given list and run a given function on every element.
-# \list:forEach The original list is left unmodified. Example:
-# `
+###
+# @meta List
+# @brief Iterate over a given list and run a given function on every element.
+# @details The original list is left unmodified. Example:
+# ---
 # (import "List.ark")
 # (let collection [1 2 5 12])
 # (let new (list:forEach collection (fun (element) {
 #     (print element)
 # })))
-# `
-# @_L the list to iterate over
-# @_func the function to call on each element
-# author: https://github.com/SuperFola
-# )
+# ---
+# @param _L the list to iterate over
+# @param _func the function to call on each element
+# @author https://github.com/SuperFola
+###
 (let list:forEach (fun (_L _func) {
     (mut _index 0)
     (while (< _index (len _L)) {
@@ -22,18 +22,18 @@
     })
 }))
 
-# (([List]index)
-# !List
-# \list:product Iterate over a given list and multiply all the elements with the others.
-# \list:product The original list is left unmodified. Example:
-# `
+###
+# @meta List
+# @brief Iterate over a given list and multiply all the elements with the others.
+# @details The original list is left unmodified. Example:
+# ---
 # (import "List.ark")
 # (let collection [1 2 5 12])
 # (let p (list:product collection))  # => 120
-# `
-# @_L the list to iterate over
-# author: https://github.com/FrenchMasterSword
-# )
+# ---
+# @param _L the list to iterate over
+# @author https://github.com/FrenchMasterSword
+###
 (let list:product (fun (_L) {
     (mut _index 0)
     (mut _output 1)
@@ -44,18 +44,18 @@
     _output
 }))
 
-# (([List]index)
-# !List
-# \list:sum Iterate over a given list and sum all the elements.
-# \list:sum The original list is left unmodified. Example:
-# `
+###
+# @meta List
+# @brief Iterate over a given list and sum all the elements.
+# @details The original list is left unmodified. Example:
+# ---
 # (import "List.ark")
 # (let collection [1 2 5 12])
 # (let p (list:sum collection))  # => 20
-# `
-# @_L the list to iterate over
-# author: https://github.com/FrenchMasterSword
-# )
+# ---
+# @param _L the list to iterate over
+# @author https://github.com/FrenchMasterSword
+###
 (let list:sum (fun (_L) {
     (mut _index 0)
     (mut _output 0)
@@ -66,7 +66,15 @@
     _output
 }))
 
-# @author: https://github.com/rstefanic
+###
+# @meta List
+# @brief
+# @details
+# ---
+# ---
+# @param _L the list to work on
+# @author https://github.com/rstefanic
+###
 (let list:drop (fun (_L _n) {
     (mut _index _n)
     (mut _output [])
@@ -77,7 +85,15 @@
     _output
 }))
 
-# @author: https://github.com/rstefanic
+###
+# @meta List
+# @brief
+# @details
+# ---
+# ---
+# @param _L the list to work on
+# @author https://github.com/rstefanic
+###
 (let list:dropWhile (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
@@ -93,7 +109,15 @@
     _output
 }))
 
-# @author: https://github.com/rstefanic
+###
+# @meta List
+# @brief
+# @details
+# ---
+# ---
+# @param _L the list to work on
+# @author https://github.com/rstefanic
+###
 (let list:filter (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
@@ -105,7 +129,15 @@
     _output
 }))
 
-# @author: https://github.com/rstefanic
+###
+# @meta List
+# @brief
+# @details
+# ---
+# ---
+# @param _L the list to work on
+# @author https://github.com/rstefanic
+###
 (let list:map (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
@@ -116,7 +148,15 @@
     _output
 }))
 
-# @author: https://github.com/FrenchMasterSword
+###
+# @meta List
+# @brief
+# @details
+# ---
+# ---
+# @param _L the list to work on
+# @author https://github.com/FrenchMasterSword
+###
 (let list:reduce (fun (_L _f) {
     (mut _index 1)
     (mut _output (@ _L 0))
@@ -127,7 +167,15 @@
     _output
 }))
 
-# @author: https://github.com/rstefanic
+###
+# @meta List
+# @brief
+# @details
+# ---
+# ---
+# @param _L the list to work on
+# @author https://github.com/rstefanic
+###
 (let list:take (fun (_L _n) {
     (mut _index 0)
     (mut _output [])
@@ -138,7 +186,15 @@
     _output
 }))
 
-# @author: https://github.com/rstefanic
+###
+# @meta List
+# @brief
+# @details
+# ---
+# ---
+# @param _L the list to work on
+# @author https://github.com/rstefanic
+###
 (let list:takeWhile (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
@@ -155,7 +211,15 @@
     _output
 }))
 
-# @author: https://github.com/FrenchMasterSword
+###
+# @meta List
+# @brief
+# @details
+# ---
+# ---
+# @param _L the list to work on
+# @author https://github.com/FrenchMasterSword
+###
 (let list:unzip (fun (_L) {
     (let _m (len _L))
     (mut _list1 [])
@@ -172,7 +236,15 @@
 
 (import "Math.ark")  # needed for (math:min a b)
 
-# @author: https://github.com/FrenchMasterSword
+###
+# @meta List
+# @brief
+# @details
+# ---
+# ---
+# @param _L the list to work on
+# @author https://github.com/FrenchMasterSword
+###
 (let list:zip (fun (_a _b) {
     (let _m (math:min (len _a) (len _b)))
     (mut _c [])
