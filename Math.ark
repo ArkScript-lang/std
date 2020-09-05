@@ -1,9 +1,7 @@
 ###
 # @meta Mathematics
-# @brief
-# ---
-# ---
-# @param
+# @brief Return the absolute value of a number
+# @param _x the number to get the absolute value of
 # @author https://github.com/rstefanic
 ###
 (let math:abs (fun (_x)
@@ -11,10 +9,8 @@
 
 ###
 # @meta Mathematics
-# @brief
-# ---
-# ---
-# @param
+# @brief Return true if the number is even, false otherwise
+# @param _n the number
 # @author https://github.com/rstefanic
 ###
 (let math:even (fun (_n)
@@ -22,10 +18,8 @@
 
 ###
 # @meta Mathematics
-# @brief
-# ---
-# ---
-# @param
+# @brief Return true if the number is odd, false otherwise
+# @param _n the number
 # @author https://github.com/rstefanic
 ###
 (let math:odd (fun (_n)
@@ -33,10 +27,9 @@
 
 ###
 # @meta Mathematics
-# @brief
-# ---
-# ---
-# @param
+# @brief Get the minimum between two numbers
+# @param _a the first number
+# @param _b the second number
 # @author https://github.com/rstefanic
 ###
 (let math:min (fun (_a _b)
@@ -44,10 +37,9 @@
 
 ###
 # @meta Mathematics
-# @brief
-# ---
-# ---
-# @param
+# @brief Get the maximum between two numbers
+# @param _a the first number
+# @param _b the second number
 # @author https://github.com/rstefanic
 ###
 (let math:max (fun (_a _b)
@@ -55,20 +47,19 @@
 
 ###
 # @meta Mathematics
-# @brief
-# ---
-# ---
-# @param
+# @brief Get a number to a given power
+# @details Note that it's defined as exp(a * ln(x)), thus won't work for negative numbers
+# @param _x the number to pow
+# @param _a the exponent
 # @author https://github.com/SuperFola
 ###
-(let math:pow (fun (x _a) (math:exp (* _a (math:ln x)))))
+(let math:pow (fun (_x _a) (math:exp (* _a (math:ln _x)))))
 
 ###
 # @meta Mathematics
-# @brief
-# ---
-# ---
-# @param
+# @brief Get the square root of a number
+# @details Square roots can't be taken for negative numbers for obvious reasons.
+# @param _x the number
 # @author https://github.com/SuperFola
 ###
-(let math:sqrt (fun (x) (math:exp (* 0.5 (math:ln x)))))
+(let math:sqrt (fun (_x) (math:exp (* 0.5 (math:ln _x)))))
