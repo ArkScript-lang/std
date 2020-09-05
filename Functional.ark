@@ -1,6 +1,6 @@
 ###
 # @meta Functional
-# @brief compose function calls
+# @brief Compose function calls
 # ---
 # (let foo (fun (a) (* a a)))
 # (let bar (fun (b) (+ b b)))
@@ -16,7 +16,7 @@
 
 ###
 # @meta Functional
-# @brief take a value as its argument and return a function taking 2 arguments which will call the first function on the value
+# @brief Take a value as its argument and return a function taking 2 arguments which will call the first function on the value
 # ---
 # (let val (left 12))
 # (val (fun (x) (print x " i am called")) (fun (x) (print x " i am NOT called")))
@@ -30,7 +30,7 @@
 
 ###
 # @meta Functional
-# @brief take a value as its argument and return a function taking 2 arguments which will call the second function on the value
+# @brief Take a value as its argument and return a function taking 2 arguments which will call the second function on the value
 # ---
 # (let val (right 12))
 # (val (fun (x) (print x " i am NOT called")) (fun (x) (print x " i am called")))
@@ -44,8 +44,8 @@
 
 ###
 # @meta Functional
-# @brief flip arguments of a function
-# @details returns a function taking 1 argument: the second argument of the function to flip
+# @brief Flip the arguments of a function
+# @details Returns a function taking 1 argument: the second argument of the function to flip
 # ---
 # (let foo (fun (a b) (- a b)))
 # ((flip foo 14) 12) # will call (foo 12 14) instead of (foo 14 12)

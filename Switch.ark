@@ -1,7 +1,7 @@
 ###
 # @meta Switch
-# @brief takes a value to match against a list of [possible values, function to run if it matched]
-# @details Once the value is matched, it stops and doesn't try any other values
+# @brief Takes a value to match against a list of [possible values, function to run if it matched]
+# @details Once the value is matched, it stops and doesn't try any other values.
 # ---
 # (switch 12 [
 #     [1 (fun () (print "the value is one"))]

@@ -13,7 +13,7 @@
 
 ###
 # @meta Exceptions
-# @brief returns takes a value as its argument and return it to be used by try
+# @brief return takes a value as its argument and return it to be used by try
 # ---
 # (let value (return (/ 1 x)))
 # ---
@@ -26,7 +26,7 @@
 
 ###
 # @meta Exceptions
-# @brief takes a value either returned by throw or return and apply a given on it if it's an error or not
+# @brief Takes a value either returned by throw or return and apply a given on it if it's an error or not
 # ---
 # (let invert (fun (x)
 #     (if (= x 0)
