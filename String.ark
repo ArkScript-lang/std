@@ -5,12 +5,12 @@
 # ---
 # (import "String.ark")
 # (let message "HeLLo World, I like cheese")
-# (let new (string:toLower message))  # => hello world, i like cheese
+# (let new (str:toLower message))  # => hello world, i like cheese
 # ---
 # @param _string the string to make lowercase
 # @author https://github.com/Natendrtfm
 ###
-(let string:toLower (fun (text) {
+(let str:toLower (fun (text) {
     (mut _index 0)
     (mut _e "")
     (mut _output "")
@@ -73,12 +73,12 @@
 # ---
 # (import "String.ark")
 # (let message "hello world, I like cheese")
-# (let new (string:toUpper message))  # => HELLO WORLD, I LIKE CHEESE
+# (let new (str:toUpper message))  # => HELLO WORLD, I LIKE CHEESE
 # ---
 # @param _string the string to make uppercase
 # @author https://github.com/Natendrtfm
 ###
-(let string:toUpper (fun (_string) {
+(let str:toUpper (fun (_string) {
     (mut _index 0)
     (mut _e "")
     (mut _output "")
@@ -142,12 +142,12 @@
 # ---
 # (import "String.ark")
 # (let message "hello world, I like goats")
-# (let reversed (string:reverse message))  # => staog ekil I ,dlrow olleh
+# (let reversed (str:reverse message))  # => staog ekil I ,dlrow olleh
 # ---
 # @param _string the string to reverse
 # @author https://github.com/Natendrtfm
 ###
-(let string:reverse (fun (_string) {
+(let str:reverse (fun (_string) {
     (mut _index (- (len _string) 1))
     (mut _returnedString "")
     (while (> _index -1) {
@@ -164,14 +164,14 @@
 # ---
 # (import "String.ark")
 # (let message "hello world, I like goats")
-# (let slice (string:slice message 6 4))  # => worl
+# (let slice (str:slice message 6 4))  # => worl
 # ---
 # @param _string the string to get a slice of
 # @param _startingIndex the index in the string where to start slicing
 # @param _length the length of the slice
 # @author https://github.com/Natendrtfm
 ###
-(let string:slice (fun (_string _startingIndex _length) {
+(let str:slice (fun (_string _startingIndex _length) {
     (assert (>= _length 1) "slice length must be greater or equal to 1")
     (assert (and (>= _startingIndex 0) (< _startingIndex (len _string))) "slice start index must be in range [0, string length[")
 
@@ -193,13 +193,13 @@
 # ---
 # (import "String.ark")
 # (let message "hello world, I like boats")
-# (let splitted (string:split message " "))
+# (let splitted (str:split message " "))
 # ---
 # @param _string the string to split
 # @param _separator the separator to use for splitting (single char)
 # @author https://github.com/Natendrtfm
 ###
-(let string:split (fun (_string _separator) {
+(let str:split (fun (_string _separator) {
     (assert (!= "" _separator) "Separator of split can not be empty")
     (assert (= 1 (len _separator)) "Separator length must be equal to 1")
     (mut _index 0)
@@ -220,4 +220,29 @@
     (if (empty? _word)
         _output
         (append _output _word))
+}))
+
+###
+# @meta String
+# @brief Replace a substring in a given string
+# @details The original string isn't modified. Example:
+# ---
+# (import "String.ark")
+# (let message "hello XXX, do you like the name XXX?")
+# (print (str:replace message "XXX" "Harry"))  # hello Harry, do you like the name Harry?
+# ---
+###
+(let str:replace (fun (_string _pattern _new) {
+    (mut _out _string)
+    (mut _idx (str:find _out _pattern))
+    (let _pattern_sz (len _pattern))
+
+    (while (!= -1 _idx) {
+        (set _out (+
+            (str:slice _out 0 _idx)
+            _new
+            (str:slice _out (+ _idx _pattern_sz) (- (len _out) (+ _idx _pattern_sz)))))
+        (set _idx (str:find _out _pattern))
+    })
+    _out
 }))
