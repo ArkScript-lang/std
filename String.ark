@@ -41,6 +41,7 @@
         (if (= _e "V") (set _e "v")
         (if (= _e "W") (set _e "w")
         (if (= _e "X") (set _e "x")
+        (if (= _e "Y") (set _e "y")
         (if (= _e "Z") (set _e "z")
         (if (= _e "Â") (set _e "â")
         (if (= _e "À") (set _e "à")
@@ -58,7 +59,7 @@
         (if (= _e "Í") (set _e "í")
         (if (= _e "Î") (set _e "î")
         (if (= _e "Ï") (set _e "ï")
-        (if (= _e "Ô") (set _e "ô") ()))))))))))))))))))))))))))))))))))))))))))
+        (if (= _e "Ô") (set _e "ô") ())))))))))))))))))))))))))))))))))))))))))))
         # End conditions
         (set _output (+ _output _e))
         (set _index (+ _index 1))
@@ -171,20 +172,23 @@
 # @param _length the length of the slice
 # @author https://github.com/Natendrtfm
 ###
-(let str:slice (fun (_string _startingIndex _length) {
-    (assert (>= _length 1) "slice length must be greater or equal to 1")
-    (assert (and (>= _startingIndex 0) (< _startingIndex (len _string))) "slice start index must be in range [0, string length[")
+(let str:slice (fun (_string _startingIndex _length)
+    (if (= _length 0)
+        ""
+        {
+            (assert (and (>= _startingIndex 0) (< _startingIndex (len _string))) "slice start index must be in range [0, string length[")
 
-    (mut _returnedString "")
-    (mut _index _startingIndex)
-    (let _end (if (> _length (len _string)) (len _string) (+ _index _length)))
+            (mut _returnedString "")
+            (mut _index _startingIndex)
+            (let _end (if (> _length (len _string)) (len _string) (+ _index _length)))
 
-    (while (< _index _end) {
-        (set _returnedString (+ _returnedString (@ _string _index)))
-        (set _index (+ _index 1))
-    })
-    _returnedString
-}))
+            (while (< _index _end) {
+                (set _returnedString (+ _returnedString (@ _string _index)))
+                (set _index (+ _index 1))
+            })
+            _returnedString
+        })
+))
 
 ###
 # @meta String
