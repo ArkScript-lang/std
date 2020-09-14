@@ -1,16 +1,29 @@
-(let switch (fun (value _tests) {
-    (mut acc 0)
-    (let end (len _tests))
+###
+# @meta Switch
+# @brief Takes a value to match against a list of [possible values, function to run if it matched]
+# @details Once the value is matched, it stops and doesn't try any other values.
+# ---
+# (switch 12 [
+#     [1 (fun () (print "the value is one"))]
+#     [12 '(print "quoted code blocks also works")]
+#     [12 '{ (let b "ok") (print b ", quoted begin blocks work as well") }]
+# ])
+# ---
+# @param
+# @author https://github.com/SuperFola
+###
+(let switch (fun (_value _tests) {
+    (mut _acc 0)
+    (let _end (len _tests))
 
-    (while (!= acc end) {
-        (mut r (@ _tests acc))
-        (mut bis (@ r 0))
-        (if (= bis value) {
-                ((@ r 1))
-                (set acc (- end 1))
-            }
-            ()
-        )
-        (set acc (+ 1 acc))
+    (while (!= _acc _end) {
+        (mut _r (@ _tests _acc))
+        (mut _bis (@ _r 0))
+        (if (= _bis _value)
+            {
+                ((@ _r 1))
+                (set _acc (- _end 1))
+            })
+        (set _acc (+ 1 _acc))
     })
 }))
