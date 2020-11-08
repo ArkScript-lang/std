@@ -14,9 +14,6 @@
 * `flip function value` returning a function taking one argument `bis`: calling `function bis value`
 
 ## List
-# @param _string base string who contain pattern to replace by new sub string given
-# @param _pattern sub string pattern to replace
-# @param _new string who must replace the pattern
 * `list:forEach list function` the function will be applied to every element of the list, one after the other
 * `list:product list` returns the product of every element with the others (they must be all numbers)
 * `list:sum list` returns the sum of all the elements in the list (they must be all numbers)
