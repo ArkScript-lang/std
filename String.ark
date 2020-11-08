@@ -1,13 +1,13 @@
 ###
 # @meta String
 # @brief Reverse a string.
-# @details The original string is left unmodified. Example:
-# ---
+# @param _string the string to make lowercase
+# @details The original string is left unmodified.
+# =begin
 # (import "String.ark")
 # (let message "HeLLo World, I like cheese")
 # (let new (str:toLower message))  # => hello world, i like cheese
-# ---
-# @param _string the string to make lowercase
+# =end
 # @author https://github.com/Natendrtfm
 ###
 (let str:toLower (fun (text) {
@@ -68,15 +68,14 @@
 }))
 
 ###
-# @meta String
 # @brief Reverse a string.
-# @details The original string is left unmodified. Example:
-# ---
+# @param _string the string to make uppercase
+# @details The original string is left unmodified.
+# =begin
 # (import "String.ark")
 # (let message "hello world, I like cheese")
 # (let new (str:toUpper message))  # => HELLO WORLD, I LIKE CHEESE
-# ---
-# @param _string the string to make uppercase
+# =end
 # @author https://github.com/Natendrtfm
 ###
 (let str:toUpper (fun (_string) {
@@ -137,15 +136,14 @@
 }))
 
 ###
-# @meta String
 # @brief Reverse a string.
-# @details The original string is left unmodified. Example:
-# ---
+# @param _string the string to reverse
+# @details The original string is left unmodified.
+# =begin
 # (import "String.ark")
 # (let message "hello world, I like goats")
 # (let reversed (str:reverse message))  # => staog ekil I ,dlrow olleh
-# ---
-# @param _string the string to reverse
+# =end
 # @author https://github.com/Natendrtfm
 ###
 (let str:reverse (fun (_string) {
@@ -159,17 +157,16 @@
 }))
 
 ###
-# @meta String
 # @brief Get a slice of a given string, from a given index with a given length
-# @details The original string is left unmodified. Example:
-# ---
-# (import "String.ark")
-# (let message "hello world, I like goats")
-# (let slice (str:slice message 6 4))  # => worl
-# ---
 # @param _string the string to get a slice of
 # @param _startingIndex the index in the string where to start slicing
 # @param _length the length of the slice
+# @details The original string is left unmodified. Example:
+# =begin
+# (import "String.ark")
+# (let message "hello world, I like goats")
+# (let slice (str:slice message 6 4))  # => worl
+# =end
 # @author https://github.com/Natendrtfm
 ###
 (let str:slice (fun (_string _startingIndex _length)
@@ -191,16 +188,15 @@
 ))
 
 ###
-# @meta String
 # @brief Split a string in multiple substrings in a list, given a separator (single character)
+# @param _string the string to split
+# @param _separator the separator to use for splitting (single char)
 # @details Returns a list of strings. Example :
-# ---
+# =begin
 # (import "String.ark")
 # (let message "hello world, I like boats")
 # (let splitted (str:split message " "))
-# ---
-# @param _string the string to split
-# @param _separator the separator to use for splitting (single char)
+# =end
 # @author https://github.com/Natendrtfm
 ###
 (let str:split (fun (_string _separator) {
@@ -227,14 +223,16 @@
 }))
 
 ###
-# @meta String
 # @brief Replace a substring in a given string
-# @details The original string isn't modified. Example:
-# ---
+# @param _string base string who contain pattern to replace by new sub string given
+# @param _pattern sub string pattern to replace
+# @param _new string who must replace the pattern
+# @details The original string isn't modified.
+# =begin
 # (import "String.ark")
 # (let message "hello XXX, do you like the name XXX?")
 # (print (str:replace message "XXX" "Harry"))  # hello Harry, do you like the name Harry?
-# ---
+# =end
 ###
 (let str:replace (fun (_string _pattern _new) {
     (mut _out _string)

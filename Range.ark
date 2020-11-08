@@ -1,8 +1,10 @@
 ###
 # @meta Range
 # @brief Create a ranged closure in interval [a, b[
+# @param i the beginning of the range
+# @param _b the end of the range
 # @details Has a field `asList` to compute a list from the current state of the range, and another one `reset`.
-# ---
+# =begin
 # (let obj (range 1 10))
 # (print (obj.asList))  # [1 2 3 4 5 6 7 8 9]
 # (while (not (nil? (obj)))
@@ -10,9 +12,7 @@
 # (print (obj.asList))  # [], the range has been used
 # (obj.reset)  # the range is ready to be used again
 # (print (obj.asList))  # [1 2 3 4 5 6 7 8 9]
-# ---
-# @param i the beginning of the range
-# @param _b the end of the range
+# =end
 # @author https://github.com/SuperFola
 ###
 (let range (fun (i _b) {
@@ -40,15 +40,14 @@
 }))
 
 ###
-# @meta Range
 # @brief Run a function on each element of the range
-# @details The range is unmodified.
-# ---
-# (let obj (range 1 10))
-# (range:forEach obj (fun (e) (print e)))
-# ---
 # @param _r the range object
 # @param _f the function
+# @details The range is unmodified.
+# =begin
+# (let obj (range 1 10))
+# (range:forEach obj (fun (e) (print e)))
+# =end
 # @author https://github.com/SuperFola
 ###
 (let range:forEach (fun (_r _f) {
@@ -61,15 +60,14 @@
 }))
 
 ###
-# @meta Range
 # @brief Create a list based on a range and a filter function
-# @details The range is unmodified.
-# ---
-# (let obj (range 1 10))
-# (print (range:filter obj math:even))  # [2 4 6 8]
-# ---
 # @param _range the range object
 # @param _fun the filter function
+# @details The range is unmodified.
+# =begin
+# (let obj (range 1 10))
+# (print (range:filter obj math:even))  # [2 4 6 8]
+# =end
 # @author https://github.com/SuperFola
 ###
 (let range:filter (fun (_range _fun) {
@@ -85,15 +83,14 @@
 }))
 
 ###
-# @meta Range
 # @brief Create a list based on a range and a function to apply to each elements
-# @details The range is unmodified.
-# ---
-# (let obj (range 1 10))
-# (print (range:map obj (fun (e) (* e e))))  # [1 4 9 16 25 36 49 64 81]
-# ---
 # @param _range the range object
 # @param _fun the function to apply
+# @details The range is unmodified.
+# =begin
+# (let obj (range 1 10))
+# (print (range:map obj (fun (e) (* e e))))  # [1 4 9 16 25 36 49 64 81]
+# =end
 # @author https://github.com/SuperFola
 ###
 (let range:map (fun (_range _fun) {
@@ -109,15 +106,14 @@
 }))
 
 ###
-# @meta Range
 # @brief Create a reduced list based on a range and a reduction function
-# @details The range is unmodified.
-# ---
-# (let obj (range 1 10))
-# (print (range:reduce obj (fun (e) (+ e e))))  # 45
-# ---
 # @param _range the range object
 # @param _fun the reduction function
+# @details The range is unmodified.
+# =begin
+# (let obj (range 1 10))
+# (print (range:reduce obj (fun (e) (+ e e))))  # 45
+# =end
 # @author https://github.com/SuperFola
 ###
 (let range:reduce (fun (_range _fun) {

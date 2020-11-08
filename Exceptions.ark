@@ -1,10 +1,10 @@
 ###
 # @meta Exceptions
 # @brief throw takes a value as its argument and return it to be used by try
-# ---
-# (let error (throw "cannot divide by zero"))
-# ---
 # @param _x the value to return
+# =begin
+# (let error (throw "cannot divide by zero"))
+# =end
 # @author https://github.com/SuperFola
 ###
 (let throw (fun (_x)
@@ -12,12 +12,11 @@
 ))
 
 ###
-# @meta Exceptions
 # @brief return takes a value as its argument and return it to be used by try
-# ---
-# (let value (return (/ 1 x)))
-# ---
 # @param _x the value to return
+# =begin
+# (let value (return (/ 1 x)))
+# =end
 # @author https://github.com/SuperFola
 ###
 (let return (fun (_y)
@@ -25,9 +24,11 @@
 ))
 
 ###
-# @meta Exceptions
 # @brief Takes a value either returned by throw or return and apply a given on it if it's an error or not
-# ---
+# @param _either the value to test
+# @param _continue the success handler
+# @param _handle the error handler
+# =begin
 # (let invert (fun (x)
 #     (if (= x 0)
 #         (throw "cannot divide by zero")
@@ -35,10 +36,7 @@
 # (try (invert 0)
 #     (fun (inverted) (print inverted))
 #     (fun (err) (print err)))
-# ---
-# @param _either the value to test
-# @param _continue the success handler
-# @param _handle the error handler
+# =end
 # @author https://github.com/SuperFola
 ###
 (let try (fun (_either _continue _handle)

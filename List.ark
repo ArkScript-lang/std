@@ -1,16 +1,16 @@
 ###
 # @meta List
 # @brief Iterate over a given list and run a given function on every element.
-# @details The original list is left unmodified. Example:
-# ---
+# @param _L the list to iterate over
+# @param _func the function to call on each element
+# @details The original list is left unmodified.
+# =begin
 # (import "List.ark")
 # (let collection [1 2 5 12])
 # (let new (list:forEach collection (fun (element) {
 #     (print element)
 # })))
-# ---
-# @param _L the list to iterate over
-# @param _func the function to call on each element
+# =end
 # @author https://github.com/SuperFola
 ###
 (let list:forEach (fun (_L _func) {
@@ -23,15 +23,14 @@
 }))
 
 ###
-# @meta List
 # @brief Iterate over a given list and multiply all the elements with the others.
-# @details The original list is left unmodified. Example:
-# ---
+# @param _L the list to iterate over
+# @details The original list is left unmodified.
+# =begin
 # (import "List.ark")
 # (let collection [1 2 5 12])
 # (let p (list:product collection))  # => 120
-# ---
-# @param _L the list to iterate over
+# =end
 # @author https://github.com/FrenchMasterSword
 ###
 (let list:product (fun (_L) {
@@ -45,15 +44,14 @@
 }))
 
 ###
-# @meta List
 # @brief Iterate over a given list and sum all the elements.
-# @details The original list is left unmodified. Example:
-# ---
+# @param _L the list to iterate over
+# @details The original list is left unmodified.
+# =begin
 # (import "List.ark")
 # (let collection [1 2 5 12])
 # (let p (list:sum collection))  # => 20
-# ---
-# @param _L the list to iterate over
+# =begin
 # @author https://github.com/FrenchMasterSword
 ###
 (let list:sum (fun (_L) {
@@ -67,15 +65,14 @@
 }))
 
 ###
-# @meta List
 # @brief Drop the first n elements of a list
-# @details The original list is left unmodified.
-# ---
-# (let cool-stuff [1 2 3 4 5 6 7 8 9])
-# (print (list:drop cool-stuff 4))  # [5 6 7 8 9]
-# ---
 # @param _L the list to work on
 # @param _n the number of elements to drop
+# @details The original list is left unmodified.
+# =begin
+# (let cool-stuff [1 2 3 4 5 6 7 8 9])
+# (print (list:drop cool-stuff 4))  # [5 6 7 8 9]
+# =end
 # @author https://github.com/rstefanic
 ###
 (let list:drop (fun (_L _n) {
@@ -89,15 +86,14 @@
 }))
 
 ###
-# @meta List
 # @brief Keep elements in a given list if they follow a predicate
-# @details The original list is left unmodified.
-# ---
-# (import "Math.ark")
-# (print (list:filter [1 2 3 4 5 6 7 8 9] math:even))  # [2 4 6 8]
-# ---
 # @param _L the list to work on
 # @param _f the predicate
+# @details The original list is left unmodified.
+# =begin
+# (import "Math.ark")
+# (print (list:filter [1 2 3 4 5 6 7 8 9] math:even))  # [2 4 6 8]
+# =end
 # @author https://github.com/rstefanic
 ###
 (let list:filter (fun (_L _f) {
@@ -112,14 +108,13 @@
 }))
 
 ###
-# @meta List
 # @brief Applies a given function to each element of a list
-# @details The original list is left unmodified.
-# ---
-# (print (list:map [1 2 3 4 5 6 7 8 9] (fun (e) (* e e))))  # [1 4 9 25 36 49 64 81]
-# ---
 # @param _L the list to work on
 # @param _f the function to apply to each element
+# @details The original list is left unmodified.
+# =begin
+# (print (list:map [1 2 3 4 5 6 7 8 9] (fun (e) (* e e))))  # [1 4 9 25 36 49 64 81]
+# =end
 # @author https://github.com/rstefanic
 ###
 (let list:map (fun (_L _f) {
@@ -133,15 +128,14 @@
 }))
 
 ###
-# @meta List
 # @brief Apply a function to the elements of a list to reduce it
-# @details The original list is left unmodified.
-# ---
-# (let cool [1 2 3 4 5 6 7 8 9])
-# (print (list:reduce cool (fun (a b) (+ a b))))  # 45
-# ---
 # @param _L the list to work on
 # @param _f the function to apply
+# @details The original list is left unmodified.
+# =begin
+# (let cool [1 2 3 4 5 6 7 8 9])
+# (print (list:reduce cool (fun (a b) (+ a b))))  # 45
+# =end
 # @author https://github.com/FrenchMasterSword
 ###
 (let list:reduce (fun (_L _f) {
@@ -159,12 +153,12 @@
 ###
 # @meta List
 # @brief Take the first n elements of
-# @details The original list is left unmodified.
-# ---
-# (print (list:take [1 2 3 4 5 6 7 8 9] 4))  # [1 2 3 4]
-# ---
 # @param _L the list to work on
 # @param _n the number of elements to take
+# @details The original list is left unmodified.
+# =begin
+# (print (list:take [1 2 3 4 5 6 7 8 9] 4))  # [1 2 3 4]
+# =end
 # @author https://github.com/rstefanic
 ###
 (let list:take (fun (_L _n) {
@@ -180,14 +174,13 @@
 }))
 
 ###
-# @meta List
 # @brief Unzip a list of [[a b] [c d]...] into [[a c ...] [b d ...]]
+# @param _L the list to work on
 # @details The original list is left unmodified.
-# ---
+# =begin
 # (let zipped [[1 5] [2 6] [3 7] [4 8]])
 # (print (list:unzip zipped))  # [[1 2 3 4] [5 6 7 8]]
-# ---
-# @param _L the list to work on
+# =end
 # @author https://github.com/FrenchMasterSword
 ###
 (let list:unzip (fun (_L) {
@@ -205,16 +198,15 @@
 }))
 
 ###
-# @meta List
 # @brief Zip two lists into one: [1 2 3 4] and [5 6 7 8] will give [[1 5] [2 6] [3 7] [4 8]]
+# @param _a the first list to work on
+# @param _b the second list to work on
 # @details The original lists are left unmodified.
-# ---
+# =begin
 # (let a [1 2 3 4])
 # (let b [5 6 7 8])
 # (print (list:zip a b))  # [[1 5] [2 6] [3 7] [4 8]]
-# ---
-# @param _a the first list to work on
-# @param _b the second list to work on
+# =end
 # @author https://github.com/FrenchMasterSword
 ###
 (let list:zip (fun (_a _b) {

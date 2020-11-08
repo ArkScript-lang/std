@@ -1,15 +1,16 @@
 ###
 # @meta Switch
 # @brief Takes a value to match against a list of [possible values, function to run if it matched]
+# @param _value value to match
+# @param _test list for test value, composed by sub lists who contained possible value and function to run if matched
 # @details Once the value is matched, it stops and doesn't try any other values.
-# ---
+# =begin
 # (switch 12 [
 #     [1 (fun () (print "the value is one"))]
 #     [12 '(print "quoted code blocks also works")]
 #     [12 '{ (let b "ok") (print b ", quoted begin blocks work as well") }]
 # ])
-# ---
-# @param
+# =end
 # @author https://github.com/SuperFola
 ###
 (let switch (fun (_value _tests) {

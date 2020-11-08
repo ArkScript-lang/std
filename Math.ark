@@ -8,7 +8,6 @@
     (if (< _x 0) (* -1 _x) _x)))
 
 ###
-# @meta Mathematics
 # @brief Return true if the number is even, false otherwise
 # @param _n the number
 # @author https://github.com/rstefanic
@@ -17,7 +16,6 @@
     (= 0 (mod _n 2))))
 
 ###
-# @meta Mathematics
 # @brief Return true if the number is odd, false otherwise
 # @param _n the number
 # @author https://github.com/rstefanic
@@ -26,7 +24,6 @@
     (= 1 (math:abs (mod _n 2)))))
 
 ###
-# @meta Mathematics
 # @brief Get the minimum between two numbers
 # @param _a the first number
 # @param _b the second number
@@ -36,7 +33,6 @@
     (if (< _a _b) _a _b)))
 
 ###
-# @meta Mathematics
 # @brief Get the maximum between two numbers
 # @param _a the first number
 # @param _b the second number
@@ -46,7 +42,6 @@
     (if (> _a _b) _a _b)))
 
 ###
-# @meta Mathematics
 # @brief Get a number to a given power
 # @details Note that it's defined as exp(a * ln(x)), thus won't work for negative numbers
 # @param _x the number to pow
@@ -56,7 +51,6 @@
 (let math:pow (fun (_x _a) (math:exp (* _a (math:ln _x)))))
 
 ###
-# @meta Mathematics
 # @brief Get the square root of a number
 # @details Square roots can't be taken for negative numbers for obvious reasons.
 # @param _x the number
