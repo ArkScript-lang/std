@@ -57,3 +57,20 @@
 # @author https://github.com/SuperFola
 ###
 (let math:sqrt (fun (_x) (math:exp (* 0.5 (math:ln _x)))))
+
+###
+# @brief Run the fibonacci function on a number
+# @param n the number
+# @param p an accumulator
+# @param c an accumulator
+# @author https://github.com/SuperFola
+# =begin
+# (math:fibo 45 0 1)
+# =end
+###
+(let math:fibo (fun (n p c) {
+    (if (<= n 0)
+        0
+        (if (= n 1)
+            c
+            (math:fibo (- n 1) c (+ p c))))}))}
