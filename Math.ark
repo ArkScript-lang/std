@@ -92,5 +92,4 @@
 		(set i (+ i 1))
 	})
 	(set divisors (append divisors i))
-    (set divisors (append divisors n))
-	divisors}))
+    (append divisors n)}))
