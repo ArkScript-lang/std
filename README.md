@@ -34,7 +34,9 @@
 * `math:max a b` returns the maximum between a and b
 * `math:pow x a` returns x to the power of a
 * `math:sqrt x` returns the square root of x
-
+* `math:divs n` returns the divisors of n
+* `maths:fibo n p c` returns the result of the fibonacci function performed on n (p & c are accumulators)
+ 
 ## Range
 
 * `range a b` returns a range object in [a, b[
