@@ -1,0 +1,14 @@
+###
+# @meta Os
+# @brief Returns the home dir of the current user
+# @author https://github.com/Wafelack
+###
+(let os:home_dir (fun () {
+  (sys:exec "whoami > whoami.txt")
+  (let whoami (io:readFile "whoami.txt"))
+  (mut res "")
+  (if (= whoami "root\n" )
+    (+ "" "/")
+    # else
+    ( + "/home/" whoami))
+}))
