@@ -54,6 +54,10 @@
 * `str:split str sep` splits `str` in multiple substrings each time the separator (a single char) is found
 * `str:replace str pattern replace` replaces `pattern` in `str` with `replace`
 
+## os
+
+* `os:home_dir` returns the home directory of the current user
+
 ## Switch
 
 <!-- Not a Nintendo Switch (tm) -->
