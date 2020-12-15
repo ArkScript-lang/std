@@ -1,6 +1,6 @@
 ###
 # @meta String
-# @brief Reverse a string.
+# @brief Converts the given character to lowercase.
 # @param _string the string to make lowercase
 # @details The original string is left unmodified.
 # =begin
@@ -68,7 +68,7 @@
 }))
 
 ###
-# @brief Reverse a string.
+# @brief Converts the given character to uppercase.
 # @param _string the string to make uppercase
 # @details The original string is left unmodified.
 # =begin
