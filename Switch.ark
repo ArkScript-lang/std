@@ -12,7 +12,7 @@
 # ])
 # =end
 # @author https://github.com/SuperFola
-###
+##
 (let switch (fun (_value _tests) {
     (mut _acc 0)
     (let _end (len _tests))

@@ -10,7 +10,7 @@
 # (print (composed 12))  # return value is (12 + 12) * (12 + 12)
 # =end
 # @author https://github.com/rstefanic
-###
+##
 (let compose (fun (_f _g)
     (fun (_y &_f &_g) (_f (_g _y)))))
 
@@ -22,7 +22,7 @@
 # (val (fun (x) (print x " i am called")) (fun (x) (print x " i am NOT called")))
 # =end
 # @author https://github.com/SuperFola
-###
+##
 (let left (fun (_x)
     (fun (_injl _injr &_x) (_injl _x))
 ))
@@ -35,7 +35,7 @@
 # (val (fun (x) (print x " i am NOT called")) (fun (x) (print x " i am called")))
 # =end
 # @author https://github.com/SuperFola
-###
+##
 (let right (fun (_y)
     (fun (_injl _injr &_y) (_injr _y))
 ))
@@ -51,6 +51,6 @@
 # =end
 
 # @author https://github.com/rstefanic
-###
+##
 (let flip (fun (_f _a)
     (fun (_b &_f &_a) (_f _b _a))))

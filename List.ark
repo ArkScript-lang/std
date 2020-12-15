@@ -12,7 +12,7 @@
 # })))
 # =end
 # @author https://github.com/SuperFola
-###
+##
 (let list:forEach (fun (_L _func) {
     (mut _index 0)
     (while (< _index (len _L)) {
@@ -32,7 +32,7 @@
 # (let p (list:product collection))  # => 120
 # =end
 # @author https://github.com/FrenchMasterSword
-###
+##
 (let list:product (fun (_L) {
     (mut _index 0)
     (mut _output 1)
@@ -53,7 +53,7 @@
 # (let p (list:sum collection))  # => 20
 # =begin
 # @author https://github.com/FrenchMasterSword
-###
+##
 (let list:sum (fun (_L) {
     (mut _index 0)
     (mut _output 0)
@@ -74,7 +74,7 @@
 # (print (list:drop cool-stuff 4))  # [5 6 7 8 9]
 # =end
 # @author https://github.com/rstefanic
-###
+##
 (let list:drop (fun (_L _n) {
     (mut _index _n)
     (mut _output [])
@@ -95,7 +95,7 @@
 # (print (list:filter [1 2 3 4 5 6 7 8 9] math:even))  # [2 4 6 8]
 # =end
 # @author https://github.com/rstefanic
-###
+##
 (let list:filter (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
@@ -116,7 +116,7 @@
 # (print (list:map [1 2 3 4 5 6 7 8 9] (fun (e) (* e e))))  # [1 4 9 25 36 49 64 81]
 # =end
 # @author https://github.com/rstefanic
-###
+##
 (let list:map (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
@@ -137,7 +137,7 @@
 # (print (list:reduce cool (fun (a b) (+ a b))))  # 45
 # =end
 # @author https://github.com/FrenchMasterSword
-###
+##
 (let list:reduce (fun (_L _f) {
     (mut _index 1)
     (mut _output (@ _L 0))
@@ -160,7 +160,7 @@
 # (print (list:take [1 2 3 4 5 6 7 8 9] 4))  # [1 2 3 4]
 # =end
 # @author https://github.com/rstefanic
-###
+##
 (let list:take (fun (_L _n) {
     (mut _index 0)
     (mut _output [])
@@ -182,7 +182,7 @@
 # (print (list:unzip zipped))  # [[1 2 3 4] [5 6 7 8]]
 # =end
 # @author https://github.com/FrenchMasterSword
-###
+##
 (let list:unzip (fun (_L) {
     (let _m (len _L))
     (mut _list1 [])
@@ -208,7 +208,7 @@
 # (print (list:zip a b))  # [[1 5] [2 6] [3 7] [4 8]]
 # =end
 # @author https://github.com/FrenchMasterSword
-###
+##
 (let list:zip (fun (_a _b) {
     (let _m (math:min (len _a) (len _b)))
     (mut _c [])

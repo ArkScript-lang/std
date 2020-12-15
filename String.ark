@@ -9,7 +9,7 @@
 # (let new (str:toLower message))  # => hello world, i like cheese
 # =end
 # @author https://github.com/Natendrtfm
-###
+##
 (let str:toLower (fun (text) {
     (mut _index 0)
     (mut _e "")
@@ -77,7 +77,7 @@
 # (let new (str:toUpper message))  # => HELLO WORLD, I LIKE CHEESE
 # =end
 # @author https://github.com/Natendrtfm
-###
+##
 (let str:toUpper (fun (_string) {
     (mut _index 0)
     (mut _e "")
@@ -145,7 +145,7 @@
 # (let reversed (str:reverse message))  # => staog ekil I ,dlrow olleh
 # =end
 # @author https://github.com/Natendrtfm
-###
+##
 (let str:reverse (fun (_string) {
     (mut _index (- (len _string) 1))
     (mut _returnedString "")
@@ -168,7 +168,7 @@
 # (let slice (str:slice message 6 4))  # => worl
 # =end
 # @author https://github.com/Natendrtfm
-###
+##
 (let str:slice (fun (_string _startingIndex _length)
     (if (= _length 0)
         ""
@@ -198,7 +198,7 @@
 # (let splitted (str:split message " "))
 # =end
 # @author https://github.com/Natendrtfm
-###
+##
 (let str:split (fun (_string _separator) {
     (assert (!= "" _separator) "Separator of split can not be empty")
     (assert (= 1 (len _separator)) "Separator length must be equal to 1")
@@ -233,7 +233,7 @@
 # (let message "hello XXX, do you like the name XXX?")
 # (print (str:replace message "XXX" "Harry"))  # hello Harry, do you like the name Harry?
 # =end
-###
+##
 (let str:replace (fun (_string _pattern _new) {
     (mut _out _string)
     (mut _idx (str:find _out _pattern))

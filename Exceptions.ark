@@ -6,7 +6,7 @@
 # (let error (throw "cannot divide by zero"))
 # =end
 # @author https://github.com/SuperFola
-###
+##
 (let throw (fun (_x)
     (fun (_injl _injr &_x) (_injl _x))
 ))
@@ -18,7 +18,7 @@
 # (let value (return (/ 1 x)))
 # =end
 # @author https://github.com/SuperFola
-###
+##
 (let return (fun (_y)
     (fun (_injl _injr &_y) (_injr _y))
 ))
@@ -38,6 +38,6 @@
 #     (fun (err) (print err)))
 # =end
 # @author https://github.com/SuperFola
-###
+##
 (let try (fun (_either _continue _handle)
     (_either _handle _continue)))
