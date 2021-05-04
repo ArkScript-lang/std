@@ -201,25 +201,22 @@
 ##
 (let str:split (fun (_string _separator) {
     (assert (!= "" _separator) "Separator of split can not be empty")
-    (assert (= 1 (len _separator)) "Separator length must be equal to 1")
-    (mut _index 0)
-    (mut _word "")
-    (mut _letter "")
-    (mut _output [])
+    (assert (>= 1 (len _separator)) "Separator length must be at least 1")
 
-    (while (< _index (len _string)) {
-        (set _letter (@ _string _index))
-        (if (= _letter _separator)
-            {
-                (set _output (append _output _word))
-                (set _word "")
-            }
-            (set _word (+ _word _letter)))
-        (set _index (+ _index 1))
+    (mut _index (str:find _string _separator))
+    (mut _previous 0)
+    (mut _output [])
+    (let _seplen (len _separator))
+
+    (while (!= _index -1) {
+        (set _output (append _output (str:slice _string 0 (- _index _previous))))
+        (set _string (str:slice _string (+ _index _seplen) (- (len _string) _index _seplen)))
+        (set _index (str:find _string _separator))
     })
-    (if (empty? _word)
+
+    (if (empty? _string)
         _output
-        (append _output _word))
+        (append _output _string))
 }))
 
 ###
