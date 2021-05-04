@@ -188,9 +188,9 @@
 ))
 
 ###
-# @brief Split a string in multiple substrings in a list, given a separator (single character)
+# @brief Split a string in multiple substrings in a list, given a separator
 # @param _string the string to split
-# @param _separator the separator to use for splitting (single char)
+# @param _separator the separator to use for splitting
 # @details Returns a list of strings. Example :
 # =begin
 # (import "String.ark")
@@ -201,7 +201,7 @@
 ##
 (let str:split (fun (_string _separator) {
     (assert (!= "" _separator) "Separator of split can not be empty")
-    (assert (>= 1 (len _separator)) "Separator length must be at least 1")
+    (assert (>= (len _separator) 1) "Separator length must be at least 1")
 
     (mut _index (str:find _string _separator))
     (mut _previous 0)
@@ -244,4 +244,27 @@
         (set _idx (str:find _out _pattern))
     })
     _out
+}))
+
+###
+# @brief Join a list of elements with a given string delimiter
+# @param _list host the elements to join
+# @param _delim a string delimiter to be put between each element
+# @details The original list isn't modified
+# =begin
+# (import "String.ark")
+# (let data [1 "hello" 3.14 true "world"])
+# (print (str:join data ";")) # 1;hello;3.14;true;world
+# =end
+##
+(let str:join (fun (_list _delim) {
+    (mut _output "")
+    (mut _index 0)
+
+    (while (< _index (len _list)) {
+        (set _output (+ _output (toString (@ _list _index)) (if (!= _index (- (len _list) 1)) _delim "")))
+        (set _index (+ 1 _index))
+    })
+
+    _output
 }))
