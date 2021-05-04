@@ -51,8 +51,9 @@
 * `str:toUpper str` returns `str` in uppercase
 * `str:reverse str` reverses `str`
 * `str:slice str start length` takes a slice of `start`, given a starting index and a slice length
-* `str:split str sep` splits `str` in multiple substrings each time the separator (a single char) is found
+* `str:split str sep` splits `str` in multiple substrings each time the separator is found
 * `str:replace str pattern replace` replaces `pattern` in `str` with `replace`
+* `str:join list delim` joins every elements of the given list with a given string `delim`, and returns a string
 
 ## os
 
