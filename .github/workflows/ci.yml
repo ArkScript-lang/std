@@ -30,13 +30,14 @@ jobs:
           else
             echo "Something went wrong, couldn't find linux64.zip"
           fi
+          cp *.arkm ../
 
       - name: Tests
         shell: bash
         run: |
           ./bin/ark --version
           if [ -f tests/all.ark ]; then
-            ./bin/ark tests/all.ark
+            ./bin/ark tests/all.ark -L ./
           else
             echo "No tests found"
           fi
