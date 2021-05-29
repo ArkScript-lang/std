@@ -34,15 +34,6 @@
     (set tests (assert-eq "hello" (str:join ["hello"] ";") "string join" tests))
     (set tests (assert-eq "" (str:join [] ";;") "string join" tests))
 
-    (set tests (assert-eq "hllo world" (str:removeAt "hello world" 1) "string remove at" tests))
-    (set tests (assert-eq "ello world" (str:removeAt "hello world" 0) "string remove at" tests))
-    (set tests (assert-eq "hello worl" (str:removeAt "hello world" 10) "string remove at" tests))
-
-    (set tests (assert-eq -1 (str:find "hello" "help") "string find substr" tests))
-    (set tests (assert-eq 0 (str:find "hello" "hel") "string find substr" tests))
-    (set tests (assert-eq 2 (str:find "hello" "llo") "string find substr" tests))
-    (set tests (assert-eq -1 (str:find "" "1") "string find substr" tests))
-
     (recap "String tests passed" tests (- (time) start-time))
 
     tests
