@@ -1,6 +1,11 @@
 (let start_time (time))
 
-(print "Starting unit tests")
+(print "
+Standard library
+================
+    Starting unit tests...
+
+")
 
 # Each test file is consisting of a function executing a list of asserts
 # to see if everything is all right.
