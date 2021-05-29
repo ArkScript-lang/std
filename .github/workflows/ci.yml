@@ -30,7 +30,7 @@ jobs:
           else
             echo "Something went wrong, couldn't find linux64.zip"
           fi
-          cp *.arkm ../
+          cp lib/*.arkm ../
 
       - name: Tests
         shell: bash
