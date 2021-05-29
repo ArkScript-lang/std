@@ -4,7 +4,6 @@
 Standard library
 ================
     Starting unit tests...
-
 ")
 
 # Each test file is consisting of a function executing a list of asserts
