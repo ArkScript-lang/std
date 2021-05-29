@@ -1,5 +1,7 @@
 # ArkScript standard library
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ArkScript-lang/std/CI?logo=cmake&style=for-the-badge)
+
 ## Exceptions
 
 * `throw value` to use with try
