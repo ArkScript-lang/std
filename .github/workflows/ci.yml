@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout std
+        uses: actions/checkout@v2
+      
+      - name: Download latest ArkScript release
+        shell: bash
+        run: |
+          mkdir bin && cd bin
+          current=`curl -s https://github.com/ArkScript-lang/Ark/releases/latest | egrep -o "tag/(?[^\"]+)"`
+          echo "Found a new version: $current"
+          current=`echo $current | cut -c 5- -`
+          url="https://github.com/ArkScript-lang/Ark/releases/download/$current/linux64.zip"
+          wget --quiet $url
+          if [ -f linux64.zip ]; then
+            echo "New version $current downloaded in $(pwd)/linux64.zip"
+            unzip -o linux64.zip
+            rm linux64.zip
+          else
+            echo "Something went wrong, couldn't find linux64.zip"
+          fi
+
+      - name: Tests
+        shell: bash
+        run: |
+          ./bin/ark --version
+          if [ -f tests/all.ark ]; then
+            ./bin/ark tests/all.ark
+          else
+            echo "No tests found"
+          fi
