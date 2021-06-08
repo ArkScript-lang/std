@@ -24,11 +24,12 @@ jobs:
           path: bin
           repo: ArkScript-lang/Ark
       
-      - name: Move files to work correctly
+      - name: Set up files
         shell: bash
         run: |
           cd bin
           cp lib/*.arkm ../
+          chmod u+x ark
 
       - name: Tests
         shell: bash
