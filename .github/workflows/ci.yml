@@ -13,24 +13,23 @@ jobs:
     steps:
       - name: Checkout std
         uses: actions/checkout@v2
+        
+      - name: Download Linux artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: linux-gcc.yml
+          branch: dev
+          name: ark-linux-gcc-version
+          path: bin
+          repo: ArkScript-lang/Ark
       
-      - name: Download latest ArkScript release
+      - name: Set up files
         shell: bash
         run: |
-          mkdir bin && cd bin
-          current=`curl -s https://github.com/ArkScript-lang/Ark/releases/latest | egrep -o "tag/(?[^\"]+)"`
-          echo "Found a new version: $current"
-          current=`echo $current | cut -c 5- -`
-          url="https://github.com/ArkScript-lang/Ark/releases/download/$current/linux64.zip"
-          wget --quiet $url
-          if [ -f linux64.zip ]; then
-            echo "New version $current downloaded in $(pwd)/linux64.zip"
-            unzip -o linux64.zip
-            rm linux64.zip
-          else
-            echo "Something went wrong, couldn't find linux64.zip"
-          fi
+          cd bin
           cp lib/*.arkm ../
+          chmod u+x ark
 
       - name: Tests
         shell: bash
