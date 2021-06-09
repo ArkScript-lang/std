@@ -44,6 +44,10 @@
     (set tests (assert-eq (list:flatten [[1]]) [1] "flatten" tests))
     (set tests (assert-eq (list:flatten zipped) [1 2 3 4 5 6 7 8 9] "flatten" tests))
 
+    (set tests (assert-eq (list:flatMap [] (fun (a) [a a])) [] "flatMap" tests))
+    (set tests (assert-eq (list:flatMap a (fun (a) (* 2 a))) [2 4 6] "flatMap" tests))
+    (set tests (assert-eq (list:flatMap a (fun (a) [a a])) [1 1 2 2 3 3] "flatMap" tests))
+
     (set tests (assert-eq (list:take a 1) [1] "take" tests))
     (set tests (assert-eq (list:take a 100) a "take" tests))
 

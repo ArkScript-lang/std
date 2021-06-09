@@ -133,7 +133,7 @@
 }))
 
 ###
-# @brief Applies a given function to each element of a list
+# @brief Apply a given function to each element of a list
 # @param _L the list to work on
 # @param _f the function to apply to each element
 # @details The original list is left unmodified.
@@ -189,6 +189,28 @@
     (while (< _index (len _L)) {
         (mut _sub (@ _output _index))
         (set _output (if (= "List" (type _sub)) (concat _output _sub) (append _output _sub)))
+        (set _index (+ 1 _index))
+    })
+    _output
+})
+
+###
+# @brief Apply a given function to each element of a list and then flatten it
+# @param _L the list to work on
+# @param _f the function to apply to each element
+# @details The original list is left unmodified.
+# =begin
+# (let cool [1 2 3 4])
+# (print (list:flatMap cool (fun (a) [a a])))  # [1 1 2 2 3 3 4 4]
+# =end
+# @author https://github.com/SuperFola
+##
+(let list:flatMap (fun _L _f) {
+    (mut _index 0)
+    (mut _output [])
+    (while (< _index (len _L)) {
+        (mut _res (_f (@ _L _index)))
+        (set _output (if (= "List" (type _sub)) (concat _output _res) (append _output _res)))
         (set _index (+ 1 _index))
     })
     _output
