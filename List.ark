@@ -183,7 +183,7 @@
 # =end
 # @author https://github.com/SuperFola
 ##
-(let list:flatten (fun _L) {
+(let list:flatten (fun (_L) {
     (mut _index 0)
     (mut _output [])
     (while (< _index (len _L)) {
@@ -192,7 +192,7 @@
         (set _index (+ 1 _index))
     })
     _output
-})
+}))
 
 ###
 # @brief Apply a given function to each element of a list and then flatten it
