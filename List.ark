@@ -100,7 +100,7 @@
     (mut _index 0)
     (mut _output [])
     (while (< _index (len _L))
-        (if (_f (@ _L _i))
+        (if (_f (@ _L _index))
             (set _index (+ 1 _index))
 
             (while (< _index (len _L)) {
