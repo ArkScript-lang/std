@@ -212,7 +212,7 @@
     (mut _output [])
     (while (< _index (len _L)) {
         (mut _res (_f (@ _L _index)))
-        (set _output (if (= "List" (type _sub)) (concat _output _res) (append _output _res)))
+        (set _output (if (= "List" (type _res)) (concat _output _res) (append _output _res)))
         (set _index (+ 1 _index))
     })
     _output
