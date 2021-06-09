@@ -22,7 +22,7 @@
     (set tests (assert-eq (list:sum b) (+ 4 5 6) "sum" tests))
     (set tests (assert-eq (list:sum []) 0 "sum" tests))
 
-    (set tests (assert-eq (list:drop a -100) [1 2 3] "drop" tests))
+    (set tests (assert-eq (list:drop a 0) [1 2 3] "drop" tests))
     (set tests (assert-eq (list:drop a 1) [2 3] "drop" tests))
     (set tests (assert-eq (list:drop a 2) [3] "drop" tests))
 
@@ -42,7 +42,7 @@
     (set tests (assert-eq (list:flatten []) [] "flatten" tests))
     (set tests (assert-eq (list:flatten [[]]) [] "flatten" tests))
     (set tests (assert-eq (list:flatten [[1]]) [1] "flatten" tests))
-    (set tests (assert-eq (list:flatten zipped) [1 2 3 4 5 6 7 8 9] "flatten" tests))
+    (set tests (assert-eq (list:flatten zipped) [1 5 2 6 3 7 4 8] "flatten" tests))
 
     (set tests (assert-eq (list:flatMap [] (fun (a) [a a])) [] "flatMap" tests))
     (set tests (assert-eq (list:flatMap a (fun (a) (* 2 a))) [2 4 6] "flatMap" tests))
