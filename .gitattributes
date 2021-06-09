@@ -1,0 +1,2 @@
+*.ark linguist-language=lisp
+*.ark diff=lisp
