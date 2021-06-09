@@ -7,20 +7,20 @@
 # =begin
 # (import "List.ark")
 # (let collection [1 2 5 12])
-# (let new (list:forEach collection (fun (element) {
+# (list:forEach collection (fun (element) {
 #     (print element)
-# })))
+# }))
 # =end
 # @author https://github.com/SuperFola
 ##
-(let list:forEach (fun (_L _func) {
+!{list:forEach (_L _func) {
     (mut _index 0)
     (while (< _index (len _L)) {
         (mut _element (@ _L _index))
         (_func _element)
         (set _index (+ 1 _index))
     })
-}))
+}}
 
 ###
 # @brief Iterate over a given list and multiply all the elements with the others.
