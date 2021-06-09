@@ -289,3 +289,25 @@
     })
     _c
 }))
+
+###
+# @brief Fold a given list, starting from the left side
+# @param _L the list to work on
+# @param _init an init value
+# @param _f a function to apply to the list
+# @details The original list is left unmodified.
+# =begin
+# (let a [1 2 3 4])
+# (print (list:foldLeft a 0 (fun (a b) (+ a b))))  # 10
+# =end
+# @author https://github.com/FrenchMasterSword
+##
+(let list:foldLeft (fun (_L _init _f) {
+    (mut _index 0)
+    (mut _val _init)
+    (while (< _index (len _L)) {
+        (set _val (_f _val (@ _L _index)))
+        (set _index (+ 1 _index))
+    })
+    _val
+}))

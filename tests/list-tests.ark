@@ -57,6 +57,10 @@
     (set tests (assert-eq (list:zip a b) [[1 4] [2 5] [3 6]] "zip" tests))
     (set tests (assert-eq (list:zip [] []) [] "zip" tests))
 
+    (set tests (assert-eq (list:foldLeft [] 0 (fun (x y) (+ x y))) 0 "foldLeft" tests))
+    (set tests (assert-eq (list:foldLeft ["1" "2" "3"] "" (fun (x y) (+ x y))) "123" "foldLeft" tests))
+    (set tests (assert-eq (list:foldLeft a 0 (fun (x y) (+ x y))) 6 "foldLeft" tests))
+
     (set tests (assert-eq a [1 2 3] "unmodified list" tests))
     (set tests (assert-eq b [4 5 6] "unmodified list" tests))
 
