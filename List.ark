@@ -64,6 +64,8 @@
     _output
 }))
 
+(import "Math.ark")  # needed for math:min, math:max
+
 ###
 # @brief Drop the first n elements of a list
 # @param _L the list to work on
@@ -76,7 +78,7 @@
 # @author https://github.com/rstefanic
 ##
 (let list:drop (fun (_L _n) {
-    (mut _index _n)
+    (mut _index (math:max 0 _n))
     (mut _output [])
     (while (< _index (len _L)) {
         (set _output (append _output (@ _L _index)))
@@ -212,13 +214,13 @@
     (mut _output [])
     (while (< _index (len _L)) {
         (mut _res (_f (@ _L _index)))
-        (set _output (if (= "List" (type _res)) (concat _output _res) (append _output _res)))
+        (set _output (if (= "List" (type _res))
+            (concat _output _res)
+            (append _output _res)))
         (set _index (+ 1 _index))
     })
     _output
 }))
-
-(import "Math.ark")  # needed for (math:min a b)
 
 ###
 # @meta List
