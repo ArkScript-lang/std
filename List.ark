@@ -300,7 +300,7 @@
 # (let a [1 2 3 4])
 # (print (list:foldLeft a 0 (fun (a b) (+ a b))))  # 10
 # =end
-# @author https://github.com/FrenchMasterSword
+# @author https://github.com/SuperFola
 ##
 (let list:foldLeft (fun (_L _init _f) {
     (mut _index 0)
