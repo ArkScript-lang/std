@@ -1,0 +1,107 @@
+(import "List.ark")
+
+###
+# @meta Events
+# @brief Allows to register events listeners and emit events
+# =begin
+# (let em (events:manager:make))
+# (em.on "myType" (fun (value) (print "This is a callback")))
+# (em.emit "myType")  # => prints "This is a callback" thanks to the registered listener
+# =end
+# @author https://github.com/fabien-zoccola
+##
+(let events:manager:make (fun () {
+    # listeners list
+    (mut _listeners [])
+
+    ###
+    # @brief Checks if a given callback is valid (is a function or a closure)
+    # @param callback the callback to check
+    # @details Returns true if the callback is a function/closure, false otherwise
+    # =begin
+    # (closure._check_valid (fun (param) ()))  # => true
+    # (closure._check_valid (fun (param) {}))  # => true
+    # (closure._check_valid 5)  # => false
+    # =end
+    # @author https://github.com/fabien-zoccola
+    ##
+    (let _check_valid (fun (callback)
+        (or (= "Function" (type callback)) (= "Closure" (type callback)) )))
+
+    ###
+    # @brief Registers an event listener
+    # @param typ the type of the event to listen for
+    # @param callback the function/closure that will be called when an event is emitted
+    # @details Adds a [type callback] list to the listeners list
+    # =begin
+    # (closure.on "myType" (fun (param) ())
+    # =end
+    # @author https://github.com/fabien-zoccola
+    ##
+    (let on (fun (typ callback) 
+        (if (_check_valid callback)
+            (set _listeners (append _listeners [typ callback])))))
+
+    ###
+    # @brief Emits an event with a value
+    # @param val the emitted value
+    # @param typ the type of the emitted event
+    # @details Makes a forEach on the listeners list, and calls the callback. Returns a boolean of whether we called at least one listener
+    # =begin
+    # (closure.emitWith 5 "myType")
+    # =end
+    # @author https://github.com/fabien-zoccola
+    ##
+    (let emitWith (fun (val typ)
+        (list:forEach _listeners (fun (element) {
+            (mut found false)
+            (if (= typ (@ element 0)) {
+                ((@ element 1) val)
+                (set found true)
+            })
+            found
+        }))))
+
+    ###
+    # @brief Emits an event with no value
+    # @param typ the type of the emitted event
+    # @details Calls emitWith nil <typ>
+    # =begin
+    # (closure.emit "myType")
+    # =end
+    # @author https://github.com/fabien-zoccola
+    ##
+    (let emit (fun (typ)
+        (emitWith nil typ) ))
+
+    ###
+    # @brief Removes all listeners of a given type
+    # @param typ the type of event to remove from the list
+    # @details Returns if at least one listener has been removed
+    # =begin
+    # (closure.remove_listeners_of_type "myType")
+    # =end
+    # @author https://github.com/fabien-zoccola
+    ##
+    (let removeListenersOfType (fun (typ) {
+        (let newlist (list:filter _listeners (fun (element)
+            (!= typ (@ element 0)) )))
+        (let deleted (!= newlist _listeners))
+        (set _listeners newlist)
+        deleted
+    }))
+
+    (fun (
+        # listeners
+        &_listeners
+
+        # hidden methods
+        &_check_valid
+        
+        # methods
+        &on
+        &emit
+        &emitWith
+        &removeListenersOfType
+        ) ())
+}))
