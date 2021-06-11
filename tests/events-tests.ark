@@ -1,0 +1,41 @@
+(import "tests-tools.ark")
+
+(import "Events.ark")
+
+(let events-tests (fun () {
+    (mut tests 0)
+    (let start-time (time))
+
+    (let em (events:manager:make))
+
+    # _check_valid tests
+    (set tests (assert-eq true (em._check_valid (fun () ())) "check_valid" tests))
+    (set tests (assert-eq false (em._check_valid 4) "check_valid" tests))
+
+    # on tests
+    (em.on "myType" 4)
+    (set tests (assert-eq [] em._listeners "listeners empty" tests))
+    (em.on "myType" (fun (_) ()))
+    (set tests (assert-neq [] em._listeners "listeners with one element" tests))
+
+    # emit tests
+    (set tests (assert-eq false (em.emit "emitType") "emit" tests))
+    (em.on "emitType" (fun (_) ()))
+    (set tests (assert-eq true (em.emit "emitType") "emit" tests))
+
+    # emitWith tests
+    (set tests (assert-eq false (em.emitWith 1 "emitWithType") "emitWith" tests))
+    (em.on "emitWithType" (fun (_) ()))
+    (set tests (assert-eq true (em.emitWith 2 "emitWithType") "emitWith" tests))
+
+    # removeListenersOfType
+    (set tests (assert-eq false (em.removeListenersOfType "removeType") "removeListenersOfType" tests))
+    (em.on "removeType" (fun (_) ()))
+    (set tests (assert-eq true (em.removeListenersOfType "removeType") "removeListenersOfType" tests))
+
+    (recap "Events tests passed" tests (- (time) start-time))
+
+    tests
+}))
+
+(let passed-events (events-tests))
