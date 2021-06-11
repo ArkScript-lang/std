@@ -52,15 +52,16 @@
     # =end
     # @author https://github.com/fabien-zoccola
     ##
-    (let emitWith (fun (val typ)
-        (list:forEach _listeners (fun (element) {
-            (mut found false)
+    (let emitWith (fun (val typ) {
+        (mut found false)
+        (list:forEach _listeners (fun (element)
             (if (= typ (@ element 0)) {
                 ((@ element 1) val)
                 (set found true)
-            })
-            found
-        }))))
+            })))
+        found
+    }))
+        
 
     ###
     # @brief Emits an event with no value
