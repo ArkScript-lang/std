@@ -11,24 +11,24 @@ Standard library
 # We *must* use functions for our tests because they create a new scope,
 # to avoid collisions with other tests, and avoid false positive tests.
 
-(import "events-tests.ark")
 (import "exceptions-tests.ark")
 (import "functional-tests.ark")
 (import "list-tests.ark")
 (import "range-tests.ark")
 (import "string-tests.ark")
 (import "switch-tests.ark")
+(import "math-tests.ark")
 
 (print "  ------------------------------")
 
 (print "  Total: " (+ 0 0
-    passed-events
     passed-exceptions
     passed-functional
     passed-list
     passed-range
     passed-string
     passed-switch
+    passed-math
 ))
 
 (print "Completed in " (* 1000 (- (time) start_time)) "ms")

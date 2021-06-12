@@ -5,7 +5,7 @@
 (let math-tests (fun () {
     (mut tests 0)
     (let start-time (time))
-
+    
     (set tests (assert-eq (math:abs -1) 1 "math:abs" tests))
     (set tests (assert-eq (math:abs 1) 1 "math:abs" tests))
     (set tests (assert-val (math:even 2) "math:even" tests))
@@ -27,6 +27,11 @@
     (set tests (assert-eq (math:divs 6) [1 2 3 6] "math:divs" tests))
     (set tests (assert-eq (math:divs 2) [1 2] "math:divs" tests))
     (set tests (assert-eq (math:divs 931) [1 7 19 49 133 931] "math:divs" tests))
+    (set tests (assert-eq (math:log 27 3) 3 "math:log" tests))
+    (set tests (assert-eq (math:log 1953125 5) 9 "math:log" tests))
+    (set tests (assert-eq (math:log2 128) 7 "math:log2" tests))
+    (set tests (assert-eq (math:log2 2048) 11 "math:log2" tests))
+    (set tests (assert-eq (math:log10 1000) 3 "math:log10" tests))
 
     (recap "Math tests passed" tests (- (time) start-time))
 
