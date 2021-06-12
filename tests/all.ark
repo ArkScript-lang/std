@@ -23,6 +23,7 @@ Standard library
 (print "  ------------------------------")
 
 (print "  Total: " (+ 0 0
+    passed-events
     passed-exceptions
     passed-functional
     passed-list
