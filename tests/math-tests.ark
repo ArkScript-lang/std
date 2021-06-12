@@ -5,7 +5,7 @@
 (let math-tests (fun () {
     (mut tests 0)
     (let start-time (time))
-    
+
     (set tests (assert-eq (math:abs -1) 1 "math:abs" tests))
     (set tests (assert-eq (math:abs 1) 1 "math:abs" tests))
     (set tests (assert-val (math:even 2) "math:even" tests))
