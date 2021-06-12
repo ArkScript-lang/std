@@ -313,3 +313,49 @@
     })
     _val
 }))
+
+###
+# @brief Check if a condition is verified for all elements of a list
+# @param a the list to work on
+# @param f the conditon
+# =begin
+# (let a [1 2 3 4])
+# (let f (fun(e)(< e 5)))
+# (print (list:forAll a f))  # true
+# =end
+# @author https://github.com/Gryfenfer97
+##
+(let list:forAll (fun (a f) {
+    (mut verified true)
+    (mut index 0)
+    (while (and verified (< index (len a))) {
+        (if (not (f (@ a index)))
+            (set verified false)
+        )
+        (set index (+ 1 index))
+    })
+    verified
+}))
+
+###
+# @brief Check if a condition if verified for one or more elements of a list
+# @param a the list to work on
+# @param f the conditon
+# =begin
+# (let a [1 2 3 4])
+# (let f (fun(e)(< e 3)))
+# (print (list:any a f))  # true
+# =end
+# @author https://github.com/Gryfenfer97
+##
+(let list:any (fun (a f) {
+    (mut verified false)
+    (mut index 0)
+    (while (and (not verified) (< index (len a))) {
+        (if (f (@ a index))
+            (set verified true)
+        )
+        (set index (+ 1 index))
+    })
+    verified
+}))
