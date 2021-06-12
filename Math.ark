@@ -100,9 +100,9 @@
 # @param x the number
 # @param n the base
 # @author https://github.com/Gryfenfer97
-# = begin
+# =begin
 # (math:log 81 3) # Returns 4
-# = end
+# =end
 ##
 (let math:log (fun (x n) {
     (assert (> x 0) "math:log: x must be greater than 0")
@@ -113,9 +113,9 @@
 # @brief Returns the logarithm base 2 of a number
 # @param x the number
 # @author https://github.com/Gryfenfer97
-# = begin
+# =begin
 # (math:log2 128) # Returns 7
-# = end
+# =end
 ##
 (let math:log2 (fun (x) {
     (math:log x 2)}))
@@ -124,9 +124,9 @@
 # @brief Returns the logarithm base 10 of a number
 # @param x the number
 # @author https://github.com/Gryfenfer97
-# = begin
+# =begin
 # (math:log10 1000) # Returns 3
-# = end
+# =end
 ##
 (let math:log10 (fun (x) {
     (math:log x 10)}))
