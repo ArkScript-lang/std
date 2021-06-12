@@ -329,9 +329,9 @@
     (mut verified true)
     (mut index 0)
     (while (and verified (< index (len a))) {
-        (if (not (f (@ a index))) {
+        (if (not (f (@ a index)))
             (set verified false)
-        })
+        )
         (set index (+ 1 index))
     })
     verified
@@ -352,9 +352,9 @@
     (mut verified false)
     (mut index 0)
     (while (and (not verified) (< index (len a))) {
-        (if (f (@ a index)) {
+        (if (f (@ a index))
             (set verified true)
-        })
+        )
         (set index (+ 1 index))
     })
     verified
