@@ -64,6 +64,11 @@
     (set tests (assert-eq a [1 2 3] "unmodified list" tests))
     (set tests (assert-eq b [4 5 6] "unmodified list" tests))
 
+    (set tests (assert-eq (list:forAll a (fun (e) (< e 4))) true "list:forAll" tests))
+    (set tests (assert-eq (list:forAll a (fun (e) (< e 2))) false "list:forAll" tests))
+    (set tests (assert-eq (list:any a (fun (e) (< e 2))) true "list:any" tests))
+    (set tests (assert-eq (list:any a (fun (e) (> e 8))) false "list:any" tests))
+
     (recap "List tests passed" tests (- (time) start-time))
 
     tests
