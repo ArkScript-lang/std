@@ -130,3 +130,14 @@
 ##
 (let math:log10 (fun (x) {
     (math:log x 10)}))
+
+###
+# @brief Returns the quotient of the euclidian division of a and b
+# @param a the dividend
+# @param b the divisor
+# @author https://github.com/fabien-zoccola
+# =begin
+# (math:floordiv 14 6) # Returns 2
+# =end
+##
+(let math:floordiv (fun (a b) (math:floor (/ a b))))
