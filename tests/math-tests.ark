@@ -32,6 +32,9 @@
     (set tests (assert-eq (math:log2 128) 7 "math:log2" tests))
     (set tests (assert-eq (math:log2 2048) 11 "math:log2" tests))
     (set tests (assert-eq (math:log10 1000) 3 "math:log10" tests))
+    (set tests (assert-eq (math:floordiv 14 6) 2 "math:floordiv" tests))
+    (set tests (assert-eq (math:floordiv 14 14) 1 "math:floordiv" tests))
+    (set tests (assert-eq (math:floordiv 14 15) 0 "math:floordiv" tests))
 
     (recap "Math tests passed" tests (- (time) start-time))
 
