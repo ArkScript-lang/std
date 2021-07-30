@@ -260,7 +260,7 @@
     (mut _index 0)
     (mut _output [])
     (mut continue true)
-    (while continue 
+    (while (and (< _index (len _L)) continue)
         (if (_f (@ _L _index))
             {
                 (set _output (append _output (@ _L _index)))
