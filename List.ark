@@ -259,7 +259,6 @@
 (let list:takeWhile (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
-
     (mut continue true)
     (while continue 
         (if (_f (@ _L _index))
