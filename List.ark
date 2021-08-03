@@ -1,5 +1,3 @@
-###
-# @meta List
 # @brief Iterate over a given list and run a given function on every element.
 # @param _L the list to iterate over
 # @param _func the function to call on each element
@@ -12,7 +10,6 @@
 # }))
 # =end
 # @author https://github.com/SuperFola
-##
 (let list:forEach (fun (_L _func) {
     (mut _index 0)
     (while (< _index (len _L)) {
@@ -22,7 +19,6 @@
     })
 }))
 
-###
 # @brief Iterate over a given list and multiply all the elements with the others.
 # @param _L the list to iterate over
 # @details The original list is left unmodified.
@@ -32,7 +28,6 @@
 # (let p (list:product collection))  # => 120
 # =end
 # @author https://github.com/FrenchMasterSword
-##
 (let list:product (fun (_L) {
     (mut _index 0)
     (mut _output 1)
@@ -43,7 +38,6 @@
     _output
 }))
 
-###
 # @brief Iterate over a given list and sum all the elements.
 # @param _L the list to iterate over
 # @details The original list is left unmodified.
@@ -51,9 +45,8 @@
 # (import "List.ark")
 # (let collection [1 2 5 12])
 # (let p (list:sum collection))  # => 20
-# =begin
+# =end
 # @author https://github.com/FrenchMasterSword
-##
 (let list:sum (fun (_L) {
     (mut _index 0)
     (mut _output 0)
@@ -66,7 +59,6 @@
 
 (import "Math.ark")  # needed for math:min, math:max
 
-###
 # @brief Drop the first n elements of a list
 # @param _L the list to work on
 # @param _n the number of elements to drop
@@ -76,7 +68,6 @@
 # (print (list:drop cool-stuff 4))  # [5 6 7 8 9]
 # =end
 # @author https://github.com/rstefanic
-##
 (let list:drop (fun (_L _n) {
     (mut _index (math:max 0 _n))
     (mut _output [])
@@ -87,7 +78,6 @@
     _output
 }))
 
-###
 # @brief Drop the first elements of a list, while they match a given predicate
 # @param _L the list to work on
 # @param _f the predicate
@@ -97,7 +87,6 @@
 # (print (list:dropWhile cool-stuff (fun (a) (< a 4))))  # [4 5 6 7 8 9]
 # =end
 # @author https://github.com/SuperFola
-##
 (let list:dropWhile (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
@@ -112,7 +101,6 @@
     _output
 }))
 
-###
 # @brief Keep elements in a given list if they follow a predicate
 # @param _L the list to work on
 # @param _f the predicate
@@ -122,7 +110,6 @@
 # (print (list:filter [1 2 3 4 5 6 7 8 9] math:even))  # [2 4 6 8]
 # =end
 # @author https://github.com/rstefanic
-##
 (let list:filter (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
@@ -134,7 +121,6 @@
     _output
 }))
 
-###
 # @brief Apply a given function to each element of a list
 # @param _L the list to work on
 # @param _f the function to apply to each element
@@ -143,7 +129,6 @@
 # (print (list:map [1 2 3 4 5 6 7 8 9] (fun (e) (* e e))))  # [1 4 9 25 36 49 64 81]
 # =end
 # @author https://github.com/rstefanic
-##
 (let list:map (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
@@ -154,7 +139,6 @@
     _output
 }))
 
-###
 # @brief Apply a function to the elements of a list to reduce it
 # @param _L the list to work on
 # @param _f the function to apply
@@ -164,7 +148,6 @@
 # (print (list:reduce cool (fun (a b) (+ a b))))  # 45
 # =end
 # @author https://github.com/FrenchMasterSword
-##
 (let list:reduce (fun (_L _f) {
     (mut _index 1)
     (mut _output (@ _L 0))
@@ -175,7 +158,6 @@
     _output
 }))
 
-###
 # @brief Flatten a list
 # @param _L the list to work on
 # @details The original list is left unmodified.
@@ -184,7 +166,6 @@
 # (print (list:flatten cool))  # [1 2 3 4 5 6 7 8 9]
 # =end
 # @author https://github.com/SuperFola
-##
 (let list:flatten (fun (_L) {
     (mut _index 0)
     (mut _output [])
@@ -198,7 +179,6 @@
     _output
 }))
 
-###
 # @brief Apply a given function to each element of a list and then flatten it
 # @param _L the list to work on
 # @param _f the function to apply to each element
@@ -208,7 +188,6 @@
 # (print (list:flatMap cool (fun (a) [a a])))  # [1 1 2 2 3 3 4 4]
 # =end
 # @author https://github.com/SuperFola
-##
 (let list:flatMap (fun (_L _f) {
     (mut _index 0)
     (mut _output [])
@@ -222,8 +201,6 @@
     _output
 }))
 
-###
-# @meta List
 # @brief Take the first n elements of
 # @param _L the list to work on
 # @param _n the number of elements to take
@@ -232,7 +209,6 @@
 # (print (list:take [1 2 3 4 5 6 7 8 9] 4))  # [1 2 3 4]
 # =end
 # @author https://github.com/rstefanic
-##
 (let list:take (fun (_L _n) {
     (mut _index 0)
     (mut _output [])
@@ -245,7 +221,6 @@
     _output
 }))
 
-###
 # @brief Unzip a list of [[a b] [c d]...] into [[a c ...] [b d ...]]
 # @param _L the list to work on
 # @details The original list is left unmodified.
@@ -254,7 +229,6 @@
 # (print (list:unzip zipped))  # [[1 2 3 4] [5 6 7 8]]
 # =end
 # @author https://github.com/FrenchMasterSword
-##
 (let list:unzip (fun (_L) {
     (let _m (len _L))
     (mut _list1 [])
@@ -269,7 +243,6 @@
     [_list1 _list2]
 }))
 
-###
 # @brief Zip two lists into one: [1 2 3 4] and [5 6 7 8] will give [[1 5] [2 6] [3 7] [4 8]]
 # @param _a the first list to work on
 # @param _b the second list to work on
@@ -280,7 +253,6 @@
 # (print (list:zip a b))  # [[1 5] [2 6] [3 7] [4 8]]
 # =end
 # @author https://github.com/FrenchMasterSword
-##
 (let list:zip (fun (_a _b) {
     (let _m (math:min (len _a) (len _b)))
     (mut _c [])
@@ -292,7 +264,6 @@
     _c
 }))
 
-###
 # @brief Fold a given list, starting from the left side
 # @param _L the list to work on
 # @param _init an init value
@@ -303,7 +274,6 @@
 # (print (list:foldLeft a 0 (fun (a b) (+ a b))))  # 10
 # =end
 # @author https://github.com/SuperFola
-##
 (let list:foldLeft (fun (_L _init _f) {
     (mut _index 0)
     (mut _val _init)
@@ -314,48 +284,42 @@
     _val
 }))
 
-###
 # @brief Check if a condition is verified for all elements of a list
-# @param a the list to work on
-# @param f the conditon
+# @param _L the list to work on
+# @param _f the conditon
 # =begin
 # (let a [1 2 3 4])
-# (let f (fun(e)(< e 5)))
+# (let f (fun (e) (< e 5)))
 # (print (list:forAll a f))  # true
 # =end
 # @author https://github.com/Gryfenfer97
-##
-(let list:forAll (fun (a f) {
-    (mut verified true)
-    (mut index 0)
-    (while (and verified (< index (len a))) {
-        (if (not (f (@ a index)))
-            (set verified false)
-        )
-        (set index (+ 1 index))
+(let list:forAll (fun (_L _f) {
+    (mut _verified true)
+    (mut _index 0)
+    (while (and _verified (< _index (len _L))) {
+        (if (not (_f (@ _L _index)))
+            (set _verified false))
+        (set _index (+ 1 _index))
     })
-    verified
+    _verified
 }))
 
-###
 # @brief Check if a condition if verified for one or more elements of a list
-# @param a the list to work on
-# @param f the conditon
+# @param _L the list to work on
+# @param _f the conditon
 # =begin
 # (let a [1 2 3 4])
-# (let f (fun(e)(< e 3)))
+# (let f (fun (e) (< e 3)))
 # (print (list:any a f))  # true
 # =end
 # @author https://github.com/Gryfenfer97
-##
-(let list:any (fun (a f) {
-    (mut verified false)
-    (mut index 0)
-    (while (and (not verified) (< index (len a))) {
-        (if (f (@ a index))
-            (set verified true)
-        )
-        (set index (+ 1 index))
+(let list:any (fun (_L _f) {
+    (mut _verified false)
+    (mut _index 0)
+    (while (and (not _verified) (< _index (len _L))) {
+        (if (_f (@ _L _index))
+            (set _verified true))
+        (set _index (+ 1 _index))
     })
-    verified
+    _verified
 }))

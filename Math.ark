@@ -1,64 +1,50 @@
-###
-# @meta Mathematics
 # @brief Return the absolute value of a number
 # @param _x the number to get the absolute value of
 # @author https://github.com/rstefanic
-##
 (let math:abs (fun (_x)
     (if (< _x 0) (* -1 _x) _x)))
 
-###
 # @brief Return true if the number is even, false otherwise
 # @param _n the number
 # @author https://github.com/rstefanic
-##
 (let math:even (fun (_n)
     (= 0 (mod _n 2))))
 
-###
 # @brief Return true if the number is odd, false otherwise
 # @param _n the number
 # @author https://github.com/rstefanic
-##
 (let math:odd (fun (_n)
     (= 1 (math:abs (mod _n 2)))))
 
-###
 # @brief Get the minimum between two numbers
 # @param _a the first number
 # @param _b the second number
 # @author https://github.com/rstefanic
-##
 (let math:min (fun (_a _b)
     (if (< _a _b) _a _b)))
 
-###
 # @brief Get the maximum between two numbers
 # @param _a the first number
 # @param _b the second number
 # @author https://github.com/rstefanic
-##
 (let math:max (fun (_a _b)
     (if (> _a _b) _a _b)))
 
-###
 # @brief Get a number to a given power
 # @details Note that it's defined as exp(a * ln(x)), thus won't work for negative numbers
 # @param _x the number to pow
 # @param _a the exponent
 # @author https://github.com/SuperFola
-##
-(let math:pow (fun (_x _a) (math:exp (* _a (math:ln _x)))))
+(let math:pow (fun (_x _a)
+    (math:exp (* _a (math:ln _x)))))
 
-###
 # @brief Get the square root of a number
 # @details Square roots can't be taken for negative numbers for obvious reasons.
 # @param _x the number
 # @author https://github.com/SuperFola
-##
-(let math:sqrt (fun (_x) (math:exp (* 0.5 (math:ln _x)))))
+(let math:sqrt (fun (_x)
+    (math:exp (* 0.5 (math:ln _x)))))
 
-###
 # @brief Run the fibonacci function on a number
 # @param n the number
 # @param p an accumulator
@@ -67,7 +53,6 @@
 # =begin
 # (math:fibo 45 0 1)
 # =end
-##
 (let math:fibo (fun (n p c) {
     (if (<= n 0)
         0
@@ -75,14 +60,12 @@
             c
             (math:fibo (- n 1) c (+ p c))))}))
 
-###
 # @brief Returns the list of a number's divisors
 # @param n the number
 # @author https://github.com/Wafelack
 # =begin
 # (math:divs 6) # Returns [1 2 3 6]
 # =end
-##
 (let math:divs (fun (n) {
     (assert (>= n 2) "math:divs: n must be greater or equal to 2")
     (mut i 2)
@@ -95,7 +78,6 @@
     })
     (append divisors n)}))
 
-###
 # @brief Returns the logarithm base n of a number
 # @param x the number
 # @param n the base
@@ -103,35 +85,29 @@
 # =begin
 # (math:log 81 3) # Returns 4
 # =end
-##
 (let math:log (fun (x n) {
     (assert (> x 0) "math:log: x must be greater than 0")
     (assert (>= n 1) "math:log: n must be greater or equal to 1")
     (math:round (/ (math:ln x) (math:ln n)))}))
 
-###
 # @brief Returns the logarithm base 2 of a number
 # @param x the number
 # @author https://github.com/Gryfenfer97
 # =begin
 # (math:log2 128) # Returns 7
 # =end
-##
-(let math:log2 (fun (x) {
-    (math:log x 2)}))
+(let math:log2 (fun (x)
+    (math:log x 2)))
 
-###
 # @brief Returns the logarithm base 10 of a number
 # @param x the number
 # @author https://github.com/Gryfenfer97
 # =begin
 # (math:log10 1000) # Returns 3
 # =end
-##
-(let math:log10 (fun (x) {
-    (math:log x 10)}))
+(let math:log10 (fun (x)
+    (math:log x 10)))
 
-###
 # @brief Returns the quotient of the euclidian division of a and b
 # @param a the dividend
 # @param b the divisor
@@ -139,5 +115,5 @@
 # =begin
 # (math:floordiv 14 6) # Returns 2
 # =end
-##
-(let math:floordiv (fun (a b) (math:floor (/ a b))))
+(let math:floordiv (fun (a b)
+    (math:floor (/ a b))))
