@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Removed
+
+## [0.1.0] - 2021-06-29
+### Added
 - math:fib to calculate Fibonacci suite
 - math:divs, generating a list of divisors for a given positive number, starting from 1
 - os.ark with OS related functions
@@ -21,9 +28,7 @@
 - updated the lib tests
 - fixing the list tests
 
-### Removed
-
-## [0.0.1] - date
+## [0.0.1] - 2020-10-01
 ### Added
 - Switch.ark with a basic switch implementation
 - List.ark with list functions
