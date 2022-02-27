@@ -53,12 +53,12 @@
 # =begin
 # (math:fibo 45 0 1)
 # =end
-(let math:fibo (fun (n p c) {
-    (if (<= n 0)
-        0
-        (if (= n 1)
-            c
-            (math:fibo (- n 1) c (+ p c))))}))
+(let math:fibo (fun (n) {
+    (let impl (fun (n p c)
+        (if (<= n 0) 0
+            (if (= n 1) c
+                (impl (- n 1) c (+ p c))))))
+    (impl n 0 1)}))
 
 # @brief Returns the list of a number's divisors
 # @param n the number
