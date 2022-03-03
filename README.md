@@ -11,11 +11,11 @@ Complete documentation is available online at [arkscript-lang/std](https://arksc
 You can also generate yourself by using our documentation generator, [ArkDoc](https://github.com/ArkScript-lang/ArkDoc):
 
 ```shell
-$ pip install mkdocs
-# default folder for ArkDoc (to search code in) is "./source/"
-$ mkdir source
-$ cp ../std/*.ark source/
-$ ruby ArkDoc.rb -g "ArkScript"
-# open your browser to read the generate doc
-$ sensible-browser docs/site/ArkScript/
+python3 -m venv venv
+source ./venv/bin/activate
+pip install -r requirements.txt
+python -m arkdoc <version> . --html out
+cd out && python -m http.server
 ```
+
+Then, open your webbrowser to go to `http://localhost:8000/`.

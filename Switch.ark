@@ -1,5 +1,3 @@
-###
-# @meta Switch
 # @brief Takes a value to match against a list of [possible values, function to run if it matched]
 # @param _value value to match
 # @param _test list for test value, composed by sub lists who contained possible value and function to run if matched
@@ -12,7 +10,6 @@
 # ])
 # =end
 # @author https://github.com/SuperFola
-##
 (let switch (fun (_value _tests) {
     (mut _acc 0)
     (let _end (len _tests))

@@ -1,5 +1,3 @@
-###
-# @meta String
 # @brief Converts the given character to lowercase.
 # @param _string the string to make lowercase
 # @details The original string is left unmodified.
@@ -9,7 +7,6 @@
 # (let new (str:toLower message))  # => hello world, i like cheese
 # =end
 # @author https://github.com/SuperFola
-##
 (let str:toLower (fun (text) {
     (mut _index 0)
     (mut _e "")
@@ -28,7 +25,6 @@
     _output
 }))
 
-###
 # @brief Converts the given character to uppercase.
 # @param _string the string to make uppercase
 # @details The original string is left unmodified.
@@ -38,7 +34,6 @@
 # (let new (str:toUpper message))  # => HELLO WORLD, I LIKE CHEESE
 # =end
 # @author https://github.com/SuperFola
-##
 (let str:toUpper (fun (_string) {
     (mut _index 0)
     (mut _e "")
@@ -57,7 +52,6 @@
     _output
 }))
 
-###
 # @brief Reverse a string.
 # @param _string the string to reverse
 # @details The original string is left unmodified.
@@ -67,7 +61,6 @@
 # (let reversed (str:reverse message))  # => staog ekil I ,dlrow olleh
 # =end
 # @author https://github.com/Natendrtfm
-##
 (let str:reverse (fun (_string) {
     (mut _index (- (len _string) 1))
     (mut _returnedString "")
@@ -78,7 +71,6 @@
     _returnedString
 }))
 
-###
 # @brief Get a slice of a given string, from a given index with a given length
 # @param _string the string to get a slice of
 # @param _startingIndex the index in the string where to start slicing
@@ -90,7 +82,6 @@
 # (let slice (str:slice message 6 4))  # => worl
 # =end
 # @author https://github.com/Natendrtfm
-##
 (let str:slice (fun (_string _startingIndex _length)
     (if (= _length 0)
         ""
@@ -109,7 +100,6 @@
         })
 ))
 
-###
 # @brief Split a string in multiple substrings in a list, given a separator
 # @param _string the string to split
 # @param _separator the separator to use for splitting
@@ -120,7 +110,6 @@
 # (let splitted (str:split message " "))
 # =end
 # @author https://github.com/Natendrtfm
-##
 (let str:split (fun (_string _separator) {
     (assert (!= "" _separator) "Separator of split can not be empty")
     (assert (>= (len _separator) 1) "Separator length must be at least 1")
@@ -141,7 +130,6 @@
         (append _output _string))
 }))
 
-###
 # @brief Replace a substring in a given string
 # @param _string base string who contain pattern to replace by new sub string given
 # @param _pattern sub string pattern to replace
@@ -152,7 +140,6 @@
 # (let message "hello XXX, do you like the name XXX?")
 # (print (str:replace message "XXX" "Harry"))  # hello Harry, do you like the name Harry?
 # =end
-##
 (let str:replace (fun (_string _pattern _new) {
     (mut _out _string)
     (mut _idx (str:find _out _pattern))
@@ -168,7 +155,6 @@
     _out
 }))
 
-###
 # @brief Join a list of elements with a given string delimiter
 # @param _list host the elements to join
 # @param _delim a string delimiter to be put between each element
@@ -178,7 +164,6 @@
 # (let data [1 "hello" 3.14 true "world"])
 # (print (str:join data ";")) # 1;hello;3.14;true;world
 # =end
-##
 (let str:join (fun (_list _delim) {
     (mut _output "")
     (mut _index 0)

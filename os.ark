@@ -1,14 +1,12 @@
-###
-# @meta os
 # @brief Returns the home dir of the current user
 # @author https://github.com/Wafelack, https://github.com/SuperFola
-##
-(let os:home_dir (fun () {
-    (if (or (= sys:platform "Linux") (= sys:platform "Mac OSX") (= sys:platform "Unix")) {
-        (let username (sys:exec "whoami"))
-        (if (= username "root\n")
-            "/root/"
-            (+ "/home/" username))
-    } (if (= sys:platform "Windows")
-        (sys:exec "echo|set /p=%userprofile%")))
-}))
+(let os:home_dir (fun ()
+    (if (or (= sys:platform "Linux") (= sys:platform "Mac OSX") (= sys:platform "Unix"))
+        {
+            (let username (sys:exec "whoami"))
+            (if (= username "root\n")
+                "/root/"
+                (+ "/home/" username))
+        }
+        (if (= sys:platform "Windows")
+            (sys:exec "echo|set /p=%userprofile%")))))
