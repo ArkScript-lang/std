@@ -20,7 +20,7 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow: ci.yml
           branch: dev
-          name: ubuntu-gcc-11
+          name: ubuntu-gcc-10
           path: bin
           repo: ArkScript-lang/Ark
       
