@@ -29,9 +29,9 @@ jobs:
         run: |
           cd bin
           cp lib/*.arkm ../
+          chmod u+x arkscript *.so
           cp arkscript ../
           cp *.so ../
-          chmod u+x ark
 
       - name: Tests
         shell: bash
