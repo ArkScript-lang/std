@@ -20,7 +20,7 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow: ci.yml
           branch: dev
-          name: ubuntu-gcc-11
+          name: ubuntu-gcc-10
           path: bin
           repo: ArkScript-lang/Ark
       
@@ -29,14 +29,16 @@ jobs:
         run: |
           cd bin
           cp lib/*.arkm ../
-          chmod u+x ark
+          chmod u+x arkscript *.so
+          cp arkscript ../
+          cp *.so ../
 
       - name: Tests
         shell: bash
         run: |
-          ./bin/ark --version
+          ./arkscript --version
           if [ -f tests/all.ark ]; then
-            ./bin/ark tests/all.ark -L ./
+            ./arkscript tests/all.ark -L ./
           else
             echo "No tests found"
           fi
