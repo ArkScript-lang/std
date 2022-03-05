@@ -1,0 +1,25 @@
+(import "tests-tools.ark")
+
+(import "Lazy.ark")
+
+(let lazy-tests (fun () {
+    (mut tests 0)
+    (let start-time (time))
+
+    (let calculate_the_sun_weight (fun () (begin (sys:sleep 50) 42)))
+    (let memo (lazy:eval calculate_the_sun_weight))
+
+    (mut timer-0 (time))
+    (set tests (assert-eq (memo) 42 "memoize the sun weight" tests))
+    (set tests (assert-gt (- (time) timer-0) 0.05 "lazy:eval ran the function for the first time" tests))
+
+    (set timer-0 (time))
+    (set tests (assert-eq (memo) 42 "the memoized value hasn't changed" tests))
+    (set tests (assert-lt (- (time) timer-0) 0.005 "lazy:eval returned the memoized value" tests))
+
+    (recap "Lazy tests passed" tests (- (time) start-time))
+
+    tests
+}))
+
+(let passed-lazy (lazy-tests))

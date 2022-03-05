@@ -14,6 +14,7 @@ Standard library
 (import "events-tests.ark")
 (import "exceptions-tests.ark")
 (import "functional-tests.ark")
+(import "lazy-tests.ark")
 (import "list-tests.ark")
 (import "range-tests.ark")
 (import "string-tests.ark")
@@ -26,6 +27,7 @@ Standard library
     passed-events
     passed-exceptions
     passed-functional
+    passed-lazy
     passed-list
     passed-range
     passed-string
