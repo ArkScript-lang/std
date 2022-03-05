@@ -117,3 +117,32 @@
 # =end
 (let math:floordiv (fun (a b)
     (math:floor (/ a b))))
+
+
+##################################
+
+(let math:complex (fun (real imag)
+    (fun (&real &imag) ())))
+
+(let math:complex-add (fun (_c0 _c1)
+    (math:complex (+ _c0.real _c1.real) (+ _c0.imag _c1.imag))))
+
+(let math:complex-sub (fun (_c0 _c1)
+    (math:complex (- _c0.real _c1.real) (- _c0.imag _c1.imag))))
+
+(let math:complex-mul (fun (_c0 _c1)
+    (math:complex (+ (* _c0.real _c1.real) (- 0 (* _c0.imag _c1.imag)))
+                  (+ (* _c0.real _c1.imag) (* _c1.real _c0.imag)))))
+
+(let math:complex-conjugate (fun (_c)
+    (math:complex _c.real (- 0 _c.imag))))
+
+(let math:complex-module (fun (_c)
+    (math:sqrt (+ (* _c.real _c.real) (* _c.imag _c.imag)))))
+
+(let math:complex-div (fun (_c0 _c1) {
+    (let _conj (math:complex-conjugate _c1))
+    (let _top (math:complex-mul _c0 _conj))
+    (let _denom (+ (* _c1.real _c1.real) (* _c1.imag _c1.imag)))
+    (math:complex (/ _top.real _denom) (/ _top.imag _denom))
+}))
