@@ -47,8 +47,6 @@
 
 # @brief Run the fibonacci function on a number
 # @param n the number
-# @param p an accumulator
-# @param c an accumulator
 # @author https://github.com/SuperFola
 # =begin
 # (math:fibo 45 0 1)
