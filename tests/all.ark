@@ -16,10 +16,11 @@ Standard library
 (import "functional-tests.ark")
 (import "lazy-tests.ark")
 (import "list-tests.ark")
+(import "macros-tests.ark")
+(import "math-tests.ark")
 (import "range-tests.ark")
 (import "string-tests.ark")
 (import "switch-tests.ark")
-(import "math-tests.ark")
 
 (print "  ------------------------------")
 
@@ -29,10 +30,11 @@ Standard library
     passed-functional
     passed-lazy
     passed-list
+    passed-macros
+    passed-math
     passed-range
     passed-string
     passed-switch
-    passed-math
 ))
 
 (print "Completed in " (* 1000 (- (time) start_time)) "ms")

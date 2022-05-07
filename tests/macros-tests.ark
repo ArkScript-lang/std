@@ -1,0 +1,32 @@
+(import "tests-tools.ark")
+
+(import "Macros.ark")
+
+(let macros-tests (fun () {
+    (mut tests 0)
+    (let start-time (time))
+
+    (let f1 (fun (data)
+        (+ data "-f1")))
+    (let f2 (fun (data)
+        (+ data "-f2")))
+    (let f3 (fun (data)
+        (+ data "-f3")))
+
+    (set tests (assert-eq (-> "f0" f1) "f0-f1" "Threading macro threaded the given functions" tests))
+    (set tests (assert-eq (-> "f0" f1 f2 f3) "f0-f1-f2-f3" "Threading macro threaded the given functions" tests))
+
+    (let test_func (fun (a b c) (* a b c)))
+    (let test_func1 (partial test_func 1))
+    (let test_func2 (partial test_func1 2))
+
+    (set tests (assert-eq (test_func1 2 3) 6 "Partial macro created a partial callable function" tests))
+    (set tests (assert-eq (argcount test_func1) 2 "Argcount of the partial function should be 2" tests))
+    (set tests (assert-eq (argcount test_func2) 1 "Argcount of the partial function should be 1" tests))
+
+    (recap "Macros tests passed" tests (- (time) start-time))
+
+    tests
+}))
+
+(let passed-macros (macros-tests))
