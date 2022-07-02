@@ -67,16 +67,21 @@
 # (let cool-stuff [1 2 3 4 5 6 7 8 9])
 # (print (list:drop cool-stuff 4))  # [5 6 7 8 9]
 # =end
-# @author https://github.com/rstefanic
-(let list:drop (fun (_L _n) {
-    (mut _index (math:max 0 _n))
-    (mut _output [])
-    (while (< _index (len _L)) {
-        (set _output (append _output (@ _L _index)))
-        (set _index (+ 1 _index))
-    })
-    _output
-}))
+# @author https://github.com/rstefanic, https://github.com/SuperFola
+(let list:drop (fun (_L _n)
+    (if (< _n (/ (len _L) 2))
+        (if (> _n 0)
+            (list:drop (tail _L) (- _n 1))
+            _L)
+        {
+            (mut _index (math:max 0 _n))
+            (mut _output [])
+            (while (< _index (len _L)) {
+                (set _output (append _output (@ _L _index)))
+                (set _index (+ 1 _index))
+            })
+            _output
+        })))
 
 # @brief Drop the first elements of a list, while they match a given predicate
 # @param _L the list to work on
