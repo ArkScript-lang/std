@@ -4,6 +4,7 @@
 ### Added
 - Lazy evaluation with `lazy:eval`
 - Math functions to manipulate complex numbers (addition, substraction, multiplication, division, conjugate, module)
+- Macros `->` to pipe transformations on data and `partial` to create partial functions easily
 
 ### Changed
 - enhanced `math:fibo` function to hide the accumulator parameters
