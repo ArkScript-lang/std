@@ -13,32 +13,24 @@ jobs:
     steps:
       - name: Checkout std
         uses: actions/checkout@v2
-        
-      - name: Download Linux artifact
-        uses: dawidd6/action-download-artifact@v2
+
+      - uses: robinraju/release-downloader@v1.5
         with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          workflow: ci.yml
-          branch: dev
-          name: ubuntu-gcc-10
-          path: bin
-          repo: ArkScript-lang/Ark
-      
+          latest: true
+          repository: ArkScript-lang/Ark
+          fileName: "linux-clang-11.zip"
+
       - name: Set up files
         shell: bash
         run: |
-          cd bin
-          cp lib/*.arkm ../
-          chmod u+x arkscript *.so
-          cp arkscript ../
-          cp *.so ../
+          unzip linux-clang-11.zip
+          chmod u+x arkscript *.so lib/*.arkm
+          cp lib/*.arkm ./
 
       - name: Tests
         shell: bash
         run: |
           ./arkscript --version
-          if [ -f tests/all.ark ]; then
-            ./arkscript tests/all.ark -L ./
-          else
-            echo "No tests found"
-          fi
+          for f in tests/*.ark; do
+            ./arkscript $f -L ./
+          done
