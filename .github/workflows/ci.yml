@@ -27,6 +27,12 @@ jobs:
           chmod u+x arkscript *.so lib/*.arkm
           cp lib/*.arkm ./
 
+      - name: Update LLVM compilers
+        shell: bash
+        run: |
+          version=11
+          sudo apt-get install -y clang-${version} lld-${version} libc++-${version}-dev libc++abi-${version}-dev clang-tools-${version}
+
       - name: Tests
         shell: bash
         run: |
