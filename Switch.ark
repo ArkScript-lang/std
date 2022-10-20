@@ -20,8 +20,5 @@
         (if (= _bis _value)
             {
                 ((@ _r 1))
-                (set _acc (- _end 1))
-            })
-        (set _acc (+ 1 _acc))
-    })
-}))
+                (set _acc (- _end 1))})
+        (set _acc (+ 1 _acc))})}))

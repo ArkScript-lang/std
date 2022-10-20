@@ -36,7 +36,6 @@
 
     (recap "String tests passed" tests (- (time) start-time))
 
-    tests
-}))
+    tests }))
 
 (let passed-string (string-tests))

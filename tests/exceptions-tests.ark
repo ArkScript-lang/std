@@ -9,8 +9,7 @@
     (let invert (fun (x) {
         (if (= x 0)
             (throw "cannot divide by zero")
-            (return (/ 1 x))
-        )}))
+            (return (/ 1 x)))}))
 
     (try (invert 0)
         (fun (inverted) (assert-val false "Exception test" tests))
@@ -22,7 +21,6 @@
 
     (recap "Exceptions tests passed" tests (- (time) start-time))
 
-    tests
-}))
+    tests }))
 
 (let passed-exceptions (exceptions-tests))

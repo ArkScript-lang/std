@@ -35,7 +35,6 @@
 
     (recap "Events tests passed" tests (- (time) start-time))
 
-    tests
-}))
+    tests }))
 
 (let passed-events (events-tests))

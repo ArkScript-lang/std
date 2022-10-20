@@ -11,8 +11,7 @@
     (mut i 0)
     (while (< i 10) {
         (set tests (assert-eq i (r) "range" tests))
-        (set i (+ 1 i))
-    })
+        (set i (+ 1 i))})
     (set tests (assert-eq r.i 10 "range" tests))
     (set tests (assert-eq (r) nil "range" tests))
 
@@ -33,7 +32,6 @@
 
     (recap "Range tests passed" tests (- (time) start-time))
 
-    tests
-}))
+    tests }))
 
 (let passed-range (range-tests))

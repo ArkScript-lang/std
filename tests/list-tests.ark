@@ -13,8 +13,7 @@
 
     (list:forEach a (fun (e) {
         # just assert we have something, basically it's just a while + @
-        (set tests (assert-neq e nil "forEach" tests))
-    }))
+        (set tests (assert-neq e nil "forEach" tests))}))
 
     (set tests (assert-eq (list:product b) (* 4 5 6) "product" tests))
     (set tests (assert-eq (list:product []) 1 "product" tests))
@@ -78,7 +77,6 @@
 
     (recap "List tests passed" tests (- (time) start-time))
 
-    tests
-}))
+    tests }))
 
 (let passed-list (list-tests))

@@ -13,8 +13,7 @@
         ["12" '(assert-val false "switch 12" tests)]
         [[12] '(assert-val false "switch 12" tests)]
         [12   '(set tests (assert-val true "switch 12" tests))]
-        [true '(assert-val false "switch 12" tests)]
-    ])
+        [true '(assert-val false "switch 12" tests)]])
 
     # FIXME: this is crashing the GCC8 and GCC11 builds
     # (switch 0 [
@@ -24,7 +23,6 @@
 
     (recap "Switch tests passed" tests (- (time) start-time))
 
-    tests
-}))
+    tests }))
 
 (let passed-switch (switch-tests))

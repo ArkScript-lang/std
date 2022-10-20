@@ -6,7 +6,6 @@
             (let username (sys:exec "whoami"))
             (if (= username "root\n")
                 "/root/"
-                (+ "/home/" username))
-        }
+                (+ "/home/" username))}
         (if (= sys:platform "Windows")
             (sys:exec "echo|set /p=%userprofile%")))))

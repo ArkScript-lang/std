@@ -19,10 +19,8 @@
         (mut a_ i)
         (while (< a_ _b) {
             (set _output (append _output a_))
-            (set a_ (+ 1 a_))
-        })
-        _output
-    }))
+            (set a_ (+ 1 a_))})
+        _output }))
 
     (let _a i)
     (let reset (fun () (set i _a)))
@@ -31,10 +29,7 @@
         (if (< i _b)
             {
                 (set i (+ i 1))
-                (- i 1)
-            })
-    })
-}))
+                (- i 1)})})}))
 
 # @brief Run a function on each element of the range
 # @param _r the range object
@@ -49,10 +44,8 @@
     (mut _val (_r))
     (while (not (nil? _val)) {
         (_f _val)
-        (set _val (_r))
-    })
-    (_r.reset)
-}))
+        (set _val (_r))})
+    (_r.reset)}))
 
 # @brief Create a list based on a range and a filter function
 # @param _range the range object
@@ -68,12 +61,9 @@
     (mut _output [])
     (while (not (nil? _value)) {
         (if (_fun _value) (set _output (append _output _value)))
-        (set _value (_range))
-    })
+        (set _value (_range))})
     (_range.reset)
-
-    _output
-}))
+    _output }))
 
 # @brief Create a list based on a range and a function to apply to each elements
 # @param _range the range object
@@ -89,12 +79,9 @@
     (mut _output [])
     (while (not (nil? _value)) {
         (set _output (append _output (_fun _value)))
-        (set _value (_range))
-    })
+        (set _value (_range))})
     (_range.reset)
-
-    _output
-}))
+    _output }))
 
 # @brief Create a reduced list based on a range and a reduction function
 # @param _range the range object
@@ -110,8 +97,6 @@
     (mut _last (_range))
     (while (not (nil? _last)) {
         (set _output (_fun _output _last))
-        (set _last (_range))
-    })
+        (set _last (_range))})
     (_range.reset)
-    _output
-}))
+    _output }))

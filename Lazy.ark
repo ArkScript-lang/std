@@ -17,8 +17,5 @@
         (if (not _has_been_called)
             {
                 (set _has_been_called true)
-                (set _memorized_value (f))
-            })
-        _memorized_value
-    })
-}))
+                (set _memorized_value (f))})
+        _memorized_value })}))

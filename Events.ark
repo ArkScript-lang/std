@@ -48,10 +48,8 @@
         (list:forEach _listeners (fun (element)
             (if (= typ (@ element 0)) {
                 ((@ element 1) val)
-                (set found true)
-            })))
-        found
-    }))
+                (set found true)})))
+        found }))
 
     # @brief Emits an event with no value
     # @param typ the type of the emitted event
@@ -75,8 +73,7 @@
             (list:filter _listeners (fun (element) (!= typ (@ element 0)))))
         (let deleted (!= newlist _listeners))
         (set _listeners newlist)
-        deleted
-    }))
+        deleted }))
 
     (fun (
         # listeners
@@ -89,6 +86,5 @@
         &on
         &emit
         &emitWith
-        &removeListenersOfType
-        ) ())
-}))
+        &removeListenersOfType)
+        () )}))

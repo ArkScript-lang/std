@@ -26,7 +26,6 @@
 
     (recap "Macros tests passed" tests (- (time) start-time))
 
-    tests
-}))
+    tests }))
 
 (let passed-macros (macros-tests))

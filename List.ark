@@ -15,9 +15,7 @@
     (while (< _index (len _L)) {
         (mut _element (@ _L _index))
         (_func _element)
-        (set _index (+ 1 _index))
-    })
-}))
+        (set _index (+ 1 _index))})}))
 
 # @brief Iterate over a given list and multiply all the elements with the others.
 # @param _L the list to iterate over
@@ -33,10 +31,8 @@
     (mut _output 1)
     (while (< _index (len _L)) {
         (set _output (* _output (@ _L _index)))
-        (set _index (+ 1 _index))
-    })
-    _output
-}))
+        (set _index (+ 1 _index))})
+    _output }))
 
 # @brief Iterate over a given list and sum all the elements.
 # @param _L the list to iterate over
@@ -52,10 +48,8 @@
     (mut _output 0)
     (while (< _index (len _L)) {
         (set _output (+ _output (@ _L _index)))
-        (set _index (+ 1 _index))
-    })
-    _output
-}))
+        (set _index (+ 1 _index))})
+    _output }))
 
 (import "Math.ark")  # needed for math:min, math:max
 
@@ -78,10 +72,8 @@
             (mut _output [])
             (while (< _index (len _L)) {
                 (set _output (append _output (@ _L _index)))
-                (set _index (+ 1 _index))
-            })
-            _output
-        })))
+                (set _index (+ 1 _index))})
+            _output })))
 
 # @brief Drop the first elements of a list, while they match a given predicate
 # @param _L the list to work on
@@ -101,10 +93,8 @@
 
             (while (< _index (len _L)) {
                 (set _output (append _output (@ _L _index)))
-                (set _index (+ 1 _index))
-            })))
-    _output
-}))
+                (set _index (+ 1 _index))})))
+    _output }))
 
 # @brief Keep elements in a given list if they follow a predicate
 # @param _L the list to work on
@@ -121,10 +111,8 @@
     (while (< _index (len _L)) {
         (if (_f (@ _L _index))
             (set _output (append _output (@ _L _index))))
-        (set _index (+ 1 _index))
-    })
-    _output
-}))
+        (set _index (+ 1 _index))})
+    _output }))
 
 # @brief Apply a given function to each element of a list
 # @param _L the list to work on
@@ -139,10 +127,8 @@
     (mut _output [])
     (while (< _index (len _L)) {
         (set _output (append _output (_f (@ _L _index))))
-        (set _index (+ 1 _index))
-    })
-    _output
-}))
+        (set _index (+ 1 _index))})
+    _output }))
 
 # @brief Apply a function to the elements of a list to reduce it
 # @param _L the list to work on
@@ -158,10 +144,8 @@
     (mut _output (@ _L 0))
     (while (< _index (len _L)) {
         (set _output (_f _output (@ _L _index)))
-        (set _index (+ 1 _index))
-    })
-    _output
-}))
+        (set _index (+ 1 _index))})
+    _output }))
 
 # @brief Flatten a list
 # @param _L the list to work on
@@ -179,10 +163,8 @@
         (set _output (if (= "List" (type _sub))
             (concat _output _sub)
             (append _output _sub)))
-        (set _index (+ 1 _index))
-    })
-    _output
-}))
+        (set _index (+ 1 _index))})
+    _output }))
 
 # @brief Apply a given function to each element of a list and then flatten it
 # @param _L the list to work on
@@ -201,10 +183,8 @@
         (set _output (if (= "List" (type _res))
             (concat _output _res)
             (append _output _res)))
-        (set _index (+ 1 _index))
-    })
-    _output
-}))
+        (set _index (+ 1 _index))})
+    _output }))
 
 # @brief Take the first n elements of
 # @param _L the list to work on
@@ -221,10 +201,8 @@
 
     (while (< _index _n) {
         (set _output (append _output (@ _L _index)))
-        (set _index (+ 1 _index))
-    })
-    _output
-}))
+        (set _index (+ 1 _index))})
+    _output }))
 
 # @brief Take the first n elements of a list, given a predicate
 # @param _L the list to work on
@@ -242,13 +220,9 @@
         (if (_f (@ _L _index))
             {
                 (set _output (append _output (@ _L _index)))
-                (set _index (+ 1 _index))
-            }
-            (set continue false)
-        )
-    )
-    _output
-}))
+                (set _index (+ 1 _index))}
+            (set continue false)))
+    _output }))
 
 # @brief Unzip a list of [[a b] [c d]...] into [[a c ...] [b d ...]]
 # @param _L the list to work on
@@ -267,10 +241,8 @@
         (mut current (@ _L _index))
         (set _list1 (append _list1 (@ current 0)))
         (set _list2 (append _list2 (@ current 1)))
-        (set _index (+ 1 _index))
-    })
-    [_list1 _list2]
-}))
+        (set _index (+ 1 _index))})
+    [_list1 _list2] }))
 
 # @brief Zip two lists into one: [1 2 3 4] and [5 6 7 8] will give [[1 5] [2 6] [3 7] [4 8]]
 # @param _a the first list to work on
@@ -288,10 +260,8 @@
     (mut _index 0)
     (while (< _index _m) {
         (set _c (append _c [(@ _a _index) (@ _b _index)]))
-        (set _index (+ 1 _index))
-    })
-    _c
-}))
+        (set _index (+ 1 _index))})
+    _c }))
 
 # @brief Fold a given list, starting from the left side
 # @param _L the list to work on
@@ -308,10 +278,8 @@
     (mut _val _init)
     (while (< _index (len _L)) {
         (set _val (_f _val (@ _L _index)))
-        (set _index (+ 1 _index))
-    })
-    _val
-}))
+        (set _index (+ 1 _index))})
+    _val }))
 
 # @brief Check if a condition is verified for all elements of a list
 # @param _L the list to work on
@@ -328,10 +296,8 @@
     (while (and _verified (< _index (len _L))) {
         (if (not (_f (@ _L _index)))
             (set _verified false))
-        (set _index (+ 1 _index))
-    })
-    _verified
-}))
+        (set _index (+ 1 _index))})
+    _verified }))
 
 # @brief Check if a condition if verified for one or more elements of a list
 # @param _L the list to work on
@@ -348,7 +314,5 @@
     (while (and (not _verified) (< _index (len _L))) {
         (if (_f (@ _L _index))
             (set _verified true))
-        (set _index (+ 1 _index))
-    })
-    _verified
-}))
+        (set _index (+ 1 _index))})
+    _verified }))

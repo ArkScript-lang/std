@@ -1,20 +1,15 @@
 !{-> (arg fn1 ...fn) {
     !{if (> (len fn) 0)
         (-> (fn1 arg) ...fn)
-        (fn1 arg)
-    }
-}}
+        (fn1 arg)}}}
 
 # internal, do not use
 !{__suffix-dup (sym x) {
     !{if (> x 1)
-        (__suffix-dup sym (- x 1))
-    }
-    (symcat sym x)
-}}
+        (__suffix-dup sym (- x 1))}
+    (symcat sym x)}}
 
 !{partial (func ...defargs) {
     !{bloc (__suffix-dup a (- (argcount func) (len defargs)))}
     (fun (bloc) (func ...defargs bloc))
-    !{undef bloc}
-}}
+    !{undef bloc}}}
