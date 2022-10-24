@@ -91,7 +91,6 @@
 
     (recap "Math tests passed" tests (- (time) start-time))
 
-    tests
-}))
+    tests }))
 
 (let passed-math (math-tests))

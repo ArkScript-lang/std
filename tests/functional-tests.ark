@@ -18,7 +18,6 @@
 
     (recap "Functional tests passed" tests (- (time) start-time))
 
-    tests
-}))
+    tests }))
 
 (let passed-functional (functional-tests))

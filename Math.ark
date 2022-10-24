@@ -72,8 +72,7 @@
     (while (and (<= i top) (!= top n)) {
         (if (= (mod n i) 0)
             (set divisors (append divisors i)))
-        (set i (+ i 1))
-    })
+        (set i (+ i 1))})
     (append divisors n)}))
 
 # @brief Returns the logarithm base n of a number
@@ -193,5 +192,4 @@
     (let _conj (math:complex-conjugate _c1))
     (let _top (math:complex-mul _c0 _conj))
     (let _denom (+ (* _c1.real _c1.real) (* _c1.imag _c1.imag)))
-    (math:complex (/ _top.real _denom) (/ _top.imag _denom))
-}))
+    (math:complex (/ _top.real _denom) (/ _top.imag _denom))}))

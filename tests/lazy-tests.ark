@@ -19,7 +19,6 @@
 
     (recap "Lazy tests passed" tests (- (time) start-time))
 
-    tests
-}))
+    tests }))
 
 (let passed-lazy (lazy-tests))

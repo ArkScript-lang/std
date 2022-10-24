@@ -20,10 +20,8 @@
         (if (in_range (str:ord _e) 65 90)
             (set _e (str:chr (+ (str:ord _e) 32))))
         (set _output (+ _output _e))
-        (set _index (+ _index 1))
-    })
-    _output
-}))
+        (set _index (+ _index 1))})
+    _output }))
 
 # @brief Converts the given character to uppercase.
 # @param _string the string to make uppercase
@@ -47,10 +45,8 @@
         (if (in_range (str:ord _e) 97 122)
             (set _e (str:chr (- (str:ord _e) 32))))
         (set _output (+ _output _e))
-        (set _index (+ _index 1))
-    })
-    _output
-}))
+        (set _index (+ _index 1))})
+    _output }))
 
 # @brief Reverse a string.
 # @param _string the string to reverse
@@ -66,10 +62,8 @@
     (mut _returnedString "")
     (while (> _index -1) {
         (set _returnedString (+ _returnedString (@ _string _index)))
-        (set _index (- _index 1))
-    })
-    _returnedString
-}))
+        (set _index (- _index 1))})
+    _returnedString }))
 
 # @brief Get a slice of a given string, from a given index with a given length
 # @param _string the string to get a slice of
@@ -94,11 +88,8 @@
 
             (while (< _index _end) {
                 (set _returnedString (+ _returnedString (@ _string _index)))
-                (set _index (+ _index 1))
-            })
-            _returnedString
-        })
-))
+                (set _index (+ _index 1))})
+            _returnedString })))
 
 # @brief Split a string in multiple substrings in a list, given a separator
 # @param _string the string to split
@@ -122,13 +113,11 @@
     (while (!= _index -1) {
         (set _output (append _output (str:slice _string 0 (- _index _previous))))
         (set _string (str:slice _string (+ _index _seplen) (- (len _string) _index _seplen)))
-        (set _index (str:find _string _separator))
-    })
+        (set _index (str:find _string _separator))})
 
     (if (empty? _string)
         _output
-        (append _output _string))
-}))
+        (append _output _string))}))
 
 # @brief Replace a substring in a given string
 # @param _string base string who contain pattern to replace by new sub string given
@@ -150,10 +139,8 @@
             (str:slice _out 0 _idx)
             _new
             (str:slice _out (+ _idx _pattern_sz) (- (len _out) (+ _idx _pattern_sz)))))
-        (set _idx (str:find _out _pattern))
-    })
-    _out
-}))
+        (set _idx (str:find _out _pattern))})
+    _out }))
 
 # @brief Join a list of elements with a given string delimiter
 # @param _list host the elements to join
@@ -170,8 +157,6 @@
 
     (while (< _index (len _list)) {
         (set _output (+ _output (toString (@ _list _index)) (if (!= _index (- (len _list) 1)) _delim "")))
-        (set _index (+ 1 _index))
-    })
+        (set _index (+ 1 _index))})
 
-    _output
-}))
+    _output }))
