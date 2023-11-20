@@ -1,6 +1,6 @@
-(import "tests-tools.ark")
+(import tests-tools)
 
-(import "Events.ark")
+(import std.Events)
 
 (let events-tests (fun () {
     (mut tests 0)

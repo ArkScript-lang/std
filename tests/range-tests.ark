@@ -1,7 +1,7 @@
-(import "tests-tools.ark")
+(import tests-tools)
 
-(import "Range.ark")
-(import "Math.ark")  # for math:even
+(import std.Range)
+(import std.Math :even)
 
 (let range-tests (fun () {
     (mut tests 0)

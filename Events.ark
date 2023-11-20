@@ -1,4 +1,4 @@
-(import "List.ark")
+(import std.List)
 
 # @brief Allows to register events listeners and emit events
 # =begin

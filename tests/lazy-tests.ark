@@ -1,6 +1,6 @@
-(import "tests-tools.ark")
+(import tests-tools)
 
-(import "Lazy.ark")
+(import std.Lazy)
 
 (let lazy-tests (fun () {
     (mut tests 0)

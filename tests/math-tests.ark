@@ -1,6 +1,6 @@
-(import "tests-tools.ark")
+(import tests-tools)
 
-(import "Math.ark")
+(import std.Math)
 
 (let math-tests (fun () {
     (mut tests 0)

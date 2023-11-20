@@ -1,6 +1,6 @@
-(import "tests-tools.ark")
+(import tests-tools)
 
-(import "Functional.ark")
+(import std.Functional)
 
 (let functional-tests (fun () {
     (mut tests 0)

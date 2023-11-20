@@ -1,6 +1,6 @@
-(import "tests-tools.ark")
+(import tests-tools)
 
-(import "Exceptions.ark")
+(import std.Exceptions)
 
 (let exceptions-tests (fun () {
     (mut tests 0)

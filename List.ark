@@ -3,7 +3,7 @@
 # @param _func the function to call on each element
 # @details The original list is left unmodified.
 # =begin
-# (import "List.ark")
+# (import std.List)
 # (let collection [1 2 5 12])
 # (list:forEach collection (fun (element) {
 #     (print element)
@@ -21,7 +21,7 @@
 # @param _L the list to iterate over
 # @details The original list is left unmodified.
 # =begin
-# (import "List.ark")
+# (import std.List)
 # (let collection [1 2 5 12])
 # (let p (list:product collection))  # => 120
 # =end
@@ -38,7 +38,7 @@
 # @param _L the list to iterate over
 # @details The original list is left unmodified.
 # =begin
-# (import "List.ark")
+# (import std.List)
 # (let collection [1 2 5 12])
 # (let p (list:sum collection))  # => 20
 # =end
@@ -51,7 +51,7 @@
         (set _index (+ 1 _index))})
     _output }))
 
-(import "Math.ark")  # needed for math:min, math:max
+(import std.Math :min :max)
 
 # @brief Drop the first n elements of a list
 # @param _L the list to work on
@@ -101,7 +101,7 @@
 # @param _f the predicate
 # @details The original list is left unmodified.
 # =begin
-# (import "Math.ark")
+# (import std.Math)
 # (print (list:filter [1 2 3 4 5 6 7 8 9] math:even))  # [2 4 6 8]
 # =end
 # @author https://github.com/rstefanic
