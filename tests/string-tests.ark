@@ -29,6 +29,7 @@
     (set tests (assert-eq "hello world" (str:replace "hello world" "coucou" "not") "string replace" tests))
     (set tests (assert-eq "not world" (str:replace "hello world" "hello" "not") "string replace" tests))
     (set tests (assert-eq "not not " (str:replace "hello hello " "hello" "not") "string replace" tests))
+    (set tests (assert-eq "hello worldABC" (str:replace "hello worldABC" "ABC" "worldABC") "string replace" tests))
 
     (set tests (assert-eq "hello;3.14;true;world" (str:join ["hello" 3.14 true "world"] ";") "string join" tests))
     (set tests (assert-eq "hello" (str:join ["hello"] ";") "string join" tests))
