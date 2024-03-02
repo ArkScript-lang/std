@@ -1,3 +1,4 @@
+# internal, do not use
 (let _runner (fun (_name _callable) {
     (mut _passed 0)
     (mut _failed 0)
@@ -25,6 +26,7 @@
 
     [_passed _failed]}))
 
+# internal, do not use
 (let _report_error (fun (_lhs _rhs _lhs_repr _rhs_repr) {
     (set _failed (+ 1 _failed))
     (append! _failures (str:format "{} was not equal to {}" _lhs_repr _rhs_repr))
@@ -34,8 +36,16 @@
     (append! _failures (str:format (+ "{: <" (toString _rhs_start) "}{:~<" (toString _rhs_align) "} {}") "|" "\\" _lhs))
     (append! _failures (str:format (+ "{:~<" (toString _lhs_align) "} {}") "\\" _rhs))}))
 
+# internal, do not use
 (let _report_success (fun () (set _passed (+ 1 _passed))))
 
+# @brief Given a value or function call returning a boolean, generate a test case
+# @param _cond the value to test for truthiness
+# =begin
+# (test:suite name {
+#     (test:expect (my_function 1 2 3))})
+# =end
+# @author https://github.com/SuperFola
 ($ test:expect (_cond) {
     (if (!= true _cond)
         {
@@ -43,16 +53,42 @@
             (append! _failures (str:format "{} was not true but {}" ($repr _cond) _cond))        }
         (_report_success))})
 
+# @brief Compare two values that should be equal and generate a test case
+# @param _lhs the first value
+# @param _rhs the second value
+# =begin
+# (test:suite name {
+#     (test:eq 6 (my_function 1 2 3))})
+# =end
+# @author https://github.com/SuperFola
 ($ test:eq (_lhs _rhs) {
     (if (= _lhs _rhs)
         (_report_success)
         (_report_error _lhs _rhs ($repr _lhs) ($repr _rhs)))})
 
+# @brief Compare two values that should **not** be equal and generate a test case
+# @param _lhs the first value
+# @param _rhs the second value
+# =begin
+# (test:suite name {
+#     (test:neq 0 (my_function 1 2 3))})
+# =end
+# @author https://github.com/SuperFola
 ($ test:neq (_lhs _rhs) {
     (if (!= _lhs _rhs)
         (_report_success)
         (_report_error _lhs _rhs ($repr _lhs) ($repr _rhs)))})
 
+# @brief Generate the code for a test suite
+# @details Create two variables: _name-output (a list: [successes, failures]) and _name-status (boolean, true on success)
+# @param _name test name, as an identifier
+# @param _body body of the test, a begin block
+# =begin
+# (test:suite name {
+#     (test:eq 6 (my_function 1 2 3))
+#     (test:eq 128 (* 8 16))})
+# =end
+# @author https://github.com/SuperFola
 ($ test:suite (_name _body) {
     (let (symcat _name "-output") (_runner ($repr _name) (fun () {_body})))
     (let (symcat _name "-status") (= 0 (@ (symcat _name "-output") 1)))})
