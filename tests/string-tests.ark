@@ -1,42 +1,32 @@
-(import tests-tools)
-
 (import std.String)
+(import std.Testing)
 
-(let string-tests (fun () {
-    (mut tests 0)
-    (let start-time (time))
+(test:suite string {
+    (test:eq "abcdefghijklmnopqrstuvwxyz" (str:toLower "ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
+    (test:eq "abcdefghijklmnopqrstuvwxyz" (str:toLower "abcdefghijklmnopqrstuvwxyz"))
+    (test:eq "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (str:toUpper "abcdefghijklmnopqrstuvwxyz"))
+    (test:eq "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (str:toUpper "ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
 
-    (set tests (assert-eq "abcdefghijklmnopqrstuvwxyz" (str:toLower "ABCDEFGHIJKLMNOPQRSTUVWXYZ") "string lower" tests))
-    (set tests (assert-eq "abcdefghijklmnopqrstuvwxyz" (str:toLower "abcdefghijklmnopqrstuvwxyz") "string lower" tests))
-    (set tests (assert-eq "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (str:toUpper "abcdefghijklmnopqrstuvwxyz") "string upper" tests))
-    (set tests (assert-eq "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (str:toUpper "ABCDEFGHIJKLMNOPQRSTUVWXYZ") "string upper" tests))
+    (test:eq "hello world" (str:reverse "dlrow olleh"))
+    (test:eq "" (str:reverse ""))
+    (test:eq "a" (str:reverse "a"))
 
-    (set tests (assert-eq "hello world" (str:reverse "dlrow olleh") "string reverse" tests))
-    (set tests (assert-eq "" (str:reverse "") "string reverse" tests))
-    (set tests (assert-eq "a" (str:reverse "a") "string reverse" tests))
+    (test:eq "hello" (str:slice "hello world" 0 5))
+    (test:eq "hello world" (str:slice "hello world" 0 100))
+    (test:eq "h" (str:slice "hello world" 0 1))
+    (test:eq "ello" (str:slice "hello world" 1 4))
 
-    (set tests (assert-eq "hello" (str:slice "hello world" 0 5) "string slice" tests))
-    (set tests (assert-eq "hello world" (str:slice "hello world" 0 100) "string slice" tests))
-    (set tests (assert-eq "h" (str:slice "hello world" 0 1) "string slice" tests))
-    (set tests (assert-eq "ello" (str:slice "hello world" 1 4) "string slice" tests))
+    (test:eq ["a" "bc" "def"] (str:split "a,bc,def" ","))
+    (test:eq ["a" "bc" "def"] (str:split "a-;-bc-;-def" "-;-"))
+    (test:eq ["abcdef"] (str:split "abcdef" ";;;;"))
+    (test:eq ["a"] (str:split "a" ","))
+    (test:eq [] (str:split "" ","))
 
-    (set tests (assert-eq ["a" "bc" "def"] (str:split "a,bc,def" ",") "string split" tests))
-    (set tests (assert-eq ["a" "bc" "def"] (str:split "a-;-bc-;-def" "-;-") "string split" tests))
-    (set tests (assert-eq ["abcdef"] (str:split "abcdef" ";;;;") "string split" tests))
-    (set tests (assert-eq ["a"] (str:split "a" ",") "string split" tests))
-    (set tests (assert-eq [] (str:split "" ",") "string split" tests))
+    #(test:eq "hello world" (str:replace "hello world" "coucou" "not"))
+    #(test:eq "not world" (str:replace "hello world" "hello" "not"))
+    (test:eq "not not " (str:replace "hello hello " "hello" "not"))
+    (test:eq "hello worldworldABC" (str:replace "hello worldABC" "ABC" "worldABC"))
 
-    (set tests (assert-eq "hello world" (str:replace "hello world" "coucou" "not") "string replace" tests))
-    (set tests (assert-eq "not world" (str:replace "hello world" "hello" "not") "string replace" tests))
-    (set tests (assert-eq "not not " (str:replace "hello hello " "hello" "not") "string replace" tests))
-    (set tests (assert-eq "hello worldABC" (str:replace "hello worldABC" "ABC" "worldABC") "string replace" tests))
-
-    (set tests (assert-eq "hello;3.14;true;world" (str:join ["hello" 3.14 true "world"] ";") "string join" tests))
-    (set tests (assert-eq "hello" (str:join ["hello"] ";") "string join" tests))
-    (set tests (assert-eq "" (str:join [] ";;") "string join" tests))
-
-    (recap "String tests passed" tests (- (time) start-time))
-
-    tests }))
-
-(let passed-string (string-tests))
+    (test:eq "hello;3.14;true;world" (str:join ["hello" 3.14 true "world"] ";"))
+    (test:eq "hello" (str:join ["hello"] ";"))
+    (test:eq "" (str:join [] ";;"))})

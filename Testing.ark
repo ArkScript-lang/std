@@ -1,0 +1,58 @@
+(let _runner (fun (_name _callable) {
+    (mut _passed 0)
+    (mut _failed 0)
+    (mut _failures [])
+
+    (let _start_time (time))
+    # run test
+    (_callable)
+    (let _end_time (time))
+
+    # no newline, yet
+    (puts _name)
+    (if (> _passed 0)
+        (puts (str:format " - {} ✅" _passed)))
+    (if (> _failed 0)
+        (puts (str:format ", {} ❌" _failed)))
+
+    (puts (str:format " in {:2.3f}ms\n" (* 1000 (- _end_time _start_time))))
+
+    (mut _i 0)
+    (let _failures_count (len _failures))
+    (while (< _i _failures_count) {
+        (print "\t" (@ _failures _i))
+        (set _i (+ 1 _i))})
+
+    [_passed _failed]}))
+
+(let _report_error (fun (_lhs _rhs _lhs_repr _rhs_repr) {
+    (set _failed (+ 1 _failed))
+    (append! _failures (str:format "{} was not equal to {}" _lhs_repr _rhs_repr))
+    (let _rhs_start (+ (len _lhs_repr) (len " was not equal to ")))
+    (let _lhs_align (len _lhs_repr))
+    (let _rhs_align (len _rhs_repr))
+    (append! _failures (str:format (+ "{: <" (toString _rhs_start) "}{:~<" (toString _rhs_align) "} {}") "|" "\\" _lhs))
+    (append! _failures (str:format (+ "{:~<" (toString _lhs_align) "} {}") "\\" _rhs))}))
+
+(let _report_success (fun () (set _passed (+ 1 _passed))))
+
+($ test:expect (_cond) {
+    (if (!= true _cond)
+        {
+            (set _failed (+ 1 _failed))
+            (append! _failures (str:format "{} was not true but {}" ($repr _cond) _cond))        }
+        (_report_success))})
+
+($ test:eq (_lhs _rhs) {
+    (if (= _lhs _rhs)
+        (_report_success)
+        (_report_error _lhs _rhs ($repr _lhs) ($repr _rhs)))})
+
+($ test:neq (_lhs _rhs) {
+    (if (!= _lhs _rhs)
+        (_report_success)
+        (_report_error _lhs _rhs ($repr _lhs) ($repr _rhs)))})
+
+($ test:suite (_name _body) {
+    (let (symcat _name "-output") (_runner ($repr _name) (fun () {_body})))
+    (let (symcat _name "-status") (= 0 (@ (symcat _name "-output") 1)))})

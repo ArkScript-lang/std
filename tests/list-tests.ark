@@ -1,82 +1,72 @@
-(import tests-tools)
-
 (import std.List)
 (import std.Math :even)
+(import std.Testing)
 
-(let list-tests (fun () {
-    (mut tests 0)
-    (let start-time (time))
+(let a [1 2 3])
+(let b [4 5 6])
+(let zipped [[1 5] [2 6] [3 7] [4 8]])
 
-    (let a [1 2 3])
-    (let b [4 5 6])
-    (let zipped [[1 5] [2 6] [3 7] [4 8]])
-
+(test:suite list {
     (list:forEach a (fun (e) {
         # just assert we have something, basically it's just a while + @
-        (set tests (assert-neq e nil "forEach" tests))}))
+        (test:neq e nil)}))
 
-    (set tests (assert-eq (list:product b) (* 4 5 6) "product" tests))
-    (set tests (assert-eq (list:product []) 1 "product" tests))
+    (test:eq (list:product b) (* 4 5 6))
+    (test:eq (list:product []) 1)
 
-    (set tests (assert-eq (list:sum b) (+ 4 5 6) "sum" tests))
-    (set tests (assert-eq (list:sum []) 0 "sum" tests))
+    (test:eq (list:sum b) (+ 4 5 6))
+    (test:eq (list:sum []) 0)
 
-    (set tests (assert-eq (list:drop a 0) [1 2 3] "drop" tests))
-    (set tests (assert-eq (list:drop a 1) [2 3] "drop" tests))
-    (set tests (assert-eq (list:drop a 2) [3] "drop" tests))
+    (test:eq (list:drop a 0) [1 2 3])
+    (test:eq (list:drop a 1) [2 3])
+    (test:eq (list:drop a 2) [3])
 
-    (set tests (assert-eq (list:dropWhile a (fun (c) (< c 0))) [1 2 3] "dropWhile" tests))
-    (set tests (assert-eq (list:dropWhile a (fun (c) (< c 2))) [2 3] "dropWhile" tests))
-    (set tests (assert-eq (list:dropWhile a (fun (c) (< c 5))) [] "dropWhile" tests))
+    (test:eq (list:dropWhile a (fun (c) (< c 0))) [1 2 3])
+    (test:eq (list:dropWhile a (fun (c) (< c 2))) [2 3])
+    (test:eq (list:dropWhile a (fun (c) (< c 5))) [])
 
-    (set tests (assert-eq (list:filter a math:even) [2] "filter" tests))
-    (set tests (assert-eq (list:filter a (fun (e) (> e 100))) [] "filter" tests))
-    (set tests (assert-eq (list:filter [] (fun (e) (> e 100))) [] "filter" tests))
+    (test:eq (list:filter a math:even) [2])
+    (test:eq (list:filter a (fun (e) (> e 100))) [])
+    (test:eq (list:filter [] (fun (e) (> e 100))) [])
 
-    (set tests (assert-eq (list:map b (fun (e) (* e e))) [16 25 36] "map" tests))
-    (set tests (assert-eq (list:map [] (fun (e) (* e e))) [] "map" tests))
+    (test:eq (list:map b (fun (e) (* e e))) [16 25 36])
+    (test:eq (list:map [] (fun (e) (* e e))) [])
 
-    (set tests (assert-eq (list:reduce a (fun (x y) (- x y))) -4 "reduce" tests))
+    (test:eq (list:reduce a (fun (x y) (- x y))) -4)
 
-    (set tests (assert-eq (list:flatten []) [] "flatten" tests))
-    (set tests (assert-eq (list:flatten [[]]) [] "flatten" tests))
-    (set tests (assert-eq (list:flatten [[1]]) [1] "flatten" tests))
-    (set tests (assert-eq (list:flatten zipped) [1 5 2 6 3 7 4 8] "flatten" tests))
+    (test:eq (list:flatten []) [])
+    (test:eq (list:flatten [[]]) [])
+    (test:eq (list:flatten [[1]]) [1])
+    (test:eq (list:flatten zipped) [1 5 2 6 3 7 4 8])
 
-    (set tests (assert-eq (list:flatMap [] (fun (a) [a a])) [] "flatMap" tests))
-    (set tests (assert-eq (list:flatMap a (fun (a) (* 2 a))) [2 4 6] "flatMap" tests))
-    (set tests (assert-eq (list:flatMap a (fun (a) [a a])) [1 1 2 2 3 3] "flatMap" tests))
+    (test:eq (list:flatMap [] (fun (a) [a a])) [])
+    (test:eq (list:flatMap a (fun (a) (* 2 a))) [2 4 6])
+    (test:eq (list:flatMap a (fun (a) [a a])) [1 1 2 2 3 3])
 
-    (set tests (assert-eq (list:take a 1) [1] "take" tests))
-    (set tests (assert-eq (list:take a 100) a "take" tests))
+    (test:eq (list:take a 1) [1])
+    (test:eq (list:take a 100) a)
 
-    (set tests (assert-eq (list:takeWhile a (fun (c) (< c 0))) [] "takeWhile" tests))
-    (set tests (assert-eq (list:takeWhile a (fun (c) (< c 2))) [1] "takeWhile" tests))
-    (set tests (assert-eq (list:takeWhile a (fun (c) (< c 3))) [1 2] "takeWhile" tests))
-    (set tests (assert-eq (list:takeWhile a (fun (c) (< c 5))) [1 2 3] "takeWhile" tests))
+    (test:eq (list:takeWhile a (fun (c) (< c 0))) [])
+    (test:eq (list:takeWhile a (fun (c) (< c 2))) [1])
+    (test:eq (list:takeWhile a (fun (c) (< c 3))) [1 2])
+    (test:eq (list:takeWhile a (fun (c) (< c 5))) [1 2 3])
 
-    (set tests (assert-eq (list:unzip zipped) [[1 2 3 4] [5 6 7 8]] "unzip" tests))
-    (set tests (assert-eq (list:unzip []) [[] []] "unzip" tests))
+    (test:eq (list:unzip zipped) [[1 2 3 4] [5 6 7 8]])
+    (test:eq (list:unzip []) [[] []])
 
-    (set tests (assert-eq (list:zip a b) [[1 4] [2 5] [3 6]] "zip" tests))
-    (set tests (assert-eq (list:zip [] []) [] "zip" tests))
+    (test:eq (list:zip a b) [[1 4] [2 5] [3 6]])
+    (test:eq (list:zip [] []) [])
 
-    (set tests (assert-eq (list:foldLeft [] 0 (fun (x y) (+ x y))) 0 "foldLeft" tests))
-    (set tests (assert-eq (list:foldLeft ["1" "2" "3"] "" (fun (x y) (+ x y))) "123" "foldLeft" tests))
-    (set tests (assert-eq (list:foldLeft a 0 (fun (x y) (+ x y))) 6 "foldLeft" tests))
+    (test:eq (list:foldLeft [] 0 (fun (x y) (+ x y))) 0)
+    (test:eq (list:foldLeft ["1" "2" "3"] "" (fun (x y) (+ x y))) "123")
+    (test:eq (list:foldLeft a 0 (fun (x y) (+ x y))) 6)
 
-    (set tests (assert-eq a [1 2 3] "unmodified list" tests))
-    (set tests (assert-eq b [4 5 6] "unmodified list" tests))
+    (test:eq a [1 2 3])
+    (test:eq b [4 5 6])
 
-    (set tests (assert-eq (list:forAll a (fun (e) (< e 4))) true "list:forAll" tests))
-    (set tests (assert-eq (list:forAll a (fun (e) (< e 2))) false "list:forAll" tests))
-    (set tests (assert-eq (list:forAll [] (fun (e) (= e 2))) true "list:forAll" tests))
-    (set tests (assert-eq (list:any a (fun (e) (< e 2))) true "list:any" tests))
-    (set tests (assert-eq (list:any a (fun (e) (> e 8))) false "list:any" tests))
-    (set tests (assert-eq (list:any [] (fun (e) (= e 8))) false "list:any" tests))
-
-    (recap "List tests passed" tests (- (time) start-time))
-
-    tests }))
-
-(let passed-list (list-tests))
+    (test:expect (list:forAll a (fun (e) (< e 4))))
+    (test:expect (not (list:forAll a (fun (e) (< e 2)))))
+    (test:expect (list:forAll [] (fun (e) (= e 2))))
+    (test:expect (list:any a (fun (e) (< e 2))))
+    (test:expect (not (list:any a (fun (e) (> e 8)))))
+    (test:expect (not (list:any [] (fun (e) (= e 8)))))})
