@@ -6,6 +6,7 @@
     (let _case_desc "")
     (mut _cases [])
     (mut _case_pointer 0)
+    (mut display_cases_success false)
 
     (let _start_time (time))
     # run test
@@ -29,10 +30,10 @@
 
     [_passed _failed]}))
 
-(let _case_description (fun (_desc)
+(let _test_desc (fun (_desc)
     (if (empty? _desc)
         ""
-        (str:format " for case '{}'" (head _desc)))))
+        (str:format " for test '{}'" (head _desc)))))
 
 # internal, do not use
 # Has a _case_desc which also exists (empty) inside _runner so that tests without a
@@ -62,23 +63,24 @@
     (_case _desc (fun () {_body})))
 
 # internal, do not use
+# Until _case_pointer isn't at the end of the pile (where our failing test case's is),
+# iterate on the list, writing the case name in a cascade pattern.
+# This way if we have CASE A>CASE B>CASE C and no test crashed in A nor in A>B,
+# we are still able to display the cascade A>B>C with the correct indentation.
+(let _add_case (fun () {
+    (let _target_len (len _cases))
+    (while (< _case_pointer _target_len) {
+        (mut _indent (* 2 _case_pointer))
+        (mut _fmt (if (> _indent 0) (+ "{: <" (toString _indent) "}{}") "{}{}"))
+        (append! _failures (str:format _fmt "" (@ _cases _case_pointer)))
+        (set _case_pointer (+ 1 _case_pointer))})}))
+
+# internal, do not use
 # This can only be used within a (nested or not) call to test:suite
 # because it updates _failed and _failures, which are defined by
 # test:suite call to _runner
 (let _report_error (fun (_lhs _rhs _lhs_repr _rhs_repr _desc) {
     (set _failed (+ 1 _failed))
-
-    # Until _case_pointer isn't at the end of the pile (where our failing test case's is),
-    # iterate on the list, writing the case name in a cascade pattern.
-    # This way if we have CASE A>CASE B>CASE C and no test crashed in A nor in A>B,
-    # we are still able to display the cascade A>B>C with the correct indentation.
-    (let _add_case (fun () {
-        (let _target_len (len _cases))
-        (while (< _case_pointer _target_len) {
-            (mut _indent (* 2 _case_pointer))
-            (mut _fmt (if (> _indent 0) (+ "{: <" (toString _indent) "}{}") "{}{}"))
-            (append! _failures (str:format _fmt "" (@ _cases _case_pointer)))
-            (set _case_pointer (+ 1 _case_pointer))})}))
 
     # If we have a case description AND the pointer isn't up to date, display the case(s)' names
     (if (and (not (empty? _case_desc)) (!= _case_pointer (len _cases)))
@@ -90,7 +92,7 @@
         (str:format (+ "{: <" (toString _indent_case_len) "}") "")
         ""))
     # Add the error message
-    (append! _failures (str:format "{}expected '{}' but got '{}'{}" _indent _lhs_repr _rhs_repr (_case_description _desc)))
+    (append! _failures (str:format "{}expected '{}' but got '{}'{}" _indent _lhs_repr _rhs_repr (_test_desc _desc)))
 
     (let _rhs_start (+ (len _lhs_repr) (len "expected ''")))
     (let _lhs_align (len _lhs_repr))
@@ -121,7 +123,11 @@
 # internal, do not use
 # This can only be used within a (nested or not) call to test:suite
 # because it updates _passed, which is defined by test:suite call to _runner
-(let _report_success (fun () (set _passed (+ 1 _passed))))
+(let _report_success (fun () {
+    (set _passed (+ 1 _passed))
+    (if display_cases_success
+        (_add_case))
+}))
 
 # @brief Given a value or function call returning a boolean, generate a test case
 # @param _cond the value to test for truthiness
@@ -136,7 +142,7 @@
     (if (!= true _cond)
         {
             (set _failed (+ 1 _failed))
-            (append! _failures (str:format "{} returned {}{}" ($repr _cond) _cond) (_case_description _desc))}
+            (append! _failures (str:format "{} returned {}{}" ($repr _cond) _cond) (_test_desc _desc))}
         (_report_success))})
 
 # @brief Compare two values that should be equal and generate a test case
@@ -174,6 +180,7 @@
 # @param _body body of the test, a begin block
 # =begin
 # (test:suite name {
+#     (set display_cases_success true)  # default: false, when true, display all the cases names on success and failures
 #     (test:eq 6 (my_function 1 2 3))
 #     (test:eq 128 (* 8 16))})
 # =end
