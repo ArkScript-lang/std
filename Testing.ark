@@ -96,20 +96,27 @@
     (let _lhs_align (len _lhs_repr))
     (let _rhs_align (len _rhs_repr))
     (let _show_expected (!= _lhs_repr (toString _lhs)))
+    (let _show_real (!= _rhs_repr (toString _rhs)))
 
-    (append! _failures
-        (str:format
-            (+ "{}{: <" (toString (len "expected ")) "}" "{: <" (toString _rhs_start) "}{:~<" (toString _rhs_align) "} {}")
-            _indent
-            # to position one char before the first ' surrounding the expected value
-            ""
-            # writes the | right under the first ' surrounding the expected value
-            (if _show_expected "|" "")
-            # begins the \~~~~ under the real value
-            "\\"
-            _rhs))
+    (if _show_real
+        (append! _failures
+            (str:format
+                (+ "{}{: <" (toString (len "expected ")) "}" "{: <" (toString _rhs_start) "}{:~<" (toString _rhs_align) "} {}")
+                _indent
+                # to position one char before the first ' surrounding the expected value
+                ""
+                # writes the | right under the first ' surrounding the expected value
+                (if _show_expected "|" "")
+                # begins the \~~~~ under the real value
+                (if _show_real "\\" "")
+                (if _show_real _rhs ""))))
     (if _show_expected
-        (append! _failures (str:format (+ "{}{: <9}{:~<" (toString _lhs_align) "} {}") _indent "" "\\" _lhs)))}))
+        (append! _failures
+            (str:format
+                (+ "{}{: <" (toString (len "expected ")) "}\\ {}")
+                _indent
+                ""
+                _lhs)))}))
 
 # internal, do not use
 # This can only be used within a (nested or not) call to test:suite
