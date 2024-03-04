@@ -3,6 +3,9 @@
     (mut _passed 0)
     (mut _failed 0)
     (mut _failures [])
+    (let _case_desc "")
+    (mut _cases [])
+    (mut _case_pointer 0)
 
     (let _start_time (time))
     # run test
@@ -21,63 +24,142 @@
     (mut _i 0)
     (let _failures_count (len _failures))
     (while (< _i _failures_count) {
-        (print "\t" (@ _failures _i))
+        (print "  " (@ _failures _i))
         (set _i (+ 1 _i))})
 
     [_passed _failed]}))
 
-# internal, do not use
-(let _report_error (fun (_lhs _rhs _lhs_repr _rhs_repr) {
-    (set _failed (+ 1 _failed))
-    (append! _failures (str:format "{} was not equal to {}" _lhs_repr _rhs_repr))
-    (let _rhs_start (+ (len _lhs_repr) (len " was not equal to ")))
-    (let _lhs_align (len _lhs_repr))
-    (let _rhs_align (len _rhs_repr))
-    (append! _failures (str:format (+ "{: <" (toString _rhs_start) "}{:~<" (toString _rhs_align) "} {}") "|" "\\" _lhs))
-    (append! _failures (str:format (+ "{:~<" (toString _lhs_align) "} {}") "\\" _rhs))}))
+(let _case_description (fun (_desc)
+    (if (empty? _desc)
+        ""
+        (str:format " for case '{}'" (head _desc)))))
 
 # internal, do not use
+# Has a _case_desc which also exists (empty) inside _runner so that tests without a
+# case won't crash the testing library when trying to access the case name.
+# Add the test name to a pile so that we can nicely print all the case names later.
+# Update the pointer to current case to its old value later on
+(let _case (fun (_case_desc _callable) {
+    (let _old_pointer _case_pointer)
+    (append! _cases _case_desc)
+    (_callable)
+    (pop! _cases -1)
+    (set _case_pointer _old_pointer)}))
+
+# @brief Create a test case with a label to help with debugging when one or more tests fail
+# @details Test cases can be nested.
+# @param _desc a description for the test, a string
+# @param _body test to execute
+# =begin
+# (test:suite name {
+#     (test:expect (my_function 1 2 3))
+#     (test:case "a description" {
+#         (test:expect (return_true) "return true"})
+#         (test:eq 1 2 "1 is 2, this should fail")})
+# =end
+# @author https://github.com/SuperFola
+($ test:case (_desc _body)
+    (_case _desc (fun () {_body})))
+
+# internal, do not use
+# This can only be used within a (nested or not) call to test:suite
+# because it updates _failed and _failures, which are defined by
+# test:suite call to _runner
+(let _report_error (fun (_lhs _rhs _lhs_repr _rhs_repr _desc) {
+    (set _failed (+ 1 _failed))
+
+    # Until _case_pointer isn't at the end of the pile (where our failing test case's is),
+    # iterate on the list, writing the case name in a cascade pattern.
+    # This way if we have CASE A>CASE B>CASE C and no test crashed in A nor in A>B,
+    # we are still able to display the cascade A>B>C with the correct indentation.
+    (let _add_case (fun () {
+        (let _target_len (len _cases))
+        (while (< _case_pointer _target_len) {
+            (mut _indent (* 2 _case_pointer))
+            (mut _fmt (if (> _indent 0) (+ "{: <" (toString _indent) "}{}") "{}{}"))
+            (append! _failures (str:format _fmt "" (@ _cases _case_pointer)))
+            (set _case_pointer (+ 1 _case_pointer))})}))
+
+    # If we have a case description AND the pointer isn't up to date, display the case(s)' names
+    (if (and (not (empty? _case_desc)) (!= _case_pointer (len _cases)))
+        (_add_case))
+
+    # Compute global indent for the failing test resume
+    (let _indent_case_len (* 2 (len _cases)))
+    (let _indent (if (> _indent_case_len 0)
+        (str:format (+ "{: <" (toString _indent_case_len) "}") "")
+        ""))
+    # Add the error message
+    (append! _failures (str:format "{}expected '{}' but got '{}'{}" _indent _lhs_repr _rhs_repr (_case_description _desc)))
+
+    (let _rhs_start (+ (len _lhs_repr) (len "expected ''")))
+    (let _lhs_align (len _lhs_repr))
+    (let _rhs_align (len _rhs_repr))
+    (let _show_expected (!= _lhs_repr (toString _lhs)))
+
+    (append! _failures
+        (str:format
+            (+ "{}{: <" (toString (len "expected ")) "}" "{: <" (toString _rhs_start) "}{:~<" (toString _rhs_align) "} {}")
+            _indent
+            # to position one char before the first ' surrounding the expected value
+            ""
+            # writes the | right under the first ' surrounding the expected value
+            (if _show_expected "|" "")
+            # begins the \~~~~ under the real value
+            "\\"
+            _rhs))
+    (if _show_expected
+        (append! _failures (str:format (+ "{}{: <9}{:~<" (toString _lhs_align) "} {}") _indent "" "\\" _lhs)))}))
+
+# internal, do not use
+# This can only be used within a (nested or not) call to test:suite
+# because it updates _passed, which is defined by test:suite call to _runner
 (let _report_success (fun () (set _passed (+ 1 _passed))))
 
 # @brief Given a value or function call returning a boolean, generate a test case
 # @param _cond the value to test for truthiness
+# @param _desc an optional description (string) for the test
 # =begin
 # (test:suite name {
-#     (test:expect (my_function 1 2 3))})
+#     (test:expect (my_function 1 2 3))
+#     (test:expect (return_true) "return true"})
 # =end
 # @author https://github.com/SuperFola
-($ test:expect (_cond) {
+($ test:expect (_cond ..._desc) {
     (if (!= true _cond)
         {
             (set _failed (+ 1 _failed))
-            (append! _failures (str:format "{} was not true but {}" ($repr _cond) _cond))        }
+            (append! _failures (str:format "{} returned {}{}" ($repr _cond) _cond) (_case_description _desc))}
         (_report_success))})
 
 # @brief Compare two values that should be equal and generate a test case
-# @param _lhs the first value
-# @param _rhs the second value
+# @param _expected expected value
+# @param _expr computed value to test
+# @param _desc an optional description (string) for the test
 # =begin
 # (test:suite name {
-#     (test:eq 6 (my_function 1 2 3))})
+#     (test:eq 6 (my_function 1 2 3))
+#     (test:eq 5 (foo) "foo should return 5")})
 # =end
 # @author https://github.com/SuperFola
-($ test:eq (_lhs _rhs) {
-    (if (= _lhs _rhs)
+($ test:eq (_expected _expr ..._desc) {
+    (if (= _expected _expr)
         (_report_success)
-        (_report_error _lhs _rhs ($repr _lhs) ($repr _rhs)))})
+        (_report_error _expected _expr ($repr _expected) ($repr _expr) _desc))})
 
 # @brief Compare two values that should **not** be equal and generate a test case
-# @param _lhs the first value
-# @param _rhs the second value
+# @param _unexpected the value we don't want
+# @param _value tested value
+# @param _desc an optional description (string) for the test
 # =begin
 # (test:suite name {
 #     (test:neq 0 (my_function 1 2 3))})
 # =end
 # @author https://github.com/SuperFola
-($ test:neq (_lhs _rhs) {
-    (if (!= _lhs _rhs)
+($ test:neq (_unexpected _value ..._desc) {
+    (if (!= _unexpected _value)
         (_report_success)
-        (_report_error _lhs _rhs ($repr _lhs) ($repr _rhs)))})
+        (_report_error _unexpected _value ($repr _unexpected) ($repr _value) _desc))})
 
 # @brief Generate the code for a test suite
 # @details Create two variables: _name-output (a list: [successes, failures]) and _name-status (boolean, true on success)

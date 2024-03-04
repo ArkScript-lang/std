@@ -5,7 +5,7 @@
 
 (test:suite events {
     # _check_valid tests
-    (test:expect (em._check_valid (fun () ())))
+    (test:expect (em._check_valid (fun () ())) "a function is valid")
     (test:expect (not (em._check_valid 4)))
 
     # on tests
