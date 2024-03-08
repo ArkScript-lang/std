@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  ARTIFACT_NAME: "linux-clang-15.zip"
+  CLANG_VERSION: 15
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,29 +18,29 @@ jobs:
       - name: Checkout std
         uses: actions/checkout@v2
 
-      - uses: robinraju/release-downloader@v1.5
+      - uses: robinraju/release-downloader@v1.9
         with:
           latest: true
+          preRelease: true
           repository: ArkScript-lang/Ark
-          fileName: "linux-clang-11.zip"
+          fileName: ${{ env.ARTIFACT_NAME }}
 
       - name: Set up files
         shell: bash
         run: |
-          unzip linux-clang-11.zip
+          unzip $ARTIFACT_NAME
           chmod u+x arkscript *.so lib/*.arkm
           cp lib/*.arkm ./
 
       - name: Update LLVM compilers
         shell: bash
         run: |
-          version=11
-          sudo apt-get install -y clang-${version} lld-${version} libc++-${version}-dev libc++abi-${version}-dev clang-tools-${version}
+          sudo apt-get install -y clang-${CLANG_VERSION} lld-${CLANG_VERSION} \
+            libc++-${CLANG_VERSION}-dev libc++abi-${CLANG_VERSION}-dev \
+            clang-tools-${CLANG_VERSION}
 
       - name: Tests
         shell: bash
         run: |
           ./arkscript --version
-          for f in tests/*.ark; do
-            ./arkscript $f -L ./
-          done
+          ./arkscript tests/all.ark -L ./

@@ -1,28 +1,12 @@
-(import "tests-tools.ark")
+(import std.Switch)
+(import std.Testing)
 
-(import "Switch.ark")
-
-(let switch-tests (fun () {
-    (mut tests 0)
-    (let start-time (time))
-
+(test:suite switch {
     (switch 12 [
-        [0    '(assert-val false "switch 12" tests)]
-        [-1   '(assert-val false "switch 12" tests)]
-        [nil  '(assert-val false "switch 12" tests)]
-        ["12" '(assert-val false "switch 12" tests)]
-        [[12] '(assert-val false "switch 12" tests)]
-        [12   '(set tests (assert-val true "switch 12" tests))]
-        [true '(assert-val false "switch 12" tests)]])
-
-    # FIXME: this is crashing the GCC8 and GCC11 builds
-    # (switch 0 [
-    #     [nil  '(assert-val false "switch 0" tests)]
-    # ])
-    # (set tests (assert-val true "switch 0" tests))
-
-    (recap "Switch tests passed" tests (- (time) start-time))
-
-    tests }))
-
-(let passed-switch (switch-tests))
+        [0    (fun () (test:expect false))]
+        [-1   (fun () (test:expect false))]
+        [nil  (fun () (test:expect false))]
+        ["12" (fun () (test:expect false))]
+        [[12] (fun () (test:expect false))]
+        [12   (fun () (test:expect true))]
+        [true (fun () (test:expect false))]])})

@@ -1,40 +1,30 @@
-(import "tests-tools.ark")
+(import std.Events)
+(import std.Testing)
 
-(import "Events.ark")
+(let em (events:manager:make))
 
-(let events-tests (fun () {
-    (mut tests 0)
-    (let start-time (time))
-
-    (let em (events:manager:make))
-
+(test:suite events {
     # _check_valid tests
-    (set tests (assert-eq true (em._check_valid (fun () ())) "check_valid" tests))
-    (set tests (assert-eq false (em._check_valid 4) "check_valid" tests))
+    (test:expect (em._check_valid (fun () ())) "a function is valid")
+    (test:expect (not (em._check_valid 4)))
 
     # on tests
     (em.on "myType" 4)
-    (set tests (assert-eq [] em._listeners "listeners empty" tests))
+    (test:eq [] em._listeners)
     (em.on "myType" (fun (_) ()))
-    (set tests (assert-neq [] em._listeners "listeners with one element" tests))
+    (test:neq [] em._listeners)
 
     # emit tests
-    (set tests (assert-eq false (em.emit "emitType") "emit" tests))
+    (test:expect (not (em.emit "emitType")))
     (em.on "emitType" (fun (_) ()))
-    (set tests (assert-eq true (em.emit "emitType") "emit" tests))
+    (test:expect (em.emit "emitType"))
 
     # emitWith tests
-    (set tests (assert-eq false (em.emitWith 1 "emitWithType") "emitWith" tests))
+    (test:expect (not (em.emitWith 1 "emitWithType")))
     (em.on "emitWithType" (fun (_) ()))
-    (set tests (assert-eq true (em.emitWith 2 "emitWithType") "emitWith" tests))
+    (test:expect (em.emitWith 2 "emitWithType"))
 
     # removeListenersOfType
-    (set tests (assert-eq false (em.removeListenersOfType "removeType") "removeListenersOfType" tests))
+    (test:expect (not (em.removeListenersOfType "removeType")))
     (em.on "removeType" (fun (_) ()))
-    (set tests (assert-eq true (em.removeListenersOfType "removeType") "removeListenersOfType" tests))
-
-    (recap "Events tests passed" tests (- (time) start-time))
-
-    tests }))
-
-(let passed-events (events-tests))
+    (test:expect (em.removeListenersOfType "removeType"))})

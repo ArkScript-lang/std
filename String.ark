@@ -135,11 +135,15 @@
     (let _pattern_sz (len _pattern))
 
     (while (!= -1 _idx) {
+        (mut _first_segment (str:slice _out 0 _idx))
+        (mut _next_segment (str:slice _out (+ _idx _pattern_sz) (- (len _out) (+ _idx _pattern_sz))))
         (set _out (+
-            (str:slice _out 0 _idx)
+            _first_segment
             _new
-            (str:slice _out (+ _idx _pattern_sz) (- (len _out) (+ _idx _pattern_sz)))))
-        (set _idx (str:find _out _pattern))})
+            _next_segment))
+        (set _idx (str:find _next_segment _pattern))
+        (if (!= -1 _idx)
+            (set _idx (+ _idx (len _first_segment) (len _new))))})
     _out }))
 
 # @brief Join a list of elements with a given string delimiter
