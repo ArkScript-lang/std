@@ -140,9 +140,7 @@
 # @author https://github.com/SuperFola
 ($ test:expect (_cond ..._desc) {
     (if (!= true _cond)
-        {
-            (set _failed (+ 1 _failed))
-            (append! _failures (str:format "{} returned {}{}" ($repr _cond) _cond) (_test_desc _desc))}
+        (_report_error true _cond "true" ($repr _cond) _desc)
         (_report_success))})
 
 # @brief Compare two values that should be equal and generate a test case
