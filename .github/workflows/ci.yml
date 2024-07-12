@@ -43,4 +43,5 @@ jobs:
         shell: bash
         run: |
           ./arkscript --version
+          mkdir -p std && mv *.ark std/
           ./arkscript tests/all.ark -L ./
