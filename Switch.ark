@@ -1,24 +1,22 @@
-# @brief Takes a value to match against a list of [possible values, function to run if it matched]
-# @param _value value to match
-# @param _test list for test value, composed by sub lists who contained possible value and function to run if matched
+# @brief Takes a value to match against a list of (possible value, code to run)...
+# @param value value to match
+# @param case first case
+# @param then value when first case matches
+# @param ...cases more (case, then)
 # @details Once the value is matched, it stops and doesn't try any other values.
 # =begin
-# (switch 12 [
-#     [1 (fun () (print "the value is one"))]
-#     [12 '(print "quoted code blocks also works")]
-#     [12 '{ (let b "ok") (print b ", quoted begin blocks work as well") }]
-# ])
+# (switch 4
+#     1 (print "hello")
+#     2 (print "bye")
+#     12 (print "jackpot")
+#     (+ 1 4) (print "computation")
+#     _ (print "default"))
 # =end
 # @author https://github.com/SuperFola
-(let switch (fun (_value _tests) {
-    (mut _acc 0)
-    (let _end (len _tests))
-
-    (while (!= _acc _end) {
-        (mut _r (@ _tests _acc))
-        (mut _bis (@ _r 0))
-        (if (= _bis _value)
-            {
-                ((@ _r 1))
-                (set _acc (- _end 1))})
-        (set _acc (+ 1 _acc))})}))
+($ switch (value case then ...cases) {
+    ($if (= "_" ($repr case))
+        then
+        (if (= value case)
+            then
+            ($if (>= (len cases) 2)
+                (switch value ...cases))))})

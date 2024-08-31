@@ -2,11 +2,12 @@
 (import std.Testing)
 
 (test:suite switch {
-    (switch 12 [
-        [0    (fun () (test:expect false))]
-        [-1   (fun () (test:expect false))]
-        [nil  (fun () (test:expect false))]
-        ["12" (fun () (test:expect false))]
-        [[12] (fun () (test:expect false))]
-        [12   (fun () (test:expect true))]
-        [true (fun () (test:expect false))]])})
+    (switch 12
+        0    (test:expect false)
+        -1   (test:expect false)
+        nil  (test:expect false)
+        "12" (test:expect false)
+        [12] (test:expect false)
+        12   (test:expect true)
+        true (test:expect false)
+        _    (test:expect false))})
