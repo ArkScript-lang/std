@@ -1,6 +1,6 @@
-# ArkScript standard library ![Latest version](https://img.shields.io/github/v/release/arkscript-lang/ark?include_prereleases&style=for-the-badge)
+# ArkScript standard library [![Latest version](https://img.shields.io/github/v/release/arkscript-lang/ark?include_prereleases&style=for-the-badge)](https://img.shields.io/github/v/release/arkscript-lang/ark?style=for-the-badge&include_prereleases)
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ArkScript-lang/std/CI?logo=cmake&style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ArkScript-lang/std/ci.yml?branch=master&logo=cmake&style=for-the-badge)
 
 ## Online documentation
 
