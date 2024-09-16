@@ -17,5 +17,5 @@
     (test:eq (-> "f0" f1 f2 f3) "f0-f1-f2-f3")
 
     (test:eq (test_func1 2 3) 6)
-    (test:eq (argcount test_func1) 2)
-    (test:eq (argcount test_func2) 1)})
+    (test:eq ($argcount test_func1) 2)
+    (test:eq ($argcount test_func2) 1)})

@@ -184,5 +184,5 @@
 # =end
 # @author https://github.com/SuperFola
 ($ test:suite (_name _body) {
-    (let (symcat _name "-output") (_runner ($repr _name) (fun () ($paste {_body}))))
-    (let (symcat _name "-status") (= 0 (@ (symcat _name "-output") 1)))})
+    (let ($symcat _name "-output") (_runner ($repr _name) (fun () ($paste {_body}))))
+    (let ($symcat _name "-status") (= 0 (@ ($symcat _name "-output") 1)))})
