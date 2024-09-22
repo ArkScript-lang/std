@@ -8,20 +8,20 @@
 # =end
 # @author https://github.com/SuperFola
 (let str:toLower (fun (text) {
-    (mut _index 0)
-    (mut _e "")
-    (mut _output "")
+  (mut _index 0)
+  (mut _e "")
+  (mut _output "")
 
-    (let in_range (fun (val a b)
-        (and (>= val a) (<= val b))))
+  (let in_range (fun (val a b) (and (>= val a) (<= val b))))
 
-    (while (< _index (len text)) {
-        (set _e (@ text _index))
-        (if (in_range (str:ord _e) 65 90)
-            (set _e (str:chr (+ (str:ord _e) 32))))
-        (set _output (+ _output _e))
-        (set _index (+ _index 1))})
-    _output }))
+  (while (< _index (len text)) {
+    (set _e (@ text _index))
+
+    (if (in_range (str:ord _e) 65 90)
+      (set _e (str:chr (+ (str:ord _e) 32))))
+    (set _output (+ _output _e))
+    (set _index (+ _index 1)) })
+  _output }))
 
 # @brief Converts the given character to uppercase.
 # @param _string the string to make uppercase
@@ -33,20 +33,20 @@
 # =end
 # @author https://github.com/SuperFola
 (let str:toUpper (fun (_string) {
-    (mut _index 0)
-    (mut _e "")
-    (mut _output "")
+  (mut _index 0)
+  (mut _e "")
+  (mut _output "")
 
-    (let in_range (fun (val a b)
-        (and (>= val a) (<= val b))))
+  (let in_range (fun (val a b) (and (>= val a) (<= val b))))
 
-    (while (< _index (len _string)) {
-        (set _e (@ _string _index))
-        (if (in_range (str:ord _e) 97 122)
-            (set _e (str:chr (- (str:ord _e) 32))))
-        (set _output (+ _output _e))
-        (set _index (+ _index 1))})
-    _output }))
+  (while (< _index (len _string)) {
+    (set _e (@ _string _index))
+
+    (if (in_range (str:ord _e) 97 122)
+      (set _e (str:chr (- (str:ord _e) 32))))
+    (set _output (+ _output _e))
+    (set _index (+ _index 1)) })
+  _output }))
 
 # @brief Reverse a string.
 # @param _string the string to reverse
@@ -58,12 +58,13 @@
 # =end
 # @author https://github.com/Natendrtfm
 (let str:reverse (fun (_string) {
-    (mut _index (- (len _string) 1))
-    (mut _returnedString "")
-    (while (> _index -1) {
-        (set _returnedString (+ _returnedString (@ _string _index)))
-        (set _index (- _index 1))})
-    _returnedString }))
+  (mut _index (- (len _string) 1))
+  (mut _returnedString "")
+
+  (while (> _index -1) {
+    (set _returnedString (+ _returnedString (@ _string _index)))
+    (set _index (- _index 1)) })
+  _returnedString }))
 
 # @brief Get a slice of a given string, from a given index with a given length
 # @param _string the string to get a slice of
@@ -77,19 +78,23 @@
 # =end
 # @author https://github.com/Natendrtfm
 (let str:slice (fun (_string _startingIndex _length)
-    (if (= _length 0)
-        ""
-        {
-            (assert (and (>= _startingIndex 0) (< _startingIndex (len _string))) "slice start index must be in range [0, string length[")
+  (if (= _length 0)
+    ""
+    {
+      (assert (and (>= _startingIndex 0) (< _startingIndex (len _string))) "slice start index must be in range [0, string length[")
 
-            (mut _returnedString "")
-            (mut _index _startingIndex)
-            (let _end (if (> _length (len _string)) (len _string) (+ _index _length)))
+      (mut _returnedString "")
+      (mut _index _startingIndex)
 
-            (while (< _index _end) {
-                (set _returnedString (+ _returnedString (@ _string _index)))
-                (set _index (+ _index 1))})
-            _returnedString })))
+      (let _end
+        (if (> _length (len _string))
+          (len _string)
+          (+ _index _length)))
+
+      (while (< _index _end) {
+        (set _returnedString (+ _returnedString (@ _string _index)))
+        (set _index (+ _index 1)) })
+      _returnedString })))
 
 # @brief Split a string in multiple substrings in a list, given a separator
 # @param _string the string to split
@@ -102,22 +107,22 @@
 # =end
 # @author https://github.com/Natendrtfm
 (let str:split (fun (_string _separator) {
-    (assert (!= "" _separator) "Separator of split can not be empty")
-    (assert (>= (len _separator) 1) "Separator length must be at least 1")
+  (assert (!= "" _separator) "Separator of split can not be empty")
+  (assert (>= (len _separator) 1) "Separator length must be at least 1")
 
-    (mut _index (str:find _string _separator))
-    (mut _previous 0)
-    (mut _output [])
-    (let _seplen (len _separator))
+  (mut _index (str:find _string _separator))
+  (mut _previous 0)
+  (mut _output [])
+  (let _seplen (len _separator))
 
-    (while (!= _index -1) {
-        (set _output (append _output (str:slice _string 0 (- _index _previous))))
-        (set _string (str:slice _string (+ _index _seplen) (- (len _string) _index _seplen)))
-        (set _index (str:find _string _separator))})
+  (while (!= _index -1) {
+    (set _output (append _output (str:slice _string 0 (- _index _previous))))
+    (set _string (str:slice _string (+ _index _seplen) (- (len _string) _index _seplen)))
+    (set _index (str:find _string _separator)) })
 
-    (if (empty? _string)
-        _output
-        (append _output _string))}))
+  (if (empty? _string)
+    _output
+    (append _output _string)) }))
 
 # @brief Replace a substring in a given string
 # @param _string base string who contain pattern to replace by new sub string given
@@ -130,21 +135,19 @@
 # (print (str:replace message "XXX" "Harry"))  # hello Harry, do you like the name Harry?
 # =end
 (let str:replace (fun (_string _pattern _new) {
-    (mut _out _string)
-    (mut _idx (str:find _out _pattern))
-    (let _pattern_sz (len _pattern))
+  (mut _out _string)
+  (mut _idx (str:find _out _pattern))
+  (let _pattern_sz (len _pattern))
 
-    (while (!= -1 _idx) {
-        (mut _first_segment (str:slice _out 0 _idx))
-        (mut _next_segment (str:slice _out (+ _idx _pattern_sz) (- (len _out) (+ _idx _pattern_sz))))
-        (set _out (+
-            _first_segment
-            _new
-            _next_segment))
-        (set _idx (str:find _next_segment _pattern))
-        (if (!= -1 _idx)
-            (set _idx (+ _idx (len _first_segment) (len _new))))})
-    _out }))
+  (while (!= -1 _idx) {
+    (mut _first_segment (str:slice _out 0 _idx))
+    (mut _next_segment (str:slice _out (+ _idx _pattern_sz) (- (len _out) (+ _idx _pattern_sz))))
+
+    (set _out (+ _first_segment _new _next_segment))
+    (set _idx (str:find _next_segment _pattern))
+    (if (!= -1 _idx)
+      (set _idx (+ _idx (len _first_segment) (len _new)))) })
+  _out }))
 
 # @brief Join a list of elements with a given string delimiter
 # @param _list host the elements to join
@@ -156,11 +159,15 @@
 # (print (str:join data ";")) # 1;hello;3.14;true;world
 # =end
 (let str:join (fun (_list _delim) {
-    (mut _output "")
-    (mut _index 0)
+  (mut _output "")
+  (mut _index 0)
 
-    (while (< _index (len _list)) {
-        (set _output (+ _output (toString (@ _list _index)) (if (!= _index (- (len _list) 1)) _delim "")))
-        (set _index (+ 1 _index))})
-
-    _output }))
+  (while (< _index (len _list)) {
+    (set _output (+
+        _output
+        (toString (@ _list _index))
+        (if (!= _index (- (len _list) 1))
+          _delim
+          "")))
+    (set _index (+ 1 _index)) })
+  _output }))

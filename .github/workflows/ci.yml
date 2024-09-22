@@ -11,6 +11,18 @@ env:
   CLANG_VERSION: 16
 
 jobs:
+  check_ark:
+    name: ArkScript formatting check
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Format check
+        uses: ArkScript-lang/action-format@master
+        with:
+          folder: .
+          exclude: tests
+
   build:
     runs-on: ubuntu-24.04
 

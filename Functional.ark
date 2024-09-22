@@ -9,7 +9,7 @@
 # =end
 # @author https://github.com/rstefanic
 (let compose (fun (_f _g)
-    (fun (_y &_f &_g) (_f (_g _y)))))
+  (fun (_y &_f &_g) (_f (_g _y)))))
 
 # @brief Take a value as its argument and return a function taking 2 arguments which will call the first function on the value
 # @param _x the value
@@ -19,7 +19,7 @@
 # =end
 # @author https://github.com/SuperFola
 (let left (fun (_x)
-    (fun (_injl _injr &_x) (_injl _x))))
+  (fun (_injl _injr &_x) (_injl _x))))
 
 # @brief Take a value as its argument and return a function taking 2 arguments which will call the second function on the value
 # @param _y the value
@@ -29,7 +29,7 @@
 # =end
 # @author https://github.com/SuperFola
 (let right (fun (_y)
-    (fun (_injl _injr &_y) (_injr _y))))
+  (fun (_injl _injr &_y) (_injr _y))))
 
 # @brief Flip the arguments of a function
 # @param _f the function
@@ -41,4 +41,4 @@
 # =end
 # @author https://github.com/rstefanic
 (let flip (fun (_f _a)
-    (fun (_b &_f &_a) (_f _b _a))))
+  (fun (_b &_f &_a) (_f _b _a))))
