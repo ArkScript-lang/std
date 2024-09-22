@@ -14,9 +14,8 @@
 # =end
 # @author https://github.com/SuperFola
 ($ switch (value case then ...cases) {
-    ($if (= "_" ($repr case))
-        then
-        (if (= value case)
-            then
-            ($if (>= (len cases) 2)
-                (switch value ...cases))))})
+  ($if (= "_" ($repr case))
+    then
+    (if (= value case)
+      then
+      ($if (>= (len cases) 2) (switch value ...cases)))) })

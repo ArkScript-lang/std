@@ -5,7 +5,7 @@
 # =end
 # @author https://github.com/SuperFola
 (let throw (fun (_x)
-    (fun (_injl _injr &_x) (_injl _x))))
+  (fun (_injl _injr &_x) (_injl _x))))
 
 # @brief return takes a value as its argument and return it to be used by try
 # @param _x the value to return
@@ -14,7 +14,7 @@
 # =end
 # @author https://github.com/SuperFola
 (let return (fun (_y)
-    (fun (_injl _injr &_y) (_injr _y))))
+  (fun (_injl _injr &_y) (_injr _y))))
 
 # @brief Takes a value either returned by throw or return and apply a given on it if it's an error or not
 # @param _either the value to test
@@ -30,5 +30,4 @@
 #     (fun (err) (print err)))
 # =end
 # @author https://github.com/SuperFola
-(let try (fun (_either _continue _handle)
-    (_either _handle _continue)))
+(let try (fun (_either _continue _handle) (_either _handle _continue)))
