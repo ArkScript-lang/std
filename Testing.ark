@@ -1,13 +1,42 @@
 # internal, do not use
-(let _runner (fun (_name _callable) {
-  (mut _passed 0)
-  (mut _failed 0)
-  (mut _failures [])
-  (let _case_desc "")
-  (mut _cases [])
-  (mut _case_pointer 0)
+(let _make_suite (fun (name) {
+  (mut passed 0)
+  (mut failed 0)
+  (mut failures [])
+  (mut cases [])
+  (mut case_pointer 0)
+  (mut case_desc "")
   (mut display_cases_success false)
 
+  (let toggle_display_cases_success (fun (bool)
+    (set display_cases_success bool)))
+
+  (let inc_passed (fun ()
+    (set passed (+ 1 passed))))
+
+  (let inc_failed (fun ()
+    (set failed (+ 1 failed))))
+  (let register_failure (fun (description) (append! failures description)))
+
+  (let add_case (fun (name) {
+    # keep track of the current case we're in
+    (set case_desc name)
+    (append! cases name) }))
+
+  (let pop_case (fun () {
+    (set case_desc "")
+    (pop! cases -1) }))
+
+  (let update_case_ptr (fun (val)
+    (set case_pointer val)))
+  (let need_case? (fun () (and (not (empty? case_desc)) (!= case_pointer (len cases)))))
+  (fun (&name &passed &failed &failures &cases &case_pointer &case_desc &display_cases_success &toggle_display_cases_success &inc_passed &inc_failed &register_failure &add_case &pop_case &update_case_ptr &need_case?) ()) }))
+
+# internal, do not use
+(mut _suite nil)
+
+# internal, do not use
+(let _runner (fun (_name _callable) {
   (let _start_time (time))
 
   # run test
@@ -17,36 +46,19 @@
   # no newline, yet
   (puts _name)
 
-  (if (> _passed 0) (puts (str:format " - {} ✅" _passed)))
+  (if (> _suite.passed 0) (puts (str:format " - {} ✅" _suite.passed)))
 
-  (if (> _failed 0) (puts (str:format ", {} ❌" _failed)))
+  (if (> _suite.failed 0) (puts (str:format ", {} ❌" _suite.failed)))
 
   (puts (str:format " in {:2.3f}ms\n" (* 1000 (- _end_time _start_time))))
 
   (mut _i 0)
-  (let _failures_count (len _failures))
+  (let _failures_count (len _suite.failures))
 
   (while (< _i _failures_count) {
-    (print "  " (@ _failures _i))
+    (print "  " (@ _suite.failures _i))
     (set _i (+ 1 _i)) })
-  [_passed _failed] }))
-
-(let _test_desc (fun (_desc)
-  (if (empty? _desc)
-    ""
-    (str:format " for test '{}'" (head _desc)))))
-
-# internal, do not use
-# Has a _case_desc which also exists (empty) inside _runner so that tests without a
-# case won't crash the testing library when trying to access the case name.
-# Add the test name to a pile so that we can nicely print all the case names later.
-# Update the pointer to current case to its old value later on
-(let _case (fun (_case_desc _callable) {
-  (let _old_pointer _case_pointer)
-  (append! _cases _case_desc)
-  (_callable)
-  (pop! _cases -1)
-  (set _case_pointer _old_pointer) }))
+  [_suite.passed _suite.failed] }))
 
 # @brief Create a test case with a label to help with debugging when one or more tests fail
 # @details Test cases can be nested.
@@ -60,10 +72,17 @@
 #         (test:eq 1 2 "1 is 2, this should fail")})
 # =end
 # @author https://github.com/SuperFola
-($ test:case (_desc _body) (_case
-    _desc
-    (fun () {
-      _body })))
+($ test:case (_desc _body) {
+  (mut _old_pointer _suite.case_pointer)
+
+  # Add the test name to a pile so that we can nicely print all the case names later.
+  # Update the pointer to current case to its old value later on
+  (_suite.add_case _desc)
+
+  {
+    _body }
+  (_suite.pop_case)
+  (_suite.update_case_ptr _old_pointer) })
 
 # internal, do not use
 # Until _case_pointer isn't at the end of the pile (where our failing test case's is),
@@ -71,30 +90,35 @@
 # This way if we have CASE A>CASE B>CASE C and no test crashed in A nor in A>B,
 # we are still able to display the cascade A>B>C with the correct indentation.
 (let _add_case (fun () {
-  (let _target_len (len _cases))
+  (let _target_len (len _suite.cases))
 
-  (while (< _case_pointer _target_len) {
-    (mut _indent (* 2 _case_pointer))
+  (while (< _suite.case_pointer _target_len) {
+    (mut _indent (* 2 _suite.case_pointer))
 
     (mut _fmt
       (if (> _indent 0)
         (+ "{: <" (toString _indent) "}{}")
         "{}{}"))
-    (append! _failures (str:format _fmt "" (@ _cases _case_pointer)))
-    (set _case_pointer (+ 1 _case_pointer)) }) }))
+    (_suite.register_failure (str:format _fmt "" (@ _suite.cases _suite.case_pointer)))
+    (_suite.update_case_ptr (+ 1 _suite.case_pointer)) }) }))
 
 # internal, do not use
 # This can only be used within a (nested or not) call to test:suite
 # because it updates _failed and _failures, which are defined by
 # test:suite call to _runner
 (let _report_error (fun (_lhs _rhs _lhs_repr _rhs_repr _desc) {
-  (set _failed (+ 1 _failed))
+  (let _test_desc (fun (_desc)
+    (if (empty? _desc)
+      ""
+      (str:format " for test '{}'" (head _desc)))))
+
+  (_suite.inc_failed)
 
   # If we have a case description AND the pointer isn't up to date, display the case(s)' names
-  (if (and (not (empty? _case_desc)) (!= _case_pointer (len _cases))) (_add_case))
+  (if (_suite.need_case?) (_add_case))
 
   # Compute global indent for the failing test resume
-  (let _indent_case_len (* 2 (len _cases)))
+  (let _indent_case_len (* 2 (len _suite.cases)))
 
   (let _indent
     (if (> _indent_case_len 0)
@@ -102,7 +126,7 @@
       ""))
 
   # Add the error message
-  (append! _failures (str:format "{}expected '{}' but got '{}'{}" _indent _lhs_repr _rhs_repr (_test_desc _desc)))
+  (_suite.register_failure (str:format "{}expected '{}' but got '{}'{}" _indent _lhs_repr _rhs_repr (_test_desc _desc)))
 
   (let _rhs_start (+ (len _lhs_repr) (len "expected ''")))
   (let _lhs_align (len _lhs_repr))
@@ -110,8 +134,8 @@
   (let _show_expected (!= _lhs_repr (toString _lhs)))
   (let _show_real (!= _rhs_repr (toString _rhs)))
 
-  (if _show_real (append!
-      _failures
+  (if _show_real
+    (_suite.register_failure
       (str:format
         (+ "{}{: <" (toString (len "expected ")) "}" "{: <" (toString _rhs_start) "}{:~<" (toString _rhs_align) "} {}")
         _indent
@@ -128,14 +152,16 @@
         (if _show_real
           _rhs
           ""))))
-  (if _show_expected (append! _failures (str:format (+ "{}{: <" (toString (len "expected ")) "}\\ {}") _indent "" _lhs))) }))
+
+  (if _show_expected
+    (_suite.register_failure (str:format (+ "{}{: <" (toString (len "expected ")) "}\\ {}") _indent "" _lhs))) }))
 
 # internal, do not use
 # This can only be used within a (nested or not) call to test:suite
 # because it updates _passed, which is defined by test:suite call to _runner
 (let _report_success (fun () {
-  (set _passed (+ 1 _passed))
-  (if display_cases_success (_add_case)) }))
+  (_suite.inc_passed)
+  (if _suite.display_cases_success (_add_case)) }))
 
 # @brief Given a value or function call returning a boolean, generate a test case
 # @param _cond the value to test for truthiness
@@ -186,12 +212,14 @@
 # @param _body body of the test, a begin block
 # =begin
 # (test:suite name {
-#     (set display_cases_success true)  # default: false, when true, display all the cases names on success and failures
+#     (_suite.toggle_display_cases_success true)  # default: false, when true, display all the cases names on success and failures
 #     (test:eq 6 (my_function 1 2 3))
 #     (test:eq 128 (* 8 16))})
 # =end
 # @author https://github.com/SuperFola
 ($ test:suite (_name _body) {
+  (set _suite (_make_suite ($repr _name)))
+
   (let ($symcat _name "-output") (_runner
       ($repr _name)
       (fun () ($paste
