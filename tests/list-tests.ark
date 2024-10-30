@@ -69,4 +69,8 @@
     (test:expect (list:forAll [] (fun (e) (= e 2))))
     (test:expect (list:any a (fun (e) (< e 2))))
     (test:expect (not (list:any a (fun (e) (> e 8)))))
-    (test:expect (not (list:any [] (fun (e) (= e 8)))))})
+    (test:expect (not (list:any [] (fun (e) (= e 8)))))
+
+    (test:eq (list:countIf a (fun (e) (= 0 (mod e 2)))) 1)
+    (test:eq (list:countIf a (fun (e) (= 1 (mod e 2)))) 2)
+    (test:eq (list:countIf [] (fun (e) (= 1 (mod e 2)))) 0)})

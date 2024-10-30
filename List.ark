@@ -319,7 +319,7 @@
 
 # @brief Check if a condition if verified for one or more elements of a list
 # @param _L the list to work on
-# @param _f the conditon
+# @param _f the condition
 # =begin
 # (let a [1 2 3 4])
 # (let f (fun (e) (< e 3)))
@@ -335,3 +335,24 @@
       (set _verified true))
     (set _index (+ 1 _index)) })
   _verified }))
+
+# @brief Count the number of elements in a list that match a condition
+# @param _L the list to work on
+# @param _f the condition
+# =begin
+# (let lst [1 2 3 4 5 6 7 8 9])
+# (let is_even (fun (e) (= 0 (mod e 2))))
+# (print (count_if lst is_even))  # 4
+# =end
+# @author https://github.com/SuperFola
+(let list:countIf (fun (_L _f) {
+  (let _inner (fun (lst cond acc)
+    (if (not (empty? lst))
+      (_inner
+        (tail lst)
+        cond
+        (if (cond (head lst))
+          (+ 1 acc)
+          acc))
+      acc)))
+  (_inner _L _f 0) }))
