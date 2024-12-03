@@ -73,16 +73,16 @@
 # =end
 # @author https://github.com/SuperFola
 ($ test:case (_desc _body) {
-  (mut _old_pointer _suite.case_pointer)
+  (mut _old_pointer testing:_suite.case_pointer)
 
   # Add the test name to a pile so that we can nicely print all the case names later.
   # Update the pointer to current case to its old value later on
-  (_suite.add_case _desc)
+  (testing:_suite.add_case _desc)
 
   {
     _body }
-  (_suite.pop_case)
-  (_suite.update_case_ptr _old_pointer) })
+  (testing:_suite.pop_case)
+  (testing:_suite.update_case_ptr _old_pointer) })
 
 # internal, do not use
 # Until _case_pointer isn't at the end of the pile (where our failing test case's is),
@@ -174,8 +174,8 @@
 # @author https://github.com/SuperFola
 ($ test:expect (_cond ..._desc) {
   (if (!= true ($paste _cond))
-    (_report_error true ($paste _cond) "true" ($repr _cond) _desc)
-    (_report_success)) })
+    (testing:_report_error true ($paste _cond) "true" ($repr _cond) _desc)
+    (testing:_report_success)) })
 
 # @brief Compare two values that should be equal and generate a test case
 # @param _expected expected value
@@ -189,8 +189,8 @@
 # @author https://github.com/SuperFola
 ($ test:eq (_expected _expr ..._desc) {
   (if (= ($paste _expected) ($paste _expr))
-    (_report_success)
-    (_report_error ($paste _expected) ($paste _expr) ($repr _expected) ($repr _expr) _desc)) })
+    (testing:_report_success)
+    (testing:_report_error ($paste _expected) ($paste _expr) ($repr _expected) ($repr _expr) _desc)) })
 
 # @brief Compare two values that should **not** be equal and generate a test case
 # @param _unexpected the value we don't want
@@ -203,8 +203,8 @@
 # @author https://github.com/SuperFola
 ($ test:neq (_unexpected _value ..._desc) {
   (if (!= ($paste _unexpected) ($paste _value))
-    (_report_success)
-    (_report_error ($paste _unexpected) ($paste _value) ($repr _unexpected) ($repr _value) _desc)) })
+    (testing:_report_success)
+    (testing:_report_error ($paste _unexpected) ($paste _value) ($repr _unexpected) ($repr _value) _desc)) })
 
 # @brief Generate the code for a test suite
 # @details Create two variables: _name-output (a list: [successes, failures]) and _name-status (boolean, true on success)
@@ -218,9 +218,9 @@
 # =end
 # @author https://github.com/SuperFola
 ($ test:suite (_name _body) {
-  (set _suite (_make_suite ($repr _name)))
+  (set testing:_suite (testing:_make_suite ($repr _name)))
 
-  (let ($symcat _name "-output") (_runner
+  (let ($symcat _name "-output") (testing:_runner
       ($repr _name)
       (fun () ($paste
           {

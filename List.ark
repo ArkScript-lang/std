@@ -5,12 +5,12 @@
 # =begin
 # (import std.List)
 # (let collection [1 2 5 12])
-# (list:forEach collection (fun (element) {
+# (forEach collection (fun (element) {
 #     (print element)
 # }))
 # =end
 # @author https://github.com/SuperFola
-(let list:forEach (fun (_L _func) {
+(let forEach (fun (_L _func) {
   (mut _index 0)
 
   (while (< _index (len _L)) {
@@ -24,10 +24,10 @@
 # =begin
 # (import std.List)
 # (let collection [1 2 5 12])
-# (let p (list:product collection))  # => 120
+# (let p (product collection))  # => 120
 # =end
 # @author https://github.com/FrenchMasterSword
-(let list:product (fun (_L) {
+(let product (fun (_L) {
   (mut _index 0)
   (mut _output 1)
 
@@ -42,10 +42,10 @@
 # =begin
 # (import std.List)
 # (let collection [1 2 5 12])
-# (let p (list:sum collection))  # => 20
+# (let p (sum collection))  # => 20
 # =end
 # @author https://github.com/FrenchMasterSword
-(let list:sum (fun (_L) {
+(let sum (fun (_L) {
   (mut _index 0)
   (mut _output 0)
 
@@ -62,13 +62,13 @@
 # @details The original list is left unmodified.
 # =begin
 # (let cool-stuff [1 2 3 4 5 6 7 8 9])
-# (print (list:drop cool-stuff 4))  # [5 6 7 8 9]
+# (print (drop cool-stuff 4))  # [5 6 7 8 9]
 # =end
 # @author https://github.com/rstefanic, https://github.com/SuperFola
-(let list:drop (fun (_L _n)
+(let drop (fun (_L _n)
   (if (< _n (/ (len _L) 2))
     (if (> _n 0)
-      (list:drop (tail _L) (- _n 1))
+      (drop (tail _L) (- _n 1))
       _L)
     {
       (mut _index (math:max 0 _n))
@@ -85,10 +85,10 @@
 # @details The original list is left unmodified.
 # =begin
 # (let cool-stuff [1 2 3 4 5 6 7 8 9])
-# (print (list:dropWhile cool-stuff (fun (a) (< a 4))))  # [4 5 6 7 8 9]
+# (print (dropWhile cool-stuff (fun (a) (< a 4))))  # [4 5 6 7 8 9]
 # =end
 # @author https://github.com/SuperFola
-(let list:dropWhile (fun (_L _f) {
+(let dropWhile (fun (_L _f) {
   (mut _index 0)
   (mut _output [])
 
@@ -106,10 +106,10 @@
 # @details The original list is left unmodified.
 # =begin
 # (import std.Math)
-# (print (list:filter [1 2 3 4 5 6 7 8 9] math:even))  # [2 4 6 8]
+# (print (filter [1 2 3 4 5 6 7 8 9] math:even))  # [2 4 6 8]
 # =end
 # @author https://github.com/rstefanic
-(let list:filter (fun (_L _f) {
+(let filter (fun (_L _f) {
   (mut _index 0)
   (mut _output [])
 
@@ -124,10 +124,10 @@
 # @param _f the function to apply to each element
 # @details The original list is left unmodified.
 # =begin
-# (print (list:map [1 2 3 4 5 6 7 8 9] (fun (e) (* e e))))  # [1 4 9 25 36 49 64 81]
+# (print (map [1 2 3 4 5 6 7 8 9] (fun (e) (* e e))))  # [1 4 9 25 36 49 64 81]
 # =end
 # @author https://github.com/rstefanic
-(let list:map (fun (_L _f) {
+(let map (fun (_L _f) {
   (mut _index 0)
   (mut _output [])
 
@@ -142,10 +142,10 @@
 # @details The original list is left unmodified.
 # =begin
 # (let cool [1 2 3 4 5 6 7 8 9])
-# (print (list:reduce cool (fun (a b) (+ a b))))  # 45
+# (print (reduce cool (fun (a b) (+ a b))))  # 45
 # =end
 # @author https://github.com/FrenchMasterSword
-(let list:reduce (fun (_L _f) {
+(let reduce (fun (_L _f) {
   (mut _index 1)
   (mut _output (@ _L 0))
 
@@ -159,10 +159,10 @@
 # @details The original list is left unmodified.
 # =begin
 # (let cool [[1 2 3] [4] 5 6 [7 8] 9])
-# (print (list:flatten cool))  # [1 2 3 4 5 6 7 8 9]
+# (print (flatten cool))  # [1 2 3 4 5 6 7 8 9]
 # =end
 # @author https://github.com/SuperFola
-(let list:flatten (fun (_L) {
+(let flatten (fun (_L) {
   (mut _index 0)
   (mut _output [])
 
@@ -182,10 +182,10 @@
 # @details The original list is left unmodified.
 # =begin
 # (let cool [1 2 3 4])
-# (print (list:flatMap cool (fun (a) [a a])))  # [1 1 2 2 3 3 4 4]
+# (print (flatMap cool (fun (a) [a a])))  # [1 1 2 2 3 3 4 4]
 # =end
 # @author https://github.com/SuperFola
-(let list:flatMap (fun (_L _f) {
+(let flatMap (fun (_L _f) {
   (mut _index 0)
   (mut _output [])
 
@@ -204,10 +204,10 @@
 # @param _n the number of elements to take
 # @details The original list is left unmodified.
 # =begin
-# (print (list:take [1 2 3 4 5 6 7 8 9] 4))  # [1 2 3 4]
+# (print (take [1 2 3 4 5 6 7 8 9] 4))  # [1 2 3 4]
 # =end
 # @author https://github.com/rstefanic
-(let list:take (fun (_L _n) {
+(let take (fun (_L _n) {
   (mut _index 0)
   (mut _output [])
   (set _n (math:min _n (len _L)))
@@ -225,7 +225,7 @@
 # (print (takeWhile [1 2 3 4 5 6 7 8 9 10] (fun (a) (< a 4))))  # [1 2 3]
 # =end
 # @author https://github.com/rakista112
-(let list:takeWhile (fun (_L _f) {
+(let takeWhile (fun (_L _f) {
   (mut _index 0)
   (mut _output [])
   (mut continue true)
@@ -243,10 +243,10 @@
 # @details The original list is left unmodified.
 # =begin
 # (let zipped [[1 5] [2 6] [3 7] [4 8]])
-# (print (list:unzip zipped))  # [[1 2 3 4] [5 6 7 8]]
+# (print (unzip zipped))  # [[1 2 3 4] [5 6 7 8]]
 # =end
 # @author https://github.com/FrenchMasterSword
-(let list:unzip (fun (_L) {
+(let unzip (fun (_L) {
   (let _m (len _L))
   (mut _list1 [])
   (mut _list2 [])
@@ -266,10 +266,10 @@
 # =begin
 # (let a [1 2 3 4])
 # (let b [5 6 7 8])
-# (print (list:zip a b))  # [[1 5] [2 6] [3 7] [4 8]]
+# (print (zip a b))  # [[1 5] [2 6] [3 7] [4 8]]
 # =end
 # @author https://github.com/FrenchMasterSword
-(let list:zip (fun (_a _b) {
+(let zip (fun (_a _b) {
   (let _m (math:min (len _a) (len _b)))
   (mut _c [])
   (mut _index 0)
@@ -286,10 +286,10 @@
 # @details The original list is left unmodified.
 # =begin
 # (let a [1 2 3 4])
-# (print (list:foldLeft a 0 (fun (a b) (+ a b))))  # 10
+# (print (foldLeft a 0 (fun (a b) (+ a b))))  # 10
 # =end
 # @author https://github.com/SuperFola
-(let list:foldLeft (fun (_L _init _f) {
+(let foldLeft (fun (_L _init _f) {
   (mut _index 0)
   (mut _val _init)
 
@@ -304,10 +304,10 @@
 # =begin
 # (let a [1 2 3 4])
 # (let f (fun (e) (< e 5)))
-# (print (list:forAll a f))  # true
+# (print (forAll a f))  # true
 # =end
 # @author https://github.com/Gryfenfer97
-(let list:forAll (fun (_L _f) {
+(let forAll (fun (_L _f) {
   (mut _verified true)
   (mut _index 0)
 
@@ -323,10 +323,10 @@
 # =begin
 # (let a [1 2 3 4])
 # (let f (fun (e) (< e 3)))
-# (print (list:any a f))  # true
+# (print (any a f))  # true
 # =end
 # @author https://github.com/Gryfenfer97
-(let list:any (fun (_L _f) {
+(let any (fun (_L _f) {
   (mut _verified false)
   (mut _index 0)
 
@@ -345,7 +345,7 @@
 # (print (count_if lst is_even))  # 4
 # =end
 # @author https://github.com/SuperFola
-(let list:countIf (fun (_L _f) {
+(let countIf (fun (_L _f) {
   (let _inner (fun (lst cond acc)
     (if (not (empty? lst))
       (_inner

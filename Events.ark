@@ -2,12 +2,12 @@
 
 # @brief Allows to register events listeners and emit events
 # =begin
-# (let em (events:manager:make))
+# (let em (manager:make))
 # (em.on "myType" (fun (value) (print "This is a callback")))
 # (em.emit "myType")  # => prints "This is a callback" thanks to the registered listener
 # =end
 # @author https://github.com/fabien-zoccola
-(let events:manager:make (fun () {
+(let manager:make (fun () {
   # listeners list
   (mut _listeners [])
 

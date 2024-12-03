@@ -4,11 +4,11 @@
 # (let complex_stuff (fun () {
 #     # do complex work in the function
 #     42 }))
-# (let lazy (lazy:eval complex_stuff))
+# (let lazy (eval complex_stuff))
 # (print (lazy))
 # =end
 # @author https://github.com/SuperFola
-(let lazy:eval (fun (f) {
+(let eval (fun (f) {
   (mut _has_been_called false)
   (mut _memorized_value nil)
 

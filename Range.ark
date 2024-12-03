@@ -39,10 +39,10 @@
 # @details The range is unmodified.
 # =begin
 # (let obj (range 1 10))
-# (range:forEach obj (fun (e) (print e)))
+# (forEach obj (fun (e) (print e)))
 # =end
 # @author https://github.com/SuperFola
-(let range:forEach (fun (_r _f) {
+(let forEach (fun (_r _f) {
   (mut _val (_r))
 
   (while (not (nil? _val)) {
@@ -56,10 +56,10 @@
 # @details The range is unmodified.
 # =begin
 # (let obj (range 1 10))
-# (print (range:filter obj math:even))  # [2 4 6 8]
+# (print (filter obj math:even))  # [2 4 6 8]
 # =end
 # @author https://github.com/SuperFola
-(let range:filter (fun (_range _fun) {
+(let filter (fun (_range _fun) {
   (mut _value (_range))
   (mut _output [])
 
@@ -76,10 +76,10 @@
 # @details The range is unmodified.
 # =begin
 # (let obj (range 1 10))
-# (print (range:map obj (fun (e) (* e e))))  # [1 4 9 16 25 36 49 64 81]
+# (print (map obj (fun (e) (* e e))))  # [1 4 9 16 25 36 49 64 81]
 # =end
 # @author https://github.com/SuperFola
-(let range:map (fun (_range _fun) {
+(let map (fun (_range _fun) {
   (mut _value (_range))
   (mut _output [])
 
@@ -95,10 +95,10 @@
 # @details The range is unmodified.
 # =begin
 # (let obj (range 1 10))
-# (print (range:reduce obj (fun (e) (+ e e))))  # 45
+# (print (reduce obj (fun (e) (+ e e))))  # 45
 # =end
 # @author https://github.com/SuperFola
-(let range:reduce (fun (_range _fun) {
+(let reduce (fun (_range _fun) {
   (mut _output (_range))
   (mut _last (_range))
 
