@@ -46,11 +46,11 @@
   # no newline, yet
   (puts _name)
 
-  (if (> _suite.passed 0) (puts (str:format " - {} ✅" _suite.passed)))
+  (if (> _suite.passed 0) (puts (string:format " - {} ✅" _suite.passed)))
 
-  (if (> _suite.failed 0) (puts (str:format ", {} ❌" _suite.failed)))
+  (if (> _suite.failed 0) (puts (string:format ", {} ❌" _suite.failed)))
 
-  (puts (str:format " in {:2.3f}ms\n" (* 1000 (- _end_time _start_time))))
+  (puts (string:format " in {:2.3f}ms\n" (* 1000 (- _end_time _start_time))))
 
   (mut _i 0)
   (let _failures_count (len _suite.failures))
@@ -99,7 +99,7 @@
       (if (> _indent 0)
         (+ "{: <" (toString _indent) "}{}")
         "{}{}"))
-    (_suite.register_failure (str:format _fmt "" (@ _suite.cases _suite.case_pointer)))
+    (_suite.register_failure (string:format _fmt "" (@ _suite.cases _suite.case_pointer)))
     (_suite.update_case_ptr (+ 1 _suite.case_pointer)) }) }))
 
 # internal, do not use
@@ -110,7 +110,7 @@
   (let _test_desc (fun (_desc)
     (if (empty? _desc)
       ""
-      (str:format " for test '{}'" (head _desc)))))
+      (string:format " for test '{}'" (head _desc)))))
 
   (_suite.inc_failed)
 
@@ -122,11 +122,11 @@
 
   (let _indent
     (if (> _indent_case_len 0)
-      (str:format (+ "{: <" (toString _indent_case_len) "}") "")
+      (string:format (+ "{: <" (toString _indent_case_len) "}") "")
       ""))
 
   # Add the error message
-  (_suite.register_failure (str:format "{}expected '{}' but got '{}'{}" _indent _lhs_repr _rhs_repr (_test_desc _desc)))
+  (_suite.register_failure (string:format "{}expected '{}' but got '{}'{}" _indent _lhs_repr _rhs_repr (_test_desc _desc)))
 
   (let _rhs_start (+ (len _lhs_repr) (len "expected ''")))
   (let _lhs_align (len _lhs_repr))
@@ -136,7 +136,7 @@
 
   (if _show_real
     (_suite.register_failure
-      (str:format
+      (string:format
         (+ "{}{: <" (toString (len "expected ")) "}" "{: <" (toString _rhs_start) "}{:~<" (toString _rhs_align) "} {}")
         _indent
         # to position one char before the first ' surrounding the expected value
@@ -154,7 +154,7 @@
           ""))))
 
   (if _show_expected
-    (_suite.register_failure (str:format (+ "{}{: <" (toString (len "expected ")) "}\\ {}") _indent "" _lhs))) }))
+    (_suite.register_failure (string:format (+ "{}{: <" (toString (len "expected ")) "}\\ {}") _indent "" _lhs))) }))
 
 # internal, do not use
 # This can only be used within a (nested or not) call to test:suite

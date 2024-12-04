@@ -17,8 +17,8 @@
   (while (< _index (len text)) {
     (set _e (@ text _index))
 
-    (if (in_range (str:ord _e) 65 90)
-      (set _e (str:chr (+ (str:ord _e) 32))))
+    (if (in_range (string:ord _e) 65 90)
+      (set _e (string:chr (+ (string:ord _e) 32))))
     (set _output (+ _output _e))
     (set _index (+ _index 1)) })
   _output }))
@@ -42,8 +42,8 @@
   (while (< _index (len _string)) {
     (set _e (@ _string _index))
 
-    (if (in_range (str:ord _e) 97 122)
-      (set _e (str:chr (- (str:ord _e) 32))))
+    (if (in_range (string:ord _e) 97 122)
+      (set _e (string:chr (- (string:ord _e) 32))))
     (set _output (+ _output _e))
     (set _index (+ _index 1)) })
   _output }))
@@ -110,7 +110,7 @@
   (assert (!= "" _separator) "Separator of split can not be empty")
   (assert (>= (len _separator) 1) "Separator length must be at least 1")
 
-  (mut _index (str:find _string _separator))
+  (mut _index (string:find _string _separator))
   (mut _previous 0)
   (mut _output [])
   (let _seplen (len _separator))
@@ -118,7 +118,7 @@
   (while (!= _index -1) {
     (set _output (append _output (slice _string 0 (- _index _previous))))
     (set _string (slice _string (+ _index _seplen) (- (len _string) _index _seplen)))
-    (set _index (str:find _string _separator)) })
+    (set _index (string:find _string _separator)) })
 
   (if (empty? _string)
     _output
@@ -136,7 +136,7 @@
 # =end
 (let replace (fun (_string _pattern _new) {
   (mut _out _string)
-  (mut _idx (str:find _out _pattern))
+  (mut _idx (string:find _out _pattern))
   (let _pattern_sz (len _pattern))
 
   (while (!= -1 _idx) {
@@ -144,7 +144,7 @@
     (mut _next_segment (slice _out (+ _idx _pattern_sz) (- (len _out) (+ _idx _pattern_sz))))
 
     (set _out (+ _first_segment _new _next_segment))
-    (set _idx (str:find _next_segment _pattern))
+    (set _idx (string:find _next_segment _pattern))
     (if (!= -1 _idx)
       (set _idx (+ _idx (len _first_segment) (len _new)))) })
   _out }))
