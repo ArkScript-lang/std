@@ -107,22 +107,35 @@
 # =end
 # @author https://github.com/Natendrtfm
 (let split (fun (_string _separator) {
-  (assert (!= "" _separator) "Separator of split can not be empty")
-  (assert (>= (len _separator) 1) "Separator length must be at least 1")
-
-  (mut _index (string:find _string _separator))
-  (mut _previous 0)
-  (mut _output [])
+  (mut _at (string:find _string _separator))
   (let _seplen (len _separator))
+  (let _strlen (len _string))
+  (mut _output [])
+  (mut _last "")
 
-  (while (!= _index -1) {
-    (set _output (append _output (slice _string 0 (- _index _previous))))
-    (set _string (slice _string (+ _index _seplen) (- (len _string) _index _seplen)))
-    (set _index (string:find _string _separator)) })
+  (mut _i 0)
+  (while (< _i _strlen) {
+    (if (< _i _at)
+        {
+            (set _last (+ _last (@ _string _i)))
+            (set _i (+ 1 _i))
+        }
+        {
+            (append! _output _last)
+            (set _last "")
+            (set _i (+ _at _seplen))
+            (set _at (string:find _string _separator _i))
+            (if (= -1 _at)
+                (set _at _strlen))
+        })
+  })
 
-  (if (empty? _string)
+  (if (empty? _last)
     _output
-    (append _output _string)) }))
+    {
+        (append! _output _last)
+        _output
+    }) }))
 
 # @brief Replace a substring in a given string
 # @param _string base string who contain pattern to replace by new sub string given

@@ -75,7 +75,7 @@
       (mut _output [])
 
       (while (< _index (len _L)) {
-        (set _output (append _output (@ _L _index)))
+        (append! _output (@ _L _index))
         (set _index (+ 1 _index)) })
       _output })))
 
@@ -96,7 +96,7 @@
     (if (_f (@ _L _index))
       (set _index (+ 1 _index))
       (while (< _index (len _L)) {
-        (set _output (append _output (@ _L _index)))
+        (append! _output (@ _L _index))
         (set _index (+ 1 _index)) })))
   _output }))
 
@@ -115,7 +115,7 @@
 
   (while (< _index (len _L)) {
     (if (_f (@ _L _index))
-      (set _output (append _output (@ _L _index))))
+      (append! _output (@ _L _index)))
     (set _index (+ 1 _index)) })
   _output }))
 
@@ -132,7 +132,7 @@
   (mut _output [])
 
   (while (< _index (len _L)) {
-    (set _output (append _output (_f (@ _L _index))))
+    (append! _output (_f (@ _L _index)))
     (set _index (+ 1 _index)) })
   _output }))
 
@@ -169,10 +169,9 @@
   (while (< _index (len _L)) {
     (mut _sub (@ _L _index))
 
-    (set _output
       (if (= "List" (type _sub))
-        (concat _output _sub)
-        (append _output _sub)))
+        (concat! _output _sub)
+        (append! _output _sub))
     (set _index (+ 1 _index)) })
   _output }))
 
@@ -192,10 +191,9 @@
   (while (< _index (len _L)) {
     (mut _res (_f (@ _L _index)))
 
-    (set _output
       (if (= "List" (type _res))
-        (concat _output _res)
-        (append _output _res)))
+        (concat! _output _res)
+        (append! _output _res))
     (set _index (+ 1 _index)) })
   _output }))
 
@@ -213,7 +211,7 @@
   (set _n (math:min _n (len _L)))
 
   (while (< _index _n) {
-    (set _output (append _output (@ _L _index)))
+    (append! _output (@ _L _index))
     (set _index (+ 1 _index)) })
   _output }))
 
@@ -233,7 +231,7 @@
   (while (and (< _index (len _L)) continue)
     (if (_f (@ _L _index))
       {
-        (set _output (append _output (@ _L _index)))
+        (append! _output (@ _L _index))
         (set _index (+ 1 _index)) }
       (set continue false)))
   _output }))
@@ -254,8 +252,8 @@
 
   (while (< _index _m) {
     (mut current (@ _L _index))
-    (set _list1 (append _list1 (@ current 0)))
-    (set _list2 (append _list2 (@ current 1)))
+    (append! _list1 (@ current 0))
+    (append! _list2 (@ current 1))
     (set _index (+ 1 _index)) })
   [_list1 _list2] }))
 
@@ -275,7 +273,7 @@
   (mut _index 0)
 
   (while (< _index _m) {
-    (set _c (append _c [(@ _a _index) (@ _b _index)]))
+    (append! _c [(@ _a _index) (@ _b _index)])
     (set _index (+ 1 _index)) })
   _c }))
 
