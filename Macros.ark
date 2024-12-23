@@ -12,3 +12,31 @@
   ($ bloc (__suffix-dup a (- ($argcount func) (len defargs))))
   (fun (bloc) (func ...defargs bloc))
   ($undef bloc) })
+
+($ __count_placeholders (acc x ...xs)
+  ($if (empty? xs)
+    ($if (= "_" ($repr x))
+      (+ 1 acc)
+      acc)
+    ($if (= "_" ($repr x))
+      (__count_placeholders (+ 1 acc) ...xs)
+      (__count_placeholders acc ...xs))))
+
+($ __replace_placeholders (replacements x ...xs) {
+  ($if (empty? xs)
+    ($if (= "_" ($repr x))
+      (head replacements)
+      x)
+    ($if (= "_" ($repr x))
+      {
+        (head replacements)
+        (__replace_placeholders (tail replacements) ...xs) }
+      {
+        x
+        (__replace_placeholders replacements ...xs) }))})
+
+($ partial2 (call ...args) {
+  ($ length (__count_placeholders 0 ...args))
+  ($ arg_bloc (__suffix-dup arg length))
+  ($ all_args (__replace_placeholders [arg_bloc] ...args))
+  (fun (arg_bloc) (call all_args)) })
