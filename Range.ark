@@ -19,7 +19,7 @@
     (mut a_ i)
 
     (while (< a_ _b) {
-      (set _output (append _output a_))
+      (append! _output a_)
       (set a_ (+ 1 a_)) })
     _output }))
 

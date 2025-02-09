@@ -4,7 +4,7 @@
 
 ## Online documentation
 
-Complete documentation is available online at [arkscript-lang/std](https://arkscript-lang.github.io/std/).
+Complete documentation is available online at [arkscript-lang/std](https://arkscript-lang.dev/std/).
 
 ## Generate documentation offline
 
