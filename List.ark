@@ -277,6 +277,23 @@
     (set _index (+ 1 _index)) })
   _c }))
 
+# @brief Zip a list elements with their index. [5 6 7 8] will give [[0 5] [1 6] [2 7] [3 8]]
+# @param _L the list to iterate over
+# @details The original list is left unmodified.
+# =begin
+# (let a [5 6 7 8])
+# (print (zipWithIndex a))  # [[0 5] [1 6] [2 7] [3 8]]
+# =end
+# @author https://github.com/SuperFola
+(let zipWithIndex (fun (_L) {
+  (mut _output [])
+  (mut _index 0)
+  (let _len (len _L))
+  (while (< _index _len) {
+    (append! _output [_index (@ _L _index)])
+    (set _index (+ 1 _index)) })
+  _output }))
+
 # @brief Fold a given list, starting from the left side
 # @param _L the list to work on
 # @param _init an init value
