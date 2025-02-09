@@ -26,7 +26,7 @@
 # (let collection [1 2 5 12])
 # (let p (product collection))  # => 120
 # =end
-# @author https://github.com/FrenchMasterSword
+# @author https://github.com/Unactived
 (let product (fun (_L) {
   (mut _index 0)
   (mut _output 1)
@@ -44,7 +44,7 @@
 # (let collection [1 2 5 12])
 # (let p (sum collection))  # => 20
 # =end
-# @author https://github.com/FrenchMasterSword
+# @author https://github.com/Unactived
 (let sum (fun (_L) {
   (mut _index 0)
   (mut _output 0)
@@ -144,7 +144,7 @@
 # (let cool [1 2 3 4 5 6 7 8 9])
 # (print (reduce cool (fun (a b) (+ a b))))  # 45
 # =end
-# @author https://github.com/FrenchMasterSword
+# @author https://github.com/Unactived
 (let reduce (fun (_L _f) {
   (mut _index 1)
   (mut _output (@ _L 0))
@@ -243,7 +243,7 @@
 # (let zipped [[1 5] [2 6] [3 7] [4 8]])
 # (print (unzip zipped))  # [[1 2 3 4] [5 6 7 8]]
 # =end
-# @author https://github.com/FrenchMasterSword
+# @author https://github.com/Unactived
 (let unzip (fun (_L) {
   (let _m (len _L))
   (mut _list1 [])
@@ -266,7 +266,7 @@
 # (let b [5 6 7 8])
 # (print (zip a b))  # [[1 5] [2 6] [3 7] [4 8]]
 # =end
-# @author https://github.com/FrenchMasterSword
+# @author https://github.com/Unactived
 (let zip (fun (_a _b) {
   (let _m (math:min (len _a) (len _b)))
   (mut _c [])
