@@ -1,4 +1,4 @@
-(import std.Range)
+(import std.Range:*)
 (import std.Math :even)
 (import std.Testing)
 

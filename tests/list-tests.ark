@@ -61,7 +61,7 @@
     (test:eq (list:foldLeft ["1" "2" "3"] "" (fun (x y) (+ x y))) "123")
     (test:eq (list:foldLeft a 0 (fun (x y) (+ x y))) 6)
 
-    (test:eq (list:zipWithIndex a) [0 1] [1 2] [2 3])
+    (test:eq (list:zipWithIndex a) [[0 1] [1 2] [2 3]])
     (test:eq (list:zipWithIndex []) [])
 
     (test:eq a [1 2 3])

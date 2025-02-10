@@ -1,4 +1,4 @@
-(import std.Exceptions)
+(import std.Exceptions:*)
 (import std.Testing)
 
 (let invert (fun (x)

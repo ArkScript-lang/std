@@ -1,4 +1,4 @@
-(import std.Functional)
+(import std.Functional:*)
 (import std.Testing)
 
 (let foo (fun (x) (+ x 3)))

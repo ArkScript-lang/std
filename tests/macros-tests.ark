@@ -11,7 +11,7 @@
 (let test_func (fun (a b c) (* a b c)))
 (let test_func1 (partial test_func 1))
 (let test_func2 (partial test_func1 2))
-(let test_func3 (partial2 test_fun 1 _ 3))
+(let test_func3 (partial2 test_func 1 _ 3))
 
 (test:suite macros {
     (test:eq (-> "f0" f1) "f0-f1")
