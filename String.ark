@@ -113,29 +113,30 @@
   (mut _output [])
   (mut _last "")
 
-  (mut _i 0)
-  (while (< _i _strlen) {
-    (if (< _i _at)
-        {
-            (set _last (+ _last (@ _string _i)))
-            (set _i (+ 1 _i))
-        }
+  (if (= -1 _at)
+    [_string]
+    {
+      (mut _i 0)
+      (while (< _i _strlen) {
+        (if (< _i _at)
+            {
+                (set _last (+ _last (@ _string _i)))
+                (set _i (+ 1 _i))
+            }
+            {
+                (append! _output _last)
+                (set _last "")
+                (set _i (+ _at _seplen))
+                (set _at (string:find _string _separator _i))
+                (if (= -1 _at)
+                    (set _at _strlen)) })})
+
+      (if (empty? _last)
+        _output
         {
             (append! _output _last)
-            (set _last "")
-            (set _i (+ _at _seplen))
-            (set _at (string:find _string _separator _i))
-            (if (= -1 _at)
-                (set _at _strlen))
-        })
-  })
-
-  (if (empty? _last)
-    _output
-    {
-        (append! _output _last)
-        _output
-    }) }))
+            _output
+        }) })}))
 
 # @brief Replace a substring in a given string
 # @param _string base string who contain pattern to replace by new sub string given

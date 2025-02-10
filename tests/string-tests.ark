@@ -20,7 +20,7 @@
     (test:eq ["a" "bc" "def"] (string:split "a-;-bc-;-def" "-;-"))
     (test:eq ["abcdef"] (string:split "abcdef" ";;;;"))
     (test:eq ["a"] (string:split "a" ","))
-    (test:eq [] (string:split "" ","))
+    (test:eq [""] (string:split "" ","))
 
     (test:eq "hello world" (string:replace "hello world" "coucou" "not"))
     (test:eq "not world" (string:replace "hello world" "hello" "not"))
