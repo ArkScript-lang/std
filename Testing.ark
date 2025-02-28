@@ -173,8 +173,8 @@
 # =end
 # @author https://github.com/SuperFola
 ($ test:expect (_cond ..._desc) {
-  (if (!= true ($paste _cond))
-    (testing:_report_error true ($paste _cond) "true" ($repr _cond) _desc)
+  (if (!= true ($as-is _cond))
+    (testing:_report_error true ($as-is _cond) "true" ($repr _cond) _desc)
     (testing:_report_success)) })
 
 # @brief Compare two values that should be equal and generate a test case
@@ -188,9 +188,9 @@
 # =end
 # @author https://github.com/SuperFola
 ($ test:eq (_expected _expr ..._desc) {
-  (if (= ($paste _expected) ($paste _expr))
+  (if (= ($as-is _expected) ($as-is _expr))
     (testing:_report_success)
-    (testing:_report_error ($paste _expected) ($paste _expr) ($repr _expected) ($repr _expr) _desc)) })
+    (testing:_report_error ($as-is _expected) ($as-is _expr) ($repr _expected) ($repr _expr) _desc)) })
 
 # @brief Compare two values that should **not** be equal and generate a test case
 # @param _unexpected the value we don't want
@@ -202,9 +202,9 @@
 # =end
 # @author https://github.com/SuperFola
 ($ test:neq (_unexpected _value ..._desc) {
-  (if (!= ($paste _unexpected) ($paste _value))
+  (if (!= ($as-is _unexpected) ($as-is _value))
     (testing:_report_success)
-    (testing:_report_error ($paste _unexpected) ($paste _value) ($repr _unexpected) ($repr _value) _desc)) })
+    (testing:_report_error ($as-is _unexpected) ($as-is _value) ($repr _unexpected) ($repr _value) _desc)) })
 
 # @brief Generate the code for a test suite
 # @details Create two variables: _name-output (a list: [successes, failures]) and _name-status (boolean, true on success)
@@ -222,7 +222,7 @@
 
   (let ($symcat _name "-output") (testing:_runner
       ($repr _name)
-      (fun () ($paste
+      (fun () ($as-is
           {
             _body }))))
   (let ($symcat _name "-status") (= 0 (@ ($symcat _name "-output") 1))) })
