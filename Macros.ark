@@ -13,8 +13,7 @@
   (fun (bloc) (func ...defargs bloc))
   ($undef bloc) })
 
-($ __count_placeholders (acc x ...xs)
-  ($if (empty? xs)
+($ __count_placeholders (acc x ...xs) ($if (empty? xs)
     ($if (= "_" ($repr x))
       (+ 1 acc)
       acc)
@@ -33,7 +32,8 @@
         (__replace_placeholders (tail replacements) ...xs) }
       {
         x
-        (__replace_placeholders replacements ...xs) }))})
+
+        (__replace_placeholders replacements ...xs) })) })
 
 ($ partial2 (call ...args) {
   ($ length (__count_placeholders 0 ...args))
