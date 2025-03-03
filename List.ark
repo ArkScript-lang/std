@@ -114,8 +114,7 @@
   (mut _output [])
 
   (while (< _index (len _L)) {
-    (if (_f (@ _L _index))
-      (append! _output (@ _L _index)))
+    (if (_f (@ _L _index)) (append! _output (@ _L _index)))
     (set _index (+ 1 _index)) })
   _output }))
 
@@ -169,9 +168,9 @@
   (while (< _index (len _L)) {
     (mut _sub (@ _L _index))
 
-      (if (= "List" (type _sub))
-        (concat! _output _sub)
-        (append! _output _sub))
+    (if (= "List" (type _sub))
+      (concat! _output _sub)
+      (append! _output _sub))
     (set _index (+ 1 _index)) })
   _output }))
 
@@ -191,9 +190,9 @@
   (while (< _index (len _L)) {
     (mut _res (_f (@ _L _index)))
 
-      (if (= "List" (type _res))
-        (concat! _output _res)
-        (append! _output _res))
+    (if (= "List" (type _res))
+      (concat! _output _res)
+      (append! _output _res))
     (set _index (+ 1 _index)) })
   _output }))
 
@@ -400,8 +399,7 @@
 # (print (iota 0 10))  # [0 1 2 3 4 5 6 7 8 9]
 # =end
 # @author https://github.com/SuperFola
-(let iota (fun (_init _length)
-  (iterate _init (fun (x) (+ 1 x)) _length)))
+(let iota (fun (_init _length) (iterate _init (fun (x) (+ 1 x)) _length)))
 
 # @brief Chunk a list in sub-lists of size n
 # @param _L list to chunk
@@ -420,13 +418,11 @@
   (mut _i 0)
   (while (< _i _source_len) {
     (append! _current (@ _L _i))
-    (if (= (len _current) _length)
-      {
-        (append! _output _current)
-        (set _current []) })
+    (if (= (len _current) _length) {
+      (append! _output _current)
+      (set _current []) })
     (set _i (+ 1 _i)) })
 
-  (if (not (empty? _current))
-    (append! _output _current))
+  (if (not (empty? _current)) (append! _output _current))
 
   _output }))
