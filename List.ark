@@ -402,3 +402,31 @@
 # @author https://github.com/SuperFola
 (let iota (fun (_init _length)
   (iterate _init (fun (x) (+ 1 x)) _length)))
+
+# @brief Chunk a list in sub-lists of size n
+# @param _L list to chunk
+# @param _length size of the chunks
+# =begin
+# (let indices (list:iota 1 9))  # [1 2 3 4 5 6 7 8 9]
+# (print (list:chunkBy indices 3))  # [[1 2 3] [4 5 6] [7 8 9]]
+# =end
+# @author https://github.com/SuperFola
+(let chunkBy (fun (_L _length) {
+  (assert (> _length 0) "list:chunkBy needs a chunk size of at least 1")
+  (mut _output [])
+  (mut _current [])
+  (let _source_len (len _L))
+
+  (mut _i 0)
+  (while (< _i _source_len) {
+    (append! _current (@ _L _i))
+    (if (= (len _current) _length)
+      {
+        (append! _output _current)
+        (set _current []) })
+    (set _i (+ 1 _i)) })
+
+  (if (not (empty? _current))
+    (append! _output _current))
+
+  _output }))

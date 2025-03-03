@@ -81,4 +81,10 @@
     (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 5) [0 1 2 3 4])
     (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 5) (list:iota 0 5))
     (test:eq (list:iterate "" (fun (x) (+ x "a")) 5) ["" "a" "aa" "aaa" "aaaa"])
-    (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 1) [0]) })
+    (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 1) [0])
+
+    (test:eq (list:chunkBy [1 2] 1) [[1] [2]])
+    (test:eq (list:chunkBy [1 2 3] 3) [[1 2 3]])
+    (test:eq (list:chunkBy [1 2 3 4] 3) [[1 2 3] [4]])
+    (test:eq (list:chunkBy [1 2 3 4 5] 3) [[1 2 3] [4 5]])
+    (test:eq (list:chunkBy [1 2 3 4 5 6] 3) [[1 2 3] [4 5 6]]) })
