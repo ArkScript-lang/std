@@ -76,4 +76,9 @@
 
     (test:eq (list:countIf a (fun (e) (= 0 (mod e 2)))) 1)
     (test:eq (list:countIf a (fun (e) (= 1 (mod e 2)))) 2)
-    (test:eq (list:countIf [] (fun (e) (= 1 (mod e 2)))) 0)})
+    (test:eq (list:countIf [] (fun (e) (= 1 (mod e 2)))) 0)
+
+    (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 5) [0 1 2 3 4])
+    (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 5) (list:iota 0 5))
+    (test:eq (list:iterate "" (fun (x) (+ x "a")) 5) ["" "a" "aa" "aaa" "aaaa"])
+    (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 1) [0]) })

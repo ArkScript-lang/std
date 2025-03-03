@@ -357,7 +357,7 @@
 # =begin
 # (let lst [1 2 3 4 5 6 7 8 9])
 # (let is_even (fun (e) (= 0 (mod e 2))))
-# (print (count_if lst is_even))  # 4
+# (print (countIf lst is_even))  # 4
 # =end
 # @author https://github.com/SuperFola
 (let countIf (fun (_L _f) {
@@ -371,3 +371,34 @@
           acc))
       acc)))
   (_inner _L _f 0) }))
+
+# @brief Generate a sequence based on a unary function, initial value and length
+# @param _init initial value of the sequence
+# @param _f unary function to generate values
+# @param _length the sequence length
+# =begin
+# (let f (fun (x) (+ 7 x)))
+# (print (iterate 0 f 10))  # [0 7 14 21 28 35 42 49 56 63]
+# =end
+# @author https://github.com/SuperFola
+(let iterate (fun (_init _f _length) {
+  (assert (> _length 0) "list:iterate needs a length of at least 1")
+
+  (mut _output [_init])
+  (mut _last _init)
+  (mut _i 1)
+  (while (< _i _length) {
+    (set _last (_f _last))
+    (append! _output _last)
+    (set _i (+ 1 _i)) })
+  _output }))
+
+# @brief Generate a sequence of numbers
+# @param _init initial value of the sequence
+# @param _length the sequence length
+# =begin
+# (print (iota 0 10))  # [0 1 2 3 4 5 6 7 8 9]
+# =end
+# @author https://github.com/SuperFola
+(let iota (fun (_init _length)
+  (iterate _init (fun (x) (+ 1 x)) _length)))
