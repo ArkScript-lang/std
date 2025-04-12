@@ -87,7 +87,7 @@
       (mut _index _startingIndex)
 
       (let _end
-        (if (> _length (len _string))
+        (if (>= _length (len _string))
           (len _string)
           (+ _index _length)))
 
@@ -182,4 +182,30 @@
           _delim
           "")))
     (set _index (+ 1 _index)) })
+  _output }))
+
+# @brief Strip the margin of a multiline string
+# @param _str multiline string, margin is (space)*(|)
+# =begin
+# (let s "hello
+#        |abc
+#        |def")
+# (string:stripMargin s)
+# =end
+(let stripMargin (fun (_str) {
+  (mut _output "")
+  (let _lines (split _str "\n"))
+  (let _line_count (len _lines))
+  (mut _index 0)
+
+  (while (< _index _line_count) {
+    (let _current (@ _lines _index))
+    (let _marker_pos (string:find _current "|"))
+    (if (= -1 _marker_pos)
+      (set _output (+ _output _current))
+      (set _output (+ _output (slice _current (+ 1 _marker_pos) (len _current)))))
+    (set _index (+ 1 _index))
+    (if (!= _index _line_count)
+      (set _output (+ _output "\n"))) })
+
   _output }))

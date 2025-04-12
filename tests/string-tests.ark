@@ -29,4 +29,16 @@
 
     (test:eq "hello;3.14;true;world" (string:join ["hello" 3.14 true "world"] ";"))
     (test:eq "hello" (string:join ["hello"] ";"))
-    (test:eq "" (string:join [] ";;"))})
+    (test:eq "" (string:join [] ";;"))
+
+    (test:eq "" (string:stripMargin ""))
+    (test:eq "   hello" (string:stripMargin "   hello"))
+    (test:eq "hello" (string:stripMargin "   |hello"))
+    (test:eq "hello\nabc"
+      (string:stripMargin "   |hello
+                              |abc"))
+    (test:eq "hello\nabc\nd"
+      (string:stripMargin "hello
+                          |abc
+                          |d"))
+    })
