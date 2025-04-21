@@ -18,10 +18,10 @@
     (set failed (+ 1 failed))))
   (let register_failure (fun (description) (append! failures description)))
 
-  (let add_case (fun (name) {
+  (let add_case (fun (case_name) {
     # keep track of the current case we're in
-    (set case_desc name)
-    (append! cases name) }))
+    (set case_desc case_name)
+    (append! cases case_name) }))
 
   (let pop_case (fun () {
     (set case_desc "")
@@ -29,8 +29,28 @@
 
   (let update_case_ptr (fun (val)
     (set case_pointer val)))
-  (let need_case? (fun () (and (not (empty? case_desc)) (!= case_pointer (len cases)))))
-  (fun (&name &passed &failed &failures &cases &case_pointer &case_desc &display_cases_success &toggle_display_cases_success &inc_passed &inc_failed &register_failure &add_case &pop_case &update_case_ptr &need_case?) ()) }))
+
+  (let need_case? (fun ()
+    (and (not (empty? case_desc)) (!= case_pointer (len cases)))))
+
+  (fun (
+    &name
+    &passed
+    &failed
+    &failures
+    &cases
+    &case_pointer
+    &case_desc
+    &display_cases_success
+    &toggle_display_cases_success
+    &inc_passed
+    &inc_failed
+    &register_failure
+    &add_case
+    &pop_case
+    &update_case_ptr
+    &need_case?)
+    ()) }))
 
 # internal, do not use
 (mut _suite nil)
