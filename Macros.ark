@@ -58,8 +58,8 @@
   ($ all_args (__replace_placeholders [arg_bloc] ...args))
   (fun (arg_bloc) (call all_args)) })
 
-($ unless (cond body)
-  (if (not cond) body))
+($ unless (cond ...body)
+  (if (not cond) ...body))
 
 ($ until (cond body)
   (while (not cond) body))
