@@ -7,6 +7,8 @@
     (+ data "-f2")))
 (let f3 (fun (data)
     (+ data "-f3")))
+(let apply (fun (data f)
+  (f data)))
 
 (let test_func (fun (a b c) (* a b c)))
 (let test_func1 (partial test_func 1))
@@ -16,6 +18,7 @@
 (test:suite macros {
     (test:eq (-> "f0" f1) "f0-f1")
     (test:eq (-> "f0" f1 f2 f3) "f0-f1-f2-f3")
+    (test:eq (-> "f0" f1 (apply _ f2) (apply _ f3)) "f0-f1-f2-f3")
 
     (test:eq (test_func1 2 3) 6)
     (test:eq ($argcount test_func1) 2)

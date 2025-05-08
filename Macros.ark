@@ -1,7 +1,24 @@
-($ -> (arg fn1 ...fn) {
-  ($if (> (len fn) 0)
-    (-> (fn1 arg) ...fn)
-    (fn1 arg)) })
+# internal, do not use
+($ __replace_all_placeholders_with (replacement x ...xs) {
+  ($if (empty? xs)
+    ($if (= "_" ($repr x))
+      replacement
+      x)
+    ($if (= "_" ($repr x))
+      {
+        replacement
+        (__replace_all_placeholders_with replacement ...xs) }
+      {
+        x
+        (__replace_all_placeholders_with replacement ...xs) })) })
+
+($ -> (arg fn1 ...fns) {
+  ($if (= "Symbol" ($type fn1))
+    ($ call (fn1 arg))
+    ($ call ((__replace_all_placeholders_with arg ...fn1))))
+  ($if (> (len fns) 0)
+    (-> call ...fns)
+    call) })
 
 # internal, do not use
 ($ __suffix-dup (sym x) {
@@ -40,3 +57,9 @@
   ($ arg_bloc (__suffix-dup arg length))
   ($ all_args (__replace_placeholders [arg_bloc] ...args))
   (fun (arg_bloc) (call all_args)) })
+
+($ unless (cond body)
+  (if (not cond) body))
+
+($ until (cond body)
+  (while (not cond) body))
