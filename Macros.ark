@@ -12,6 +12,16 @@
         x
         (__replace_all_placeholders_with replacement ...xs) })) })
 
+# @brief Chain calls on a given value, for a nicer syntax
+# @param arg value to transform
+# @param ...fns series of functions to apply one by one to `arg`
+# =begin
+# (import std.Macros)
+# (-> "f0" f1)  # equivalent to (f1 "f0")
+# (-> "f0" f1 f2 f3) # equivalent to (f3 (f2 (f1 "f0")))
+# (-> "f0" f1 (apply _ f2) (apply _ f3))  # equivalent to (apply (apply (f1 "f0") f2) f3)
+# =end
+# @author https://github.com/SuperFola
 (macro -> (arg fn1 ...fns) {
   ($if (= "Symbol" ($type fn1))
     (macro call (fn1 arg))
@@ -25,6 +35,18 @@
   ($if (> x 1) (__suffix-dup sym (- x 1)))
   ($symcat sym x) })
 
+# @brief Create a partial function with prefilled arguments
+# @param func function to make partial
+# @param ...defargs predefined arguments
+# =begin
+# (import std.Macros)
+# (let test_func (fun (a b c) (* a b c)))
+# (let test_func1 (partial test_func 1))
+# (let test_func2 (partial test_func1 2))
+# (print (test_func1 2 3))  # 6
+# (print (test_func2 3))  # 6
+# =end
+# @author https://github.com/SuperFola
 (macro partial (func ...defargs) {
   (macro bloc (__suffix-dup a (- ($argcount func) (len defargs))))
   (fun (bloc) (func ...defargs bloc))
@@ -52,14 +74,47 @@
 
         (__replace_placeholders replacements ...xs) })) })
 
+# @brief Create a partial function with prefilled arguments, allowing some arguments to be skipped
+# @param call function to make partial
+# @param ...args predefined arguments
+# =begin
+# (import std.Macros)
+# (let test_func (fun (a b c) (* a b c)))
+# (let test_func3 (partial2 test_func 1 _ 3))
+# (print (test_func3 2))  # 6
+# =end
+# @author https://github.com/SuperFola
 (macro partial2 (call ...args) {
   (macro length (__count_placeholders 0 ...args))
   (macro arg_bloc (__suffix-dup arg length))
   (macro all_args (__replace_placeholders [arg_bloc] ...args))
   (fun (arg_bloc) (call all_args)) })
 
+# @brief Create a reversed condition
+# @param cond condition
+# @param body then node (or then/else nodes)
+# =begin
+# (import std.Macros)
+# (unless (canCall? dog)
+#   (print "dog can't call")
+#   (print "dog can actually call us!"))
+# (unless false
+#   (print "this will always be executed"))
+# =end
+# @author https://github.com/SuperFola
 (macro unless (cond ...body)
   (if (not cond) ...body))
 
+# @brief Iterate until the condition is truthy
+# @param cond condition
+# @param body loop body
+# =begin
+# (import std.Macros)
+# (mut data [0])
+# (until (= 10 (len data))
+#   (append! data (+ 1 (@ data -1))))
+# (print data)  # [0 1 2 3 4 5 6 7 8 9]
+# =end
+# @author https://github.com/SuperFola
 (macro until (cond body)
   (while (not cond) body))
