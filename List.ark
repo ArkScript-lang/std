@@ -235,6 +235,29 @@
       (set continue false)))
   _output }))
 
+# @brief Partition a list in two, given a predicate
+# @param _L the list to work on
+# @param _f the predicate, accepting the value and its index
+# @details The original list is left unmodified.
+# =begin
+# (let a [1 2 3])
+# (print (list:partition a (fun (c i) (= 0 (mod c 2)))))  # [[2] [1 3]]
+# =end
+# @author https://github.com/rakista112
+(let partition (fun (_L _f) {
+  (mut _index 0)
+  (mut _pass [])
+  (mut _fail [])
+
+  (while (< _index (len _L)) {
+    (let _val (@ _L _index))
+    (if (_f _val _index)
+      (append! _pass _val)
+      (append! _fail _val))
+    (set _index (+ 1 _index)) })
+
+  [_pass _fail] }))
+
 # @brief Unzip a list of [[a b] [c d]...] into [[a c ...] [b d ...]]
 # @param _L the list to work on
 # @details The original list is left unmodified.
@@ -426,3 +449,35 @@
   (if (not (empty? _current)) (append! _output _current))
 
   _output }))
+
+# @brief Insert an element (or expand a list) at a given position inside a list
+# @details Original list is left unmodified
+# @param _L list to insert element(s) in
+# @param _index where to insert
+# @param _value value to insert
+# =begin
+# (let a [0])
+# (print (list:insert a 1 4))  # [0 4]
+# (print (list:insert a 1 [1 2]))  # [0 1 2]
+# (let b [0 9])
+# (print (list:insert b 1 4))  # [0 4 9]
+# (print (list:insert b 1 [1 2]))  # [0 1 2 9]
+# =end
+# @author https://github.com/SuperFola
+(let insert (fun (_L _index _value) {
+  (let _size (len _L))
+  (assert (<= _index _size) "list:insert can not insert a value outside the list")
+
+  (if (!= "List" (type _value))
+    (set _value [_value]))
+
+  # insert at beginning
+  (if (= 0 _index)
+    (concat _value _L)
+    # insert at the end
+    (if (= _size _index)
+      (concat _L _value)
+      {
+        # insert anywhere
+        (let _parts (partition _L (fun (elem i &_index) (< i _index))))
+        (concat (head _parts) _value (@ _parts 1)) })) }))
