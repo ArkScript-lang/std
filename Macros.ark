@@ -1,5 +1,5 @@
 # internal, do not use
-($ __replace_all_placeholders_with (replacement x ...xs) {
+(macro __replace_all_placeholders_with (replacement x ...xs) {
   ($if (empty? xs)
     ($if (= "_" ($repr x))
       replacement
@@ -12,25 +12,25 @@
         x
         (__replace_all_placeholders_with replacement ...xs) })) })
 
-($ -> (arg fn1 ...fns) {
+(macro -> (arg fn1 ...fns) {
   ($if (= "Symbol" ($type fn1))
-    ($ call (fn1 arg))
-    ($ call ((__replace_all_placeholders_with arg ...fn1))))
+    (macro call (fn1 arg))
+    (macro call ((__replace_all_placeholders_with arg ...fn1))))
   ($if (> (len fns) 0)
     (-> call ...fns)
     call) })
 
 # internal, do not use
-($ __suffix-dup (sym x) {
+(macro __suffix-dup (sym x) {
   ($if (> x 1) (__suffix-dup sym (- x 1)))
   ($symcat sym x) })
 
-($ partial (func ...defargs) {
-  ($ bloc (__suffix-dup a (- ($argcount func) (len defargs))))
+(macro partial (func ...defargs) {
+  (macro bloc (__suffix-dup a (- ($argcount func) (len defargs))))
   (fun (bloc) (func ...defargs bloc))
   ($undef bloc) })
 
-($ __count_placeholders (acc x ...xs) ($if (empty? xs)
+(macro __count_placeholders (acc x ...xs) ($if (empty? xs)
     ($if (= "_" ($repr x))
       (+ 1 acc)
       acc)
@@ -38,7 +38,7 @@
       (__count_placeholders (+ 1 acc) ...xs)
       (__count_placeholders acc ...xs))))
 
-($ __replace_placeholders (replacements x ...xs) {
+(macro __replace_placeholders (replacements x ...xs) {
   ($if (empty? xs)
     ($if (= "_" ($repr x))
       (head replacements)
@@ -52,14 +52,14 @@
 
         (__replace_placeholders replacements ...xs) })) })
 
-($ partial2 (call ...args) {
-  ($ length (__count_placeholders 0 ...args))
-  ($ arg_bloc (__suffix-dup arg length))
-  ($ all_args (__replace_placeholders [arg_bloc] ...args))
+(macro partial2 (call ...args) {
+  (macro length (__count_placeholders 0 ...args))
+  (macro arg_bloc (__suffix-dup arg length))
+  (macro all_args (__replace_placeholders [arg_bloc] ...args))
   (fun (arg_bloc) (call all_args)) })
 
-($ unless (cond ...body)
+(macro unless (cond ...body)
   (if (not cond) ...body))
 
-($ until (cond body)
+(macro until (cond body)
   (while (not cond) body))

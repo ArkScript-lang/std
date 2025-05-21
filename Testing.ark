@@ -92,7 +92,7 @@
 #         (test:eq 1 2 "1 is 2, this should fail")})
 # =end
 # @author https://github.com/SuperFola
-($ test:case (_desc _body) {
+(macro test:case (_desc _body) {
   (mut _old_pointer testing:_suite.case_pointer)
 
   # Add the test name to a pile so that we can nicely print all the case names later.
@@ -192,7 +192,7 @@
 #     (test:expect (return_true) "return true"})
 # =end
 # @author https://github.com/SuperFola
-($ test:expect (_cond ..._desc) {
+(macro test:expect (_cond ..._desc) {
   (if (!= true ($as-is _cond))
     (testing:_report_error true ($as-is _cond) "true" ($repr _cond) _desc)
     (testing:_report_success)) })
@@ -207,7 +207,7 @@
 #     (test:eq 5 (foo) "foo should return 5")})
 # =end
 # @author https://github.com/SuperFola
-($ test:eq (_expected _expr ..._desc) {
+(macro test:eq (_expected _expr ..._desc) {
   (if (= ($as-is _expected) ($as-is _expr))
     (testing:_report_success)
     (testing:_report_error ($as-is _expected) ($as-is _expr) ($repr _expected) ($repr _expr) _desc)) })
@@ -221,7 +221,7 @@
 #     (test:neq 0 (my_function 1 2 3))})
 # =end
 # @author https://github.com/SuperFola
-($ test:neq (_unexpected _value ..._desc) {
+(macro test:neq (_unexpected _value ..._desc) {
   (if (!= ($as-is _unexpected) ($as-is _value))
     (testing:_report_success)
     (testing:_report_error ($as-is _unexpected) ($as-is _value) ($repr _unexpected) ($repr _value) _desc)) })
@@ -237,7 +237,7 @@
 #     (test:eq 128 (* 8 16))})
 # =end
 # @author https://github.com/SuperFola
-($ test:suite (_name _body) {
+(macro test:suite (_name _body) {
   (set testing:_suite (testing:_make_suite ($repr _name)))
 
   (let ($symcat _name "-output") (testing:_runner

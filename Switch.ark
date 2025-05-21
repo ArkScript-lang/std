@@ -13,7 +13,7 @@
 #     _ (print "default"))
 # =end
 # @author https://github.com/SuperFola
-($ switch (value case then ...cases) {
+(macro switch (value case then ...cases) {
   ($if (= "_" ($repr case))
     then
     (if (= value case)
