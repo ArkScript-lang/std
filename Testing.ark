@@ -1,5 +1,6 @@
 # internal, do not use
 (let _make_suite (fun (name) {
+  (mut active false)
   (mut passed 0)
   (mut failed 0)
   (mut failures [])
@@ -33,6 +34,9 @@
   (let need_case? (fun ()
     (and (not (empty? case_desc)) (!= case_pointer (len cases)))))
 
+  (let set_active (fun (bool)
+    (set active bool)))
+
   (fun (
     &name
     &passed
@@ -49,7 +53,9 @@
     &add_case
     &pop_case
     &update_case_ptr
-    &need_case?)
+    &need_case?
+    &active
+    &set_active)
     ()) }))
 
 # internal, do not use
@@ -57,11 +63,13 @@
 
 # internal, do not use
 (let _runner (fun (_name _callable) {
+  (_suite.set_active true)
   (let _start_time (time))
 
   # run test
   (_callable)
   (let _end_time (time))
+  (_suite.set_active false)
 
   # no newline, yet
   (puts _name)
@@ -238,6 +246,7 @@
 # =end
 # @author https://github.com/SuperFola
 (macro test:suite (_name _body) {
+  (assert (or (nil? testing:_suite) (not testing:_suite.active)) "Can not nest multiple test suites together!")
   (set testing:_suite (testing:_make_suite ($repr _name)))
 
   (let ($symcat _name "-output") (testing:_runner
