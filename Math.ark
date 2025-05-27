@@ -62,6 +62,25 @@
         (impl (- n 1) c (+ p c))))))
   (impl n 0 1) }))
 
+# @brief Check if a given number is prime
+# @param n the number
+# @author https://github.com/SuperFola
+(let prime? (fun (n)
+  (if (= 2 n)
+    true
+    (if (or (= 0 (mod n 2)) (= 1 n))
+      false
+      {
+        (let k (math:ceil (+ 1 (sqrt n))))
+        (mut i 3)
+        (mut continue true)
+
+        (while (and continue (< i k)) {
+          (if (= 0 (mod n i))
+            (set continue false))
+          (set i (+ 2 i)) })
+        continue }))))
+
 # @brief Returns the list of a number's divisors
 # @param n the number
 # @author https://github.com/Wafelack
