@@ -1,0 +1,65 @@
+# @brief Write content to a file. Return nil
+# @param filename path to the file to write to (will be overwritten if it exists)
+# @param content can be any valid ArkScript value
+# =begin
+# (io:writeFile "hello.json" "{\"key\": 12}")
+# =end
+# @author https://github.com/SuperFola
+(let writeFile (fun (_name _content) (builtin__io:writeFile _name _content)))
+
+# @brief Append content to a file. Return nil
+# @param filename path to the file to append to
+# @param content can be any valid ArkScript value
+# =begin
+# (io:writeFile "hello.json" "{\"key\": 12}")
+# =end
+# @author https://github.com/SuperFola
+(let appendToFile (fun (_name _content) (builtin__io:appendToFile _name _content)))
+
+# @brief Read the content from a file as a String
+# @param filename the path of the file to read
+# =begin
+# (io:readFile "hello.json")
+# =end
+# @author https://github.com/SuperFola
+(let readFile (fun (_name) (builtin__io:readFile _name)))
+
+# @brief Check if a file exists, return True or False
+# @param filename the path of the file
+# =begin
+# (io:fileExists? "hello.json")
+# =end
+# @author https://github.com/SuperFola
+(let fileExists? (fun (_name) (builtin__io:fileExists? _name)))
+
+# @brief List files in a folder, as a List of String
+# @param path A directory
+# =begin
+# (io:listFiles "/tmp/hello")
+# =end
+# @author https://github.com/SuperFola
+(let listFiles (fun (_path) (builtin__io:listFiles _path)))
+
+# @brief Check if a path represents a directory
+# @param path A directory
+# =begin
+# (io:dir? "/tmp/hello")
+# =end
+# @author https://github.com/SuperFola
+(let dir? (fun (_path) (builtin__io:dir? _path)))
+
+# @brief Create a directory
+# @param path A directory
+# =begin
+# (io:makeDir "/tmp/myDir")
+# =end
+# @author https://github.com/SuperFola
+(let makeDir (fun (_path) (builtin__io:makeDir _path)))
+
+# @brief Delete file
+# @param filename path to file
+# =begin
+# (io:removeFile "/tmp/test.ark")
+# =end
+# @author https://github.com/SuperFola
+(let removeFile (fun (_path) (builtin__io:removeFile _path)))

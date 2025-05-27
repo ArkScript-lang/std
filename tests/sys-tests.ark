@@ -1,0 +1,9 @@
+(import std.Sys)
+(import std.Testing)
+
+(test:suite sys {
+    (test:eq builtin__sys:platform sys:platform)
+    (test:expect (!= "" sys:platform))
+
+    (test:eq builtin__sys:args sys:args)
+    (test:eq (type sys:args) "List") })

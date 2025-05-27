@@ -7,6 +7,21 @@
 (let zipped [[1 5] [2 6] [3 7] [4 8]])
 
 (test:suite list {
+    (test:eq (builtin__list:reverse a) (list:reverse a))
+    (test:eq (builtin__list:reverse []) (list:reverse []))
+
+    (test:eq (builtin__list:find a 0) (list:find a 0))
+    (test:eq (builtin__list:find a 1) (list:find a 1))
+
+    (test:eq (builtin__list:slice a 1 2 1) (list:slice a 1 2 1))
+
+    (test:eq (builtin__list:sort [9 8 1]) (list:sort [9 8 1]))
+    (test:eq (builtin__list:sort []) (list:sort []))
+
+    (test:eq (builtin__list:fill 5 nil) (list:fill 5 nil))
+
+    (test:eq (builtin__list:setAt a 0 5) (list:setAt a 0 5))
+
     (list:forEach a (fun (e) {
         # just assert we have something, basically it's just a while + @
         (test:neq e nil)}))

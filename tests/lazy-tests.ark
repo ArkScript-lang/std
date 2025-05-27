@@ -1,5 +1,6 @@
 (import std.Lazy)
 (import std.Testing)
+(import std.Sys)
 
 (let calculate_the_sun_weight (fun () (begin (sys:sleep 50) 42)))
 (let memo (lazy:eval calculate_the_sun_weight))
