@@ -1,3 +1,163 @@
+# @brief Calculate e^number
+# @param value the Number
+# =begin
+# (math:exp 1)  # 2.7182...
+# =end
+# @author https://github.com/SuperFola
+(let exp (fun (_x) (builtin__math:exp _x)))
+
+# @brief Calculate the logarithm of a number
+# @param value the Number
+# =begin
+# (math:ln 1)  # 0
+# =end
+# @author https://github.com/SuperFola
+(let ln (fun (_x) (builtin__math:ln _x)))
+
+# @brief Get the smallest possible integer greater than the number
+# @param value the Number
+# =begin
+# (math:ceil 0.2)  # 1
+# =end
+# @author https://github.com/SuperFola
+(let ceil (fun (_x) (builtin__math:ceil _x)))
+
+# @brief Get the smallest possible integer equal to the given number
+# @param value the Number
+# =begin
+# (math:floor 1.7)  # 1
+# =end
+# @author https://github.com/SuperFola
+(let floor (fun (_x) (builtin__math:floor _x)))
+
+# @brief Get the smallest possible integer equal to or greater than the given number
+# @param value the Number
+# =begin
+# (math:round 0.2)  # 0
+# (math:round 0.6)  # 1
+# =end
+# @author https://github.com/SuperFola
+(let round (fun (_x) (builtin__math:round _x)))
+
+# @brief Check if a Number is NaN
+# @param value the Number
+# =begin
+# (math:NaN? 2)  # false
+# (math:NaN? nan)  # true
+# =end
+# @author https://github.com/SuperFola
+(let NaN? (fun (_x) (builtin__math:NaN? _x)))
+
+# @brief Check if a Number if Inf
+# @param value the Number
+# =begin
+# (math:Inf? 1)  # false
+# (math:Inf? nan)  # false
+# =end
+# @author https://github.com/SuperFola
+(let Inf? (fun (_x) (builtin__math:Inf? _x)))
+
+# @brief Calculate the cosinus of a number
+# @param value the Number (radians)
+# =begin
+# (math:cos 0)  # 1
+# (math:cos math:pi)  # -1
+# =end
+# @author https://github.com/SuperFola
+(let cos (fun (_x) (builtin__math:cos _x)))
+
+# @brief Calculate the sinus of a number
+# @param value the Number (radians)
+# =begin
+# (math:sin 0)  # 0
+# (math:cos (/ math:pi 2))  # 1
+# =end
+# @author https://github.com/SuperFola
+(let sin (fun (_x) (builtin__math:sin _x)))
+
+# @brief Calculate the tangent of a number
+# @param value the Number (radians)
+# =begin
+# (math:tan 0)  # 0
+# (math:cos (/ math:pi 4))  # 1
+# =end
+# @author https://github.com/SuperFola
+(let tan (fun (_x) (builtin__math:tan _x)))
+
+# @brief Calculate the arc cosinus of a number
+# @param value the Number
+# =begin
+# (math:arccos 1)  # 0
+# =end
+# @author https://github.com/SuperFola
+(let arccos (fun (_x) (builtin__math:arccos _x)))
+
+# @brief Calculate the arc sinus of a number
+# @param value the Number
+# =begin
+# (math:arcsin 1)  # 1.570796326794897 (/ math:pi 2)
+# =end
+# @author https://github.com/SuperFola
+(let arcsin (fun (_x) (builtin__math:arcsin _x)))
+
+# @brief Calculate the arc tangent of a number
+# @param value the Number
+# =begin
+# (math:arctan 0)  # 0
+# =end
+# @author https://github.com/SuperFola
+(let arctan (fun (_x) (builtin__math:arctan _x)))
+
+# @brief Calculate the hyperbolic cosinus of a number
+# @param value the Number
+# @author https://github.com/Gryfenfer97
+(let cosh (fun (_x) (builtin__math:cosh _x)))
+
+# @brief Calculate the hyperbolic sinus of a number
+# @param value the Number
+# @author https://github.com/Gryfenfer97
+(let sinh (fun (_x) (builtin__math:sinh _x)))
+
+# @brief Calculate the hyperbolic tangent of a number
+# @param value the Number
+# @author https://github.com/Gryfenfer97
+(let tanh (fun (_x) (builtin__math:tanh _x)))
+
+# @brief Calculate the hyperbolic arc cosinus of a number
+# @param value the Number
+# @author https://github.com/Gryfenfer97
+(let acosh (fun (_x) (builtin__math:acosh _x)))
+
+# @brief Calculate the hyperbolic arc sinus of a number
+# @param value the Number
+# @author https://github.com/Gryfenfer97
+(let asinh (fun (_x) (builtin__math:asinh _x)))
+
+# @brief Calculate the hyperbolic arc tangent of a number
+# @param value the Number
+# @author https://github.com/Gryfenfer97
+(let atanh (fun (_x) (builtin__math:atanh _x)))
+
+# @brief Pi value (3.14159...)
+# @author https://github.com/SuperFola
+(let pi builtin__math:pi)
+
+# @brief E value (2.7182...)
+# @author https://github.com/SuperFola
+(let e builtin__math:e)
+
+# @brief Tau, the ratio of the circumference to the radius of a circle, which is equal to 2*pi (6.28318...)
+# @author https://github.com/SuperFola
+(let tau builtin__math:tau)
+
+# @brief Float infinite value
+# @author https://github.com/SuperFola
+(let Inf builtin__math:Inf)
+
+# @brief Float not-a-number value
+# @author https://github.com/SuperFola
+(let NaN builtin__math:NaN)
+
 # @brief Return the absolute value of a number
 # @param _x the number to get the absolute value of
 # @author https://github.com/rstefanic
@@ -39,13 +199,13 @@
 # @param _x the number to pow
 # @param _a the exponent
 # @author https://github.com/SuperFola
-(let pow (fun (_x _a) (math:exp (* _a (math:ln _x)))))
+(let pow (fun (_x _a) (exp (* _a (ln _x)))))
 
 # @brief Get the square root of a number
 # @details Square roots can't be taken for negative numbers for obvious reasons.
 # @param _x the number
 # @author https://github.com/SuperFola
-(let sqrt (fun (_x) (math:exp (* 0.5 (math:ln _x)))))
+(let sqrt (fun (_x) (exp (* 0.5 (ln _x)))))
 
 # @brief Run the fibonacci function on a number
 # @param n the number
@@ -71,7 +231,7 @@
     (if (or (= 0 (mod n 2)) (= 1 n))
       false
       {
-        (let k (math:ceil (+ 1 (sqrt n))))
+        (let k (ceil (+ 1 (sqrt n))))
         (mut i 3)
         (mut continue true)
 
@@ -91,7 +251,7 @@
   (assert (>= n 2) "divs: n must be greater or equal to 2")
   (mut i 2)
   (mut divisors [1])
-  (let top (math:ceil (/ n 2)))
+  (let top (ceil (/ n 2)))
 
   (while (and (<= i top) (!= top n)) {
     (if (= (mod n i) 0)
@@ -109,7 +269,7 @@
 (let log (fun (x n) {
   (assert (> x 0) "log: x must be greater than 0")
   (assert (>= n 1) "log: n must be greater or equal to 1")
-  (math:round (/ (math:ln x) (math:ln n))) }))
+  (round (/ (ln x) (ln n))) }))
 
 # @brief Returns the logarithm base 2 of a number
 # @param x the number
@@ -134,7 +294,7 @@
 # =begin
 # (floordiv 14 6) # Returns 2
 # =end
-(let floordiv (fun (a b) (math:floor (/ a b))))
+(let floordiv (fun (a b) (floor (/ a b))))
 
 # @brief Create a complex number
 # @param real the real part of the complex number

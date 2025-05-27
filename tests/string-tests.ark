@@ -2,6 +2,16 @@
 (import std.Testing)
 
 (test:suite string {
+    (test:eq (builtin__string:find "abcd" "a") (string:find "abcd" "a"))
+    (test:eq (builtin__string:find "abcd" "e") (string:find "abcd" "e"))
+    (test:eq (builtin__string:find "aaacd" "a" 1) (string:findAfter "aaacd" "a" 1))
+
+    (test:eq (builtin__string:removeAt "abcd" 1) (string:removeAt "abcd" 1))
+    (test:eq (builtin__string:setAt "abcd" 1 "z") (string:setAt "abcd" 1 "z"))
+
+    (test:eq (builtin__string:ord "a") (string:ord "a"))
+    (test:eq (builtin__string:chr 65) (string:chr 65))
+
     (test:eq "abcdefghijklmnopqrstuvwxyz" (string:toLower "ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
     (test:eq "abcdefghijklmnopqrstuvwxyz" (string:toLower "abcdefghijklmnopqrstuvwxyz"))
     (test:eq "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (string:toUpper "abcdefghijklmnopqrstuvwxyz"))

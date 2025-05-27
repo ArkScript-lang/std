@@ -1,3 +1,66 @@
+# @brief Search a substring in a given String
+# @details The original String is not modified. Return -1 when not found
+# @param string the String to search in
+# @param substr the substring to search for
+# =begin
+# (string:find "hello world" "hello")  # 0
+# (string:find "hello world" "aworld")  # -1
+# =end
+# @author https://github.com/SuperFola
+(let find (fun (_str _sub) (builtin__string:find _str _sub)))
+
+# @brief Search a substring in a given String
+# @details The original String is not modified. Return -1 when not found
+# @param string the String to search in
+# @param substr the substring to search for
+# @param startIndex index to start searching from
+# =begin
+# (string:find "hello hello" "hello" 1)  # 6
+# (string:find "hello world" "aworld" 0)  # -1
+# =end
+# @author https://github.com/SuperFola
+(let findAfter (fun (_str _sub _after) (builtin__string:find _str _sub _after)))
+
+# @brief Remove a character from a String given an index
+# @details The original String is not modified
+# @param string the String to modify
+# @param index the index of the character to remove (can be negative to search from the end)
+# =begin
+# (string:removeAt "hello world" 0)  # "ello world"
+# (string:removeAt "hello world" -1)  # "hello worl"
+# =end
+# @author https://github.com/SuperFola
+(let removeAt (fun (_str _index) (builtin__string:removeAt _str _index)))
+
+# @brief Get the ordinal of a given character
+# @param char a String with a single UTF8 character
+# =begin
+# (string:ord "h")  # 104
+# (string:ord "Ô")  # 212
+# =end
+# @author https://github.com/SuperFola
+(let ord (fun (_str) (builtin__string:ord _str)))
+
+# @brief Create a character from an UTF8 codepoint
+# @param codepoint an UTF8 codepoint (Number)
+# =begin
+# (string:chr 104)  # "h"
+# (string:chr 212)  # "Ô"
+# =end
+# @author https://github.com/SuperFola
+(let chr (fun (_str) (builtin__string:chr _str)))
+
+# @brief Modify a given string and return a new one
+# @details The original string is not modified
+# @param string the string to modify
+# @param index the index of the element to modify
+# @param value the new character
+# =begin
+# (string:setAt "hello" 1 "a")  # "hallo"
+# =end
+# @author https://github.com/SuperFola
+(let setAt (fun (_str _index _x) (builtin__string:setAt _str _index _x)))
+
 # @brief Converts the given character to lowercase.
 # @param _string the string to make lowercase
 # @details The original string is left unmodified.
@@ -17,8 +80,8 @@
   (while (< _index (len text)) {
     (set _e (@ text _index))
 
-    (if (in_range (string:ord _e) 65 90)
-      (set _e (string:chr (+ (string:ord _e) 32))))
+    (if (in_range (ord _e) 65 90)
+      (set _e (chr (+ (ord _e) 32))))
     (set _output (+ _output _e))
     (set _index (+ _index 1)) })
   _output }))
@@ -42,8 +105,8 @@
   (while (< _index (len _string)) {
     (set _e (@ _string _index))
 
-    (if (in_range (string:ord _e) 97 122)
-      (set _e (string:chr (- (string:ord _e) 32))))
+    (if (in_range (ord _e) 97 122)
+      (set _e (chr (- (ord _e) 32))))
     (set _output (+ _output _e))
     (set _index (+ _index 1)) })
   _output }))
@@ -107,7 +170,7 @@
 # =end
 # @author https://github.com/Natendrtfm
 (let split (fun (_string _separator) {
-  (mut _at (string:find _string _separator))
+  (mut _at (find _string _separator))
   (let _seplen (len _separator))
   (let _strlen (len _string))
   (mut _output [])
@@ -126,7 +189,7 @@
             (append! _output _last)
             (set _last "")
             (set _i (+ _at _seplen))
-            (set _at (string:find _string _separator _i))
+            (set _at (findAfter _string _separator _i))
             (if (= -1 _at)
               (set _at _strlen)) }) })
 
@@ -148,7 +211,7 @@
 # =end
 (let replace (fun (_string _pattern _new) {
   (mut _out _string)
-  (mut _idx (string:find _out _pattern))
+  (mut _idx (find _out _pattern))
   (let _pattern_sz (len _pattern))
 
   (while (!= -1 _idx) {
@@ -156,7 +219,7 @@
     (mut _next_segment (slice _out (+ _idx _pattern_sz) (- (len _out) (+ _idx _pattern_sz))))
 
     (set _out (+ _first_segment _new _next_segment))
-    (set _idx (string:find _next_segment _pattern))
+    (set _idx (find _next_segment _pattern))
     (if (!= -1 _idx)
       (set _idx (+ _idx (len _first_segment) (len _new)))) })
   _out }))
@@ -200,7 +263,7 @@
 
   (while (< _index _line_count) {
     (let _current (@ _lines _index))
-    (let _marker_pos (string:find _current "|"))
+    (let _marker_pos (find _current "|"))
     (if (= -1 _marker_pos)
       (set _output (+ _output _current))
       (set _output (+ _output (slice _current (+ 1 _marker_pos) (len _current)))))

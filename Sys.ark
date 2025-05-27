@@ -1,0 +1,34 @@
+# @brief Execute a system specific command
+# @details Return the output of the command as a String, or nil if it was disabled in the ArkScript build
+# @param command the command to execute, as a String
+# =begin
+# (sys:exec "echo hello")
+# =end
+# @author https://github.com/SuperFola
+(let exec (fun (_command) (builtin__sys:exec _command)))
+
+# @brief Sleep for a given duration (in milliseconds)
+# @details Return nil
+# @param duration a Number representing a duration
+# =begin
+# (sys:sleep 1000)  # sleep for 1 second
+# =end
+# @author https://github.com/SuperFola
+(let sleep (fun (_duration) (builtin__sys:sleep _duration)))
+
+# @brief Exit the program with the given exit code
+# @details Any code after this function call won't be executed
+# @param exitCode usually 0 for success and 1 for errors
+# =begin
+# (sys:exit 0)  # halt the virtual machine with given exit code (success)
+# =end
+# @author https://github.com/SuperFola
+(let exit (fun (_code) (builtin__sys:exit _code)))
+
+# @brief Platform on which the program is running (Windows, Mac OSX, Linux, FreeBSD, Unix, Other)
+# @author https://github.com/SuperFola
+(let platform builtin__sys:platform)
+
+# @brief Arguments given to the program when running it from the command line
+# @author https://github.com/SuperFola
+(let args builtin__sys:args)
