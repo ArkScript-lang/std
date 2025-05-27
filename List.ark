@@ -1,3 +1,10 @@
+(let reverse (fun (_L) (builtin__list:reverse _L)))
+(let find (fun (_L _x) (builtin__list:find _L _x)))
+(let slice (fun (_L _start _end _step) (builtin__list:slice _L _start _end _step)))
+(let sort (fun (_L) (builtin__list:sort _L)))
+(let fill (fun (_val _count) (builtin__list:fill _val _count)))
+(let setAt (fun (_L _index _x) (builtin__list:setAt _L _index _x)))
+
 # @brief Iterate over a given list and run a given function on every element.
 # @param _L the list to iterate over
 # @param _func the function to call on each element

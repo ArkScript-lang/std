@@ -1,0 +1,8 @@
+(let writeFile (fun (_name _content) (builtin__io:writeFile _name _content)))
+(let appendToFile (fun (_name _content) (builtin__io:appendToFile _name _content)))
+(let readFile (fun (_name) (builtin__io:readFile _name)))
+(let fileExists? (fun (_name) (builtin__io:fileExists? _name)))
+(let listFiles (fun (_path) (builtin__io:listFiles _path)))
+(let dir? (fun (_path) (builtin__io:dir? _path)))
+(let makeDir (fun (_path) (builtin__io:makeDir _path)))
+(let removeFile (fun (_path) (builtin__io:removeFile _path)))
