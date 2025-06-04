@@ -1,6 +1,7 @@
 (import events-tests)
 (import exceptions-tests)
 (import functional-tests)
+(import io-tests)
 (import lazy-tests)
 (import list-tests)
 (import macros-tests)
@@ -8,6 +9,7 @@
 (import range-tests)
 (import string-tests)
 (import switch-tests)
+(import sys-tests)
 
 (import std.List)
 
@@ -15,14 +17,16 @@
     events-tests:events-output
     exceptions-tests:exceptions-output
     functional-tests:functional-output
+    io-tests:io-output
     lazy-tests:lazy-output
     list-tests:list-output
     macros-tests:macros-output
     math-tests:math-output
     range-tests:range-output
     string-tests:string-output
-    switch-tests:switch-output ]))
+    switch-tests:switch-output
+    sys-tests:sys-output ]))
 (let success_count (list:sum (@ outputs 0)))
 (let failure_count (list:sum (@ outputs 1)))
 
-(print (string:format "{:=<20}\nSuccesses: {} - Failures: {}\n" "=" success_count failure_count))
+(print (format "{:=<20}\nSuccesses: {} - Failures: {}\n" "=" success_count failure_count))
