@@ -28,7 +28,11 @@
   (let reset (fun ()
     (set i _a)))
 
-  (fun (&i &_a &_b &asList &reset) {
+  (fun (&i
+    &_a
+    &_b
+    &asList
+    &reset) {
     (if (< i _b) {
       (set i (+ i 1))
       (- i 1) }) }) }))

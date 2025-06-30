@@ -145,7 +145,8 @@
 # =end
 # @author https://github.com/SuperFola
 (let complex (fun (real imag)
-  (fun (&real &imag) ())))
+  (fun (&real
+    &imag) ())))
 
 # @brief Compute the addition of two complex number
 # @param _c0 the first complex number

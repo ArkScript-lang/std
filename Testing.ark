@@ -31,14 +31,12 @@
   (let update_case_ptr (fun (val)
     (set case_pointer val)))
 
-  (let need_case? (fun ()
-    (and (not (empty? case_desc)) (!= case_pointer (len cases)))))
+  (let need_case? (fun () (and (not (empty? case_desc)) (!= case_pointer (len cases)))))
 
   (let set_active (fun (bool)
     (set active bool)))
 
-  (fun (
-    &name
+  (fun (&name
     &passed
     &failed
     &failures
@@ -55,8 +53,7 @@
     &update_case_ptr
     &need_case?
     &active
-    &set_active)
-    ()) }))
+    &set_active) ()) }))
 
 # internal, do not use
 (mut _suite nil)

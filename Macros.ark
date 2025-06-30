@@ -102,8 +102,7 @@
 #   (print "this will always be executed"))
 # =end
 # @author https://github.com/SuperFola
-(macro unless (cond ...body)
-  (if (not cond) ...body))
+(macro unless (cond ...body) (if (not cond) ...body))
 
 # @brief Iterate until the condition is truthy
 # @param cond condition
@@ -116,5 +115,4 @@
 # (print data)  # [0 1 2 3 4 5 6 7 8 9]
 # =end
 # @author https://github.com/SuperFola
-(macro until (cond body)
-  (while (not cond) body))
+(macro until (cond body) (while (not cond) body))

@@ -17,11 +17,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - run: rm -rf tests
       - name: Format check
         uses: ArkScript-lang/action-format@master
         with:
           folder: .
-          exclude: tests
 
   build:
     runs-on: ubuntu-24.04
