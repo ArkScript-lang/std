@@ -369,3 +369,26 @@
   (let _top (complex-mul _c0 _conj))
   (let _denom (+ (* _c1.real _c1.real) (* _c1.imag _c1.imag)))
   (complex (/ _top.real _denom) (/ _top.imag _denom)) }))
+
+# @brief Limit a given value to a range
+# @param _x value to limit
+# @param _min minimum
+# @param _max maximum
+# =begin
+# (print (clamp 5 0 2))  # 2
+# (print (clamp 6 0 10))  # 6
+# =end
+# @author https://github.com/SuperFola
+(let clamp (fun (_x _min _max)
+  (max _min (min _x _max))))
+
+# @brief Linearly interpolate a value in [0; 1] between two bounds
+# @param _x value to interpolate (must be between 0 and 1)
+# @param _v0 lower bound
+# @param _v1 upper bound
+# =begin
+# (print (lerp 0.22 15 132))  # 40.74
+# =end
+# @author https://github.com/SuperFola
+(let lerp (fun (_x _v0 _v1)
+  (+ (* (- 1 _x) _v0) (* _x _v1))))
