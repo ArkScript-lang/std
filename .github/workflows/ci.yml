@@ -17,11 +17,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - run: rm -rf tests
+        with:
+          path: std-master
+
+      - run: rm -rf std-master/tests
+
       - name: Format check
         uses: ArkScript-lang/action-format@master
         with:
-          folder: .
+          folder: std-master
 
   build:
     runs-on: ubuntu-24.04
