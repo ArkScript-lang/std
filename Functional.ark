@@ -62,6 +62,4 @@
 # =end
 # @author https://github.com/SuperFola
 (let recombine (fun (_f _g _h)
-  (fun (_x &_f &_g &_h)
-    (_f (_g _x) (_h _x)))))
-
+  (fun (_x &_f &_g &_h) (_f (_g _x) (_h _x)))))

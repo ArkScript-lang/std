@@ -379,8 +379,7 @@
 # (print (clamp 6 0 10))  # 6
 # =end
 # @author https://github.com/SuperFola
-(let clamp (fun (_x _min _max)
-  (max _min (min _x _max))))
+(let clamp (fun (_x _min _max) (max _min (min _x _max))))
 
 # @brief Linearly interpolate a value in [0; 1] between two bounds
 # @param _x value to interpolate (must be between 0 and 1)
@@ -390,5 +389,4 @@
 # (print (lerp 0.22 15 132))  # 40.74
 # =end
 # @author https://github.com/SuperFola
-(let lerp (fun (_x _v0 _v1)
-  (+ (* (- 1 _x) _v0) (* _x _v1))))
+(let lerp (fun (_x _v0 _v1) (+ (* (- 1 _x) _v0) (* _x _v1))))
