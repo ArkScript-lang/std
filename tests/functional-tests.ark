@@ -1,13 +1,47 @@
 (import std.Functional:*)
 (import std.Testing)
+(import std.List)
 
 (let foo (fun (x) (+ x 3)))
 (let egg (fun (y) (* y 2)))
 (let bar (fun (x y) (- x y)))
 
 (test:suite functional {
-    (test:eq ((compose foo egg) 5) (foo (egg 5)))
-    (test:eq ((compose egg egg) 5) (egg (egg 5)))
-    # no need to test left and right because they were already tested by the exceptions tests (throw, return)
-    (test:eq ((flip bar 5) 6) (bar 6 5))
-    (test:eq ((flip bar 6) 5) (bar 5 6))})
+    (test:case "compose" {
+        (test:eq ((compose foo egg) 5) (foo (egg 5)))
+        (test:eq ((compose egg egg) 5) (egg (egg 5))) })
+
+    (test:case "left & right" {
+        (let err (left 5))
+        (err
+            (fun (x) (test:expect true))
+            (fun (x) (test:expect false)))
+
+        (let ok (right 6))
+        (ok
+            (fun (x) (test:expect false))
+            (fun (x) (test:expect true))) })
+
+    (test:case "flip" {
+        (test:eq ((flip bar) 5 6) (bar 6 5))
+        (test:eq ((flip bar) 6 5) (bar 5 6)) })
+
+    (test:case "identity" {
+        (test:eq (identity nil) nil)
+        (test:eq (identity []) [])
+        (test:eq (identity "hello") "hello") })
+
+    (test:case "recombine" {
+        (let mean (recombine
+            (fun (a b) (/ a b))
+            list:sum
+            list:size))
+        (test:eq (mean [0 1 1 2 3 5 8 13]) 4.125)
+        (test:eq (mean [0]) 0)
+
+        (let minMax (recombine
+            (fun (a b) [a b])
+            list:min
+            list:max))
+        (test:eq (minMax [1 1 2 3 5 8 13]) [1 13]) })})
+

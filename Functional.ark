@@ -33,12 +33,35 @@
 
 # @brief Flip the arguments of a function
 # @param _f the function
-# @param _a the first argument
-# @details Returns a function taking 1 argument: the second argument of the function to flip
+# @details Returns a function taking 2 arguments a and b, calling (f b a) 
 # =begin
 # (let foo (fun (a b) (- a b)))
-# ((flip foo 14) 12) # will call (foo 12 14) instead of (foo 14 12)
+# ((flip foo) 14 12) # will call (foo 12 14) instead of (foo 14 12)
 # =end
 # @author https://github.com/rstefanic
-(let flip (fun (_f _a)
-  (fun (_b &_f &_a) (_f _b _a))))
+(let flip (fun (_f)
+  (fun (_a _b &_f) (_f _b _a))))
+
+# @brief No-op, return the value as-is
+# @param _x the value
+# =begin
+# (let maybeAbs (if shouldNormalizeNegatives math:abs identity))
+# (let data (list:map nums maybeAbs))
+# =end
+# @author https://github.com/SuperFola
+(let identity (fun (_x) _x))
+
+# @brief Generic form for functions that need to reuse their arguments
+# @param _f function called with two arguments
+# @param _g first unary function
+# @param _h second unary function
+# @details Returns a function taking one argument x, calling (f (g x) (h x))
+# =begin
+# (let mean (recombine (fun (a b) (/ a b)) list:sum list:size))
+# (print (mean [0 1 1 2 3 5 8 13]))  # 4.125
+# =end
+# @author https://github.com/SuperFola
+(let recombine (fun (_f _g _h)
+  (fun (_x &_f &_g &_h)
+    (_f (_g _x) (_h _x)))))
+

@@ -22,6 +22,9 @@
 
     (test:eq (builtin__list:setAt a 0 5) (list:setAt a 0 5))
 
+    (test:eq (list:size []) 0)
+    (test:eq (list:size [1 2 3]) 3)
+
     (list:forEach a (fun (e) {
         # just assert we have something, basically it's just a while + @
         (test:neq e nil)}))
@@ -31,6 +34,14 @@
 
     (test:eq (list:sum b) (+ 4 5 6))
     (test:eq (list:sum []) 0)
+
+    (test:eq (list:min []) nil)
+    (test:eq (list:min b) 4)
+    (test:eq (list:min [-1]) -1)
+
+    (test:eq (list:max []) nil)
+    (test:eq (list:max b) 6)
+    (test:eq (list:max [-1]) -1)
 
     (test:eq (list:drop a 0) [1 2 3])
     (test:eq (list:drop a 1) [2 3])
