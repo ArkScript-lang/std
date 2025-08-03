@@ -1,0 +1,237 @@
+# @brief Get a value from a given dictionary using a key, or nil if it doesn't exist
+# @param _D dictionary
+# @param _key key to get
+# =begin
+# (let data (dict "key" "value"))
+# (print (dict:get data "key"))  # value
+# =end
+# @author https://github.com/SuperFola
+(let get (fun (_D _key) (builtin__dict:get _D _key)))
+
+# @brief Adds or replaces an entry to a dictionary, given a (key, value) pair
+# @details The dictionary is modified in place
+# @param _D dictionary
+# @param _key key to add (or replace)
+# @param _value value for the given key
+# =begin
+# (let data (dict "key" "value"))
+# (dict:add data "hello" "world")
+# (dict:add data "key" "hole")  # key:value will be replaced by key:hole
+# (print data)  # {key: hole, hello: world}
+# =end
+# @author https://github.com/SuperFola
+(let add (fun (_D _key _value) (builtin__dict:add _D _key _value)))
+
+# @brief
+# @param _D dictionary
+# =begin
+# (let data (dict "key" "value"))
+# (print (dict:contains data "key"))  # true
+# (print (dict:contains data "test"))  # false
+# =end
+# @author https://github.com/SuperFola
+(let contains (fun (_D _key) (builtin__dict:contains _D _key)))
+
+# @brief Deletes an entry from a dictionary, given a key
+# @details The dictionary is modified in place
+# @param _D dictionary
+# @param _key key to delete
+# =begin
+# (let data (dict "key" "value"))
+# (dict:remove data "key")
+# (print (dict:get data "key"))  # nil
+# =end
+# @author https://github.com/SuperFola
+(let remove (fun (_D _key) (builtin__dict:remove _D _key)))
+
+# @brief Returns a list of the keys of a dictionary
+# @param _D dictionary
+# =begin
+# (let data (dict "key" "value" 5 12))
+# (print (dict:keys data))  # [key, 5]
+# =end
+# @author https://github.com/SuperFola
+(let keys (fun (_D) (builtin__dict:keys _D)))
+
+# @brief Computes the number of (key, value) pairs in a given dictionary
+# @param _D dictionary
+# =begin
+# (let data (dict "key" "value"))
+# (print (dict:size data))  # 1
+# =end
+# @author https://github.com/SuperFola
+(let size (fun (_D) (builtin__dict:size _D)))
+
+# @brief Returns a list of the values of a dictionary
+# @param _D dictionary
+# =begin
+# (let data (dict "key" "value" 5 12))
+# (print (dict:values data))  # [value, 12]
+# =end
+# @author https://github.com/SuperFola
+(let values (fun (_D) {
+  (mut _output [])
+  (let _keys (keys _D))
+  (mut _i 0)
+  (while (< _i (len _keys)) {
+    (append! _output (get _D (@ _keys _i)))
+    (set _i (+ 1 _i)) })
+  _output }))
+
+# @brief Returns a list of the entries of a dictionary
+# @param _D dictionary
+# =begin
+# (let data (dict "key" "value" 5 12))
+# (print (dict:entries data))  # [[key, value], [5, 12]]
+# =end
+# @author https://github.com/SuperFola
+(let entries (fun (_D) {
+  (mut _output [])
+  (let _keys (keys _D))
+  (mut _i 0)
+  (while (< _i (len _keys)) {
+    (let key (@ _keys _i))
+    (let val (get _D key))
+    (append! _output [key val])
+    (set _i (+ 1 _i)) })
+  _output }))
+
+# @brief Map each value in a dictionary with a given function
+# @details The original dictionary is not modified
+# @param _D dictionary
+# @param _f function to apply to each value, taking both key and value as arguments
+# =begin
+# (let data (dict "key" "value"))
+# (dict:map data (fun (key value) (format "{}-{}" key value)))
+# (print data)  # {key: key-value}
+# =end
+# @author https://github.com/SuperFola
+(let map (fun (_D _f) {
+  (let _new (dict))
+  (mut _i 0)
+  (let _keys (keys _D))
+  (while (< _i (len _keys)) {
+    (let _key (@ _keys _i))
+    (add _new _key (_f _key (get _D _key)))
+    (set _i (+ 1 _i)) })
+  _new }))
+
+# @brief Map each value in a dictionary with a given function
+# @details The original dictionary is updated in place
+# @param _D dictionary
+# @param _f function to apply to each value, taking both key and value as arguments
+# =begin
+# (let data (dict "key" "value"))
+# (dict:map data (fun (key value) (format "{}-{}" key value)))
+# (print data)  # {key: key-value}
+# =end
+# @author https://github.com/SuperFola
+(let map! (fun (_D _f) {
+  (mut _i 0)
+  (let _keys (keys _D))
+  (while (< _i (len _keys)) {
+    (let _key (@ _keys _i))
+    (add _D _key (_f _key (get _D _key)))
+    (set _i (+ 1 _i)) })}))
+
+# @brief Iterate over the pairs of a dictionary with a given function
+# @param _D dictionary
+# @param _f function to call on each pair
+# =begin
+# (let data (dict "key" "value" 5 12))
+# (dict:forEach data (fun (key value) (print (format "{}-{}" key value))))
+# # key-value
+# # 5-12
+# =end
+# @author https://github.com/SuperFola
+(let forEach (fun (_D _f) {
+  (mut _i 0)
+  (let _keys (keys _D))
+  (while (< _i (len _keys)) {
+    (let _key (@ _keys _i))
+    (_f _key (get _D _key))
+    (set _i (+ 1 _i)) })}))
+
+# @brief Filter a dictionary with a predicate
+# @details The original dictionary is not modified
+# @param _D dictionary
+# @param _f predicate, taking both key and value as arguments
+# =begin
+# (let data (dict "key" "value" "hello" "world"))
+# (let new (dict:filter data (fun (key value) (> (len key) 3))))
+# (print data)  # {key: value, hello: world}
+# (print new)  # {hello: world}
+# =end
+# @author https://github.com/SuperFola
+(let filter (fun (_D _f) {
+  (let _new (dict))
+  (mut _i 0)
+  (let _keys (keys _D))
+  (while (< _i (len _keys)) {
+    (let _key (@ _keys _i))
+    (let _val (get _D _key))
+    (if (_f _key _val)
+      (add _new _key _val))
+    (set _i (+ 1 _i)) })
+  _new }))
+
+# @brief Filter a dictionary with a predicate
+# @details The original dictionary is updated in place
+# @param _D dictionary
+# @param _f predicate, taking both key and value as arguments
+# =begin
+# (let data (dict "key" "value" "hello" "world"))
+# (let new (dict:filter data (fun (key value) (> (len key) 3))))
+# (print data)  # {key: value, hello: world}
+# (print new)  # {hello: world}
+# =end
+# @author https://github.com/SuperFola
+(let filter! (fun (_D _f) {
+  (mut _i 0)
+  (let _keys (keys _D))
+  (while (< _i (len _keys)) {
+    (let _key (@ _keys _i))
+    (let _val (get _D _key))
+    (if (not (_f _key _val))
+      (remove _D _key))
+    (set _i (+ 1 _i)) }) }))
+
+# @brief Copy a dictionary
+# @details The original dictionary is not modified
+# @param _D dictionary to copy
+# =begin
+# (let data (dict "key" "value" "hello" "world"))
+# (let new (dict:copy data))
+# (dict:add data "test" 12)
+# (print data)  # {key: value, hello: world, test: 12}
+# (print new)  # {key: value, hello: world}
+# =end
+# @author https://github.com/SuperFola
+(let copy (fun (_D) {
+  (let _new (dict))
+  (let _keys (keys _D))
+  (mut _i 0)
+  (while (< _i (len _keys)) {
+    (let _key (@ _keys _i))
+    (add _new _key (get _D _key))
+    (set _i (+ 1 _i)) })
+  _new }))
+
+# @brief Update a dictionary with (key, value) pairs from a second dictionary
+# @details The original dictionary is updated in place
+# @param _D dictionary to update
+# @param _D2 second dictionary
+# =begin
+# (let data (dict "key" "value" "hello" "world"))
+# (let new (dict "key" "new value" 5 12))
+# (dict:update data new)
+# (print data)  # {key: new value, hello: world, 5: 12}
+# =end
+# @author https://github.com/SuperFola
+(let update! (fun (_D _D2) {
+  (mut _i 0)
+  (let _keys (keys _D2))
+  (while (< _i (len _keys)) {
+    (let _key (@ _keys _i))
+    (add _D _key (get _D2 _key))
+    (set _i (+ 1 _i)) })}))

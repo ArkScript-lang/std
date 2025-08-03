@@ -1,0 +1,155 @@
+(import std.Dict)
+(import std.Testing)
+
+(let foo (fun () ()))
+(let closure (fun (&foo) ()))
+
+(test:suite dict {
+    (let d (dict
+        "key" "value"
+        5 12
+        true true
+        false false
+        foo "yes"
+        closure foo))
+    (let d2 (dict
+        "a" 1
+        "b" 2
+        "c" 3))
+    (let empty (dict))
+    (let map_to_num (fun (k v) (toNumber v)))
+    (let map_to_str (fun (k v) (toString v)))
+    (let filter_str_keys (fun (k v) (= "String" (type k))))
+    (let filter_odd (fun (k v) (= 1 (mod v 2))))
+
+    (test:case "get" {
+        (test:eq (dict:get d "key") "value")
+        (test:eq (dict:get d 5) 12)
+        (test:eq (dict:get d true) true)
+        (test:eq (dict:get d false) false)
+        (test:eq (dict:get d foo) "yes")
+        (test:eq (dict:get d closure) foo) })
+
+    (test:case "contains" {
+        (test:expect (dict:contains d "key"))
+        (test:expect (dict:contains d 5))
+        (test:expect (dict:contains d true))
+        (test:expect (dict:contains d false))
+        (test:expect (dict:contains d foo))
+        (test:expect (dict:contains d closure))
+        (test:expect (not (dict:contains d -1)))
+        (test:expect (not (dict:contains d "hello")))
+        (test:expect (not (dict:contains d d))) })
+
+    (test:case "size" {
+        (test:eq (dict:size d) 6)
+        (test:eq (dict:size (dict)) 0) })
+
+    (test:case "keys" {
+        (test:eq (dict:keys d) ["key" 5 true false foo closure])
+        (test:eq (dict:keys empty) []) })
+
+    (test:case "values" {
+        (test:eq (dict:values d) ["value" 12 true false "yes" foo])
+        (test:eq (dict:values empty) []) })
+
+    (test:case "entries" {
+        (test:eq (dict:entries d) [["key" "value"] [5 12] [true true] [false false] [foo "yes"] [closure foo]])
+        (test:eq (dict:entries empty) []) })
+
+    (test:case "add" {
+        (test:eq (dict:get d "test") nil)
+        (dict:add d "test" 5)
+        (test:eq (dict:get d "test") 5)
+
+        (test:eq (dict:get d "key") "value")
+        (dict:add d "key" 2)
+        (test:eq (dict:get d "key") 2) })
+
+    (test:case "remove" {
+        (test:eq (dict:size d) 7)
+        (dict:remove d "test")
+        (test:eq (dict:get d "test") nil)
+        (test:eq (dict:size d) 6) })
+
+    (test:case "map" {
+        (let mapped (dict:map d2 map_to_str))
+        (test:eq (dict:size d2) (dict:size mapped))
+        (test:eq (dict:get d2 "a") 1)
+        (test:eq (dict:get d2 "b") 2)
+        (test:eq (dict:get d2 "c") 3)
+        (test:eq (dict:get mapped "a") "1")
+        (test:eq (dict:get mapped "b") "2")
+        (test:eq (dict:get mapped "c") "3")
+
+        (let mapped2 (dict:map (dict) (fun (k v) v)))
+        (test:eq (dict:size mapped2) 0) })
+
+    (test:case "map!" {
+        (dict:map! mapped map_to_num)
+        (test:eq (dict:size d2) (dict:size mapped))
+        (test:eq (dict:get d2 "a") 1)
+        (test:eq (dict:get d2 "b") 2)
+        (test:eq (dict:get d2 "c") 3)
+        (test:eq (dict:get mapped "a") 1)
+        (test:eq (dict:get mapped "b") 2)
+        (test:eq (dict:get mapped "c") 3)
+
+        (dict:map! empty map_to_num)
+        (test:eq (dict:size empty) 0) })
+
+    (test:case "forEach" {
+        (dict:forEach empty (fun (k v)
+          (test:expect false "should not see any element here!")))
+        (dict:forEach mapped (fun (k v)
+          (test:expect true))) })
+
+    (test:case "copy" {
+        (let d2_copy (dict:copy d2))
+        (dict:add d2_copy "d" 4)
+        (test:eq (dict:size d2_copy) 4)
+        (test:eq (dict:size d2) 3) })
+
+    (test:case "filter" {
+        (let filtered (dict:filter d filter_str_keys))
+        (test:eq (dict:size d) 6)
+        (test:eq (dict:size filtered) 1)
+        (test:eq (dict:get filtered "key") 2)
+
+        (let empty_filtered (dict:filter empty filter_str_keys))
+        (test:eq (dict:size empty_filtered) 0) })
+
+    (test:case "filter!" {
+        (dict:filter! d2 filter_odd)
+        (test:eq (dict:size d2) 2)
+        (test:expect (dict:contains d2 "a"))
+        (test:expect (not (dict:contains d2 "b")))
+        (test:expect (dict:contains d2 "c"))
+        (test:eq (dict:get d2 "a") 1)
+        (test:eq (dict:get d2 "c") 3)
+
+        (dict:filter! empty filter_odd)
+        (test:eq (dict:size empty_filtered) 0) })
+
+    (test:case "update!" {
+        (dict:update! d d2)
+        (test:eq (dict:size d) 8)
+        (test:eq (dict:get d "a") 1)
+        (test:eq (dict:get d "c") 3)
+        (test:eq (dict:get d "key") 2)
+        (test:eq (dict:get d 5) 12)
+        (test:eq (dict:get d true) true)
+        (test:eq (dict:get d false) false)
+        (test:eq (dict:get d foo) "yes")
+        (test:eq (dict:get d closure) foo)
+
+        (test:eq (dict:size d2) 2)
+        (dict:add d2 "a" 5)
+        (test:eq (dict:get d "a") 1)
+        (test:eq (dict:get d2 "a") 5)
+
+        (dict:update! d2 empty)
+        (test:eq (dict:size d2) 2)
+        (test:eq (dict:get d2 "a") 5)
+        (test:eq (dict:get d2 "c") 3)
+        (test:eq (dict:size empty) 0) })})
