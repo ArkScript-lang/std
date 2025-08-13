@@ -60,4 +60,4 @@ jobs:
         run: |
           ./arkscript --version
           mkdir -p std && mv *.ark std/
-          ./arkscript tests/all.ark -L ./
+          ./arkscript --lib ./ tests/all.ark
