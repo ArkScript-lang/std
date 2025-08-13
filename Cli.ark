@@ -1,0 +1,209 @@
+(import std.List :map :flatMap :forEach :find)
+(import std.String :join)
+(import std.Dict)
+
+(let _param (fun (name desc default kind) {
+  (let required (= kind "value"))
+  (let value default)
+
+  (fun (
+    &kind
+    &name
+    &desc
+    &default
+    &value
+    &required) ()) }))
+
+(let _group (fun (children all_of) {
+  (let kind "group")
+
+  (fun (
+    &kind
+    &children
+    &all_of) ()) }))
+
+# @brief Defines a command line flag
+# @details All flags are optional and turned off
+# @param name how the flag is named, eg "--debug"
+# @param desc what the flag achieves
+(let flag (fun (name desc)
+  (_param name desc false "flag")))
+
+# @brief Defines a command line value
+# @details All values are required and equal to their default value
+# @param name how the value is named, eg "filename"
+# @param desc what the value is for
+# @param default default value for the value
+(let value (fun (name desc default)
+  (_param name desc default "value")))
+
+# @brief Creates a group of flags/values/groups where only one of the subgroup has to match
+# @param params list of flags/values/groups
+(let oneOf (fun (params)
+  (_group params false)))
+
+# @brief Creates a group of flags/values/groups where all of the subgroups have to match
+# @param params list of flags/values/groups
+(let group (fun (params)
+  (_group params true)))
+
+(let _synopsis_group (fun (cli)
+  (if cli.all_of
+    {
+      (let partially_fmt (map
+        cli.children
+        (fun (param) (_format_param param))))
+
+      (mut options [""])
+      (mut i 0)
+
+      (while (< i (len partially_fmt)) {
+        (let e (@ partially_fmt i))
+        (if (= (type e) "String")
+          (set options (map
+            options
+            (fun (alt)
+              (if (empty? alt)
+                e
+                (format "{} {}" alt e)))))
+          # if we have a list, add (@ options 0) to each element of the list, then added to options
+          (concat! options (map e (fun (alt) (format "{} {}" (@ options 0) alt)))))
+        (set i (+ 1 i)) })
+
+      options
+    }
+    # any_of, return a list of each formatted param
+    (flatMap
+      cli.children
+      (fun (param) (_format_param param))))))
+
+(let _synopsis_flag (fun (param)
+  (if param.required
+    (format "{}" cli.name)
+    (format "[{}]" cli.name))))
+
+(let _synopsis_value (fun (param)
+  (format "<{}>" cli.name)))
+
+(let _format_param (fun (cli)
+  (if (= cli.kind "group")
+    (_synopsis_group cli)
+    (if (= cli.kind "flag")
+      (_synopsis_flag cli)
+      # if not group nor flag, then it must be a value
+      (_synopsis_value cli)))))
+
+(let _get_options (fun (d param)
+  (if (= param.kind "group")
+    (forEach
+      param.children
+      (fun (p) (_get_options d p)))
+    (dict:add d param.name param))))
+
+(let help (fun (program desc cli) {
+  (let headers (format "DESCRIPTION\n\t{}\n\nSYNOPSIS\n" desc))
+  (mut synopsis (_format_param cli))
+  (if (= (type synopsis) "List")
+    (set synopsis (join (flatMap synopsis (fun (alt) (format "\t{} {}" program alt))) "\n")))
+
+  (let params (dict))
+  (_get_options params cli)
+  (let options (join
+    (map (dict:keys params) (fun (name) {
+      (let param (dict:get params name))
+      (let fmt_name (if (= param.kind "value") (format "<{}>" name) name))
+      (format "\t{:<28} {}" fmt_name param.desc) }))
+    "\n"))
+
+  (+ headers synopsis "\n\nOPTIONS\n" options) }))
+
+(let _match_group (fun (parsed args param) {
+  (mut missing_param false)
+  (mut i 0)
+  (while (and (not missing_param) (< i (len param.children))) {
+    (let elem (@ param.children i))
+
+    # in a group, we expect arguments in order
+    (if (= elem.kind "flag")
+      (if (= (head args) elem.name)
+        {
+          (dict:add parsed elem.name true)
+          (set args (tail args)) }
+        {
+          (dict:add parsed elem.name false)
+          (set missing_param true) })
+      (if (= elem.kind "value")
+        {
+          (dict:add parsed elem.name (head args))
+          (set args (tail args)) }
+        # group
+        {
+          (if elem.all_of
+            (set missing_param (not (_match_group parsed args elem)))
+            (set missing_param (not (_match_one_of parsed args elem))))
+          (set args (tail args)) }))
+
+    (set i (+ 1 i)) })
+
+  (not missing_param) }))
+
+(let _match_one_of (fun (parsed args param) {
+  (mut i 0)
+  (mut matched false)
+  (while (and (not matched) (< i (len param.children))) {
+    (let elem (@ param.children i))
+
+    (if (= elem.kind "flag")
+      {
+        (let maybe_flag (find args elem.name))
+        (if (!= maybe_flag -1)
+          {
+            (dict:add parsed elem.name true)
+            (set matched true) }
+          (dict:add parsed elem.name false)) }
+      (if (= elem.kind "value")
+        {
+          (dict:add parsed elem.name (head args))
+          (set matched true) }
+        # group
+        (if elem.all_of
+          (set matched (_match_group parsed args elem))
+          (set matched (_match_one_of parsed args elem)))))
+
+    (set i (+ 1 i)) })
+
+  matched }))
+
+# @brief Parse a list of arguments given a CLI definition
+# @details Recursively visit the CLI to parse the argument list
+# @param args list of arguments, eg sys:args
+# @param cli cli definition
+# =begin
+# (import std.Cli)
+# (let command_line
+#   (cli:oneOf [
+#     (cli:flag "--help" "Display an help message")
+#     (cli:flag "--repl" "Start the REPL")
+#     (cli:group [
+#       (cli:flag "-c" "Compile a given file")
+#       (cli:value "file" "Path to the file to run" nil) ])]))
+#
+# (print (cli:help "miniark" "A mini ArkScript CLI" command_line))
+# (print (cli:parseArgs ["-c" "path.ark"] command_line))
+# =end
+# @author https://github.com/SuperFola
+(let parseArgs (fun (args cli) {
+  (let parsed (dict))
+
+  (if (= cli.kind "flag")
+    {
+      (let maybe_flag (find args cli.name))
+      (if (!= maybe_flag -1)
+        (dict:add parsed cli.name true)) }
+    (if (= cli.kind "value")
+      (dict:add parsed cli.name (head args))
+      # group
+      (if cli.all_of (_match_group parsed args cli) (_match_one_of parsed args cli))))
+
+  parsed }))
+
