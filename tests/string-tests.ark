@@ -51,4 +51,9 @@
       (string:stripMargin "hello
                           |abc
                           |d"))
+    (test:eq "hello\n\nabc\nd"
+      (string:stripMargin "hello
+                          |
+                          |abc
+                          |d"))
     })
