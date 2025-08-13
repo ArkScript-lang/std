@@ -1,3 +1,4 @@
+(import cli-tests)
 (import dict-tests)
 (import events-tests)
 (import exceptions-tests)
@@ -15,6 +16,7 @@
 (import std.List)
 
 (let outputs (list:unzip [
+    cli-tests:cli-output
     dict-tests:dict-output
     events-tests:events-output
     exceptions-tests:exceptions-output
