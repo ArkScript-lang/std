@@ -129,6 +129,24 @@
     (set _index (- _index 1)) })
   _returnedString }))
 
+# @brief Repeat a string
+# @param _string string to repeat
+# @param _count number of times to repeat said string
+# =begin
+# (import std.String)
+# (print (string:repeat "a" 5))  # aaaaa
+# =end
+# @author https://github.com/SuperFola
+(let repeat (fun (_string _count) {
+  (assert (> _count 0) "count must be >= 1")
+  (mut _i 0)
+  (mut _output "")
+
+  (while (< _i _count) {
+    (set _output (+ _output _string))
+    (set _i (+ 1 _i)) })
+  _output }))
+
 # @brief Get a slice of a given string, from a given index with a given length
 # @param _string the string to get a slice of
 # @param _startingIndex the index in the string where to start slicing

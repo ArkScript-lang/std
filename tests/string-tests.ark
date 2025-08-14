@@ -21,6 +21,10 @@
     (test:eq "" (string:reverse ""))
     (test:eq "a" (string:reverse "a"))
 
+    (test:eq "" (string:repeat "" 5))
+    (test:eq "a" (string:repeat "a" 1))
+    (test:eq "aaaaa" (string:repeat "a" 5))
+
     (test:eq "hello" (string:slice "hello world" 0 5))
     (test:eq "hello world" (string:slice "hello world" 0 100))
     (test:eq "h" (string:slice "hello world" 0 1))
