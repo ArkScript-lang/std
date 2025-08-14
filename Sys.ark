@@ -32,3 +32,7 @@
 # @brief Arguments given to the program when running it from the command line
 # @author https://github.com/SuperFola
 (let args builtin__sys:args)
+
+# @brief Name of the running program (file only, not the fullpath)
+# @author https://github.com/SuperFola
+(let programName builtin__sys:programName)
