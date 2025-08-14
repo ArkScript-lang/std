@@ -1,3 +1,39 @@
+# @brief Upper and lowercase ASCII letters
+# @author https://github.com/SuperFola
+(let asciiLetters "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+# @brief Lowercase ASCII letters
+# @author https://github.com/SuperFola
+(let asciiLowercase "abcdefghijklmnopqrstuvwxyz")
+
+# @brief Uppercase ASCII letters
+# @author https://github.com/SuperFola
+(let asciiUppercase "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+# @brief Digits used to represent decimal
+# @author https://github.com/SuperFola
+(let digits "0123456789")
+
+# @brief Digits used to represent hexadecimal
+# @author https://github.com/SuperFola
+(let hexdigits "0123456789abcdefABCDEF")
+
+# @brief Digits used to represent octal
+# @author https://github.com/SuperFola
+(let octdigits "01234567")
+
+# @brief All printable characters
+# @author https://github.com/SuperFola
+(let printable "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r")
+
+# @brief Punctuation characters
+# @author https://github.com/SuperFola
+(let punctuation "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")
+
+# @brief Whitespace characters
+# @author https://github.com/SuperFola
+(let whitespace " \t\n\r")
+
 # @brief Search a substring in a given String
 # @details The original String is not modified. Return -1 when not found
 # @param string the String to search in
