@@ -8,6 +8,7 @@
 (import list-tests)
 (import macros-tests)
 (import math-tests)
+(import random-tests)
 (import range-tests)
 (import string-tests)
 (import switch-tests)
@@ -26,6 +27,7 @@
     list-tests:list-output
     macros-tests:macros-output
     math-tests:math-output
+    random-tests:random-output
     range-tests:range-output
     string-tests:string-output
     switch-tests:switch-output

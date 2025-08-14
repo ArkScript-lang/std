@@ -1,0 +1,15 @@
+# @brief Select a random element from a list
+# @details If the list is empty, returns nil
+# @param _L list of elements
+# =begin
+# (import std.Random)
+# (print (random:choice [1 2 3]))
+# =end
+# @author https://github.com/SuperFola
+(let choice (fun (_L)
+  (if (empty? _L)
+    nil
+    (if (= 1 (len _L))
+      (head _L)
+      (@ _L (random 0 (- (len _L) 1)))))))
+
