@@ -13,3 +13,22 @@
       (head _L)
       (@ _L (random 0 (- (len _L) 1)))))))
 
+# @brief Shuffle a given list
+# @details The original list is not modified
+# @param _L list to shuffle
+# =begin
+# (import std.Random)
+# (let data [1 2 3 4 5])
+# (let randomized (random:shuffle data))
+# =end
+# @author https://github.com/SuperFola
+(let shuffle (fun (_L) {
+  (mut _output [])
+
+  (while (not (empty? _L)) {
+    (let _idx (random 0 (- (len _L) 1)))
+    (append! _output (@ _L _idx))
+    (pop! _L _idx) })
+
+  _output }))
+
