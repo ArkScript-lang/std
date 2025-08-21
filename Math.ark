@@ -390,3 +390,23 @@
 # =end
 # @author https://github.com/SuperFola
 (let lerp (fun (_x _v0 _v1) (+ (* (- 1 _x) _v0) (* _x _v1))))
+
+# @brief Compute the dot product of two vectors
+# @details The vectors must have the same length
+# @param _v1 vector 1
+# @param _v2 vector 2
+# =begin
+# (print (dotProduct [1 2 3] [4 5 6]))  # 32
+# =end
+# @author https://github.com/SuperFola
+(let dotProduct (fun (_v1 _v2) {
+  (assert (= (len _v1) (len _v2)) "vectors should have the same length")
+
+  (mut _result 0)
+  (mut _i 0)
+  (while (< _i (len _v1)) {
+    (set _result (+ _result (* (@ _v1 _i) (@ _v2 _i))))
+    (set _i (+ 1 _i)) })
+
+  _result }))
+
