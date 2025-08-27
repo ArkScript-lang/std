@@ -97,6 +97,21 @@
 # @author https://github.com/SuperFola
 (let setAt (fun (_str _index _x) (builtin__string:setAt _str _index _x)))
 
+# @brief Count the number of non-overlapping occurrences of a word in a string
+# @param _str string to search into
+# @param _word word to count occurrences of
+# =begin
+# (string:count "the three truths" "th")  # 3
+# =end
+# @author https://github.com/SuperFola
+(let count (fun (_str _word) {
+  (mut _count 0)
+  (mut _next (find _str _word))
+  (while (!= -1 _next) {
+    (set _count (+ 1 _count))
+    (set _next (findAfter _str _word (+ _next (len _word)))) })
+  _count }))
+
 # @brief Converts the given character to lowercase.
 # @param _string the string to make lowercase
 # @details The original string is left unmodified.

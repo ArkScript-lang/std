@@ -12,6 +12,10 @@
     (test:eq (builtin__string:ord "a") (string:ord "a"))
     (test:eq (builtin__string:chr 65) (string:chr 65))
 
+    (test:eq 3 (string:count "the three truths" "th"))
+    (test:eq 0 (string:count "the three truths" "thz"))
+    (test:eq 2 (string:count "ababababab" "abab"))
+
     (test:eq "abcdefghijklmnopqrstuvwxyz" (string:toLower "ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
     (test:eq "abcdefghijklmnopqrstuvwxyz" (string:toLower "abcdefghijklmnopqrstuvwxyz"))
     (test:eq "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (string:toUpper "abcdefghijklmnopqrstuvwxyz"))
