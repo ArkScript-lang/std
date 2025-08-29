@@ -584,3 +584,33 @@
         # insert anywhere
         (let _parts (partition _L (fun (elem i &_index) (< i _index))))
         (concat (head _parts) _value (@ _parts 1)) })) }))
+
+# @brief Create a sliding window of a given size on a list
+# @details The original list is not modified
+# @param _L list to iterate over
+# @param _size window size, must be at least 1
+# @param _f function to call with the window
+# =begin
+# (let f (fun (lst) (print lst))
+# (list:window [1 2 3 4 5] 3 f)
+# # [1 2 3]
+# # [2 3 4]
+# # [3 4 5]
+# =end
+# @author https://github.com/SuperFola
+(let window (fun (_L _size _f) {
+  (assert (> _size 0) "window size must be at least 1")
+
+  (mut _i 0)
+  (while (< _i (len _L)) {
+    (mut _win [])
+    (mut _j 0)
+    (while (< _j _size) {
+      (append! _win (@ _L (+ _i _j)))
+      (set _j (+ 1 _j)) })
+
+    (_f _win)
+
+    (if (>= (+ _i _size) (len _L))
+      (set _i (len _L)))
+    (set _i (+ 1 _i)) })}))

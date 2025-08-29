@@ -7,123 +7,160 @@
 (let zipped [[1 5] [2 6] [3 7] [4 8]])
 
 (test:suite list {
-    (test:eq (builtin__list:reverse a) (list:reverse a))
-    (test:eq (builtin__list:reverse []) (list:reverse []))
+    (test:case "builtins" {
+        (test:eq (builtin__list:reverse a) (list:reverse a))
+        (test:eq (builtin__list:reverse []) (list:reverse []))
 
-    (test:eq (builtin__list:find a 0) (list:find a 0))
-    (test:eq (builtin__list:find a 1) (list:find a 1))
+        (test:eq (builtin__list:find a 0) (list:find a 0))
+        (test:eq (builtin__list:find a 1) (list:find a 1))
 
-    (test:eq (builtin__list:slice a 1 2 1) (list:slice a 1 2 1))
+        (test:eq (builtin__list:slice a 1 2 1) (list:slice a 1 2 1))
 
-    (test:eq (builtin__list:sort [9 8 1]) (list:sort [9 8 1]))
-    (test:eq (builtin__list:sort []) (list:sort []))
+        (test:eq (builtin__list:sort [9 8 1]) (list:sort [9 8 1]))
+        (test:eq (builtin__list:sort []) (list:sort []))
 
-    (test:eq (builtin__list:fill 5 nil) (list:fill 5 nil))
+        (test:eq (builtin__list:fill 5 nil) (list:fill 5 nil))
 
-    (test:eq (builtin__list:setAt a 0 5) (list:setAt a 0 5))
+        (test:eq (builtin__list:setAt a 0 5) (list:setAt a 0 5)) })
 
-    (test:eq (list:size []) 0)
-    (test:eq (list:size [1 2 3]) 3)
+    (test:case "size" {
+        (test:eq (list:size []) 0)
+        (test:eq (list:size [1 2 3]) 3) })
 
-    (list:forEach a (fun (e) {
-        # just assert we have something, basically it's just a while + @
-        (test:neq e nil)}))
+    (test:case "forEach" {
+        (list:forEach a (fun (e) {
+            # just assert we have something, basically it's just a while + @
+            (test:neq e nil)})) })
 
-    (test:eq (list:product b) (* 4 5 6))
-    (test:eq (list:product []) 1)
+    (test:case "product" {
+        (test:eq (list:product b) (* 4 5 6))
+        (test:eq (list:product []) 1) })
 
-    (test:eq (list:sum b) (+ 4 5 6))
-    (test:eq (list:sum []) 0)
+    (test:case "sum" {
+        (test:eq (list:sum b) (+ 4 5 6))
+        (test:eq (list:sum []) 0) })
 
-    (test:eq (list:min []) nil)
-    (test:eq (list:min b) 4)
-    (test:eq (list:min [-1]) -1)
+    (test:case "min" {
+        (test:eq (list:min []) nil)
+        (test:eq (list:min b) 4)
+        (test:eq (list:min [-1]) -1) })
 
-    (test:eq (list:max []) nil)
-    (test:eq (list:max b) 6)
-    (test:eq (list:max [-1]) -1)
+    (test:case "max" {
+        (test:eq (list:max []) nil)
+        (test:eq (list:max b) 6)
+        (test:eq (list:max [-1]) -1) })
 
-    (test:eq (list:drop a 0) [1 2 3])
-    (test:eq (list:drop a 1) [2 3])
-    (test:eq (list:drop a 2) [3])
+    (test:case "drop" {
+        (test:eq (list:drop a 0) [1 2 3])
+        (test:eq (list:drop a 1) [2 3])
+        (test:eq (list:drop a 2) [3]) })
 
-    (test:eq (list:dropWhile a (fun (c) (< c 0))) [1 2 3])
-    (test:eq (list:dropWhile a (fun (c) (< c 2))) [2 3])
-    (test:eq (list:dropWhile a (fun (c) (< c 5))) [])
+    (test:case "dropWhile" {
+        (test:eq (list:dropWhile a (fun (c) (< c 0))) [1 2 3])
+        (test:eq (list:dropWhile a (fun (c) (< c 2))) [2 3])
+        (test:eq (list:dropWhile a (fun (c) (< c 5))) []) })
 
-    (test:eq (list:filter a math:even) [2])
-    (test:eq (list:filter a (fun (e) (> e 100))) [])
-    (test:eq (list:filter [] (fun (e) (> e 100))) [])
+    (test:case "filter" {
+        (test:eq (list:filter a math:even) [2])
+        (test:eq (list:filter a (fun (e) (> e 100))) [])
+        (test:eq (list:filter [] (fun (e) (> e 100))) []) })
 
-    (test:eq (list:map b (fun (e) (* e e))) [16 25 36])
-    (test:eq (list:map [] (fun (e) (* e e))) [])
+    (test:case "map" {
+        (test:eq (list:map b (fun (e) (* e e))) [16 25 36])
+        (test:eq (list:map [] (fun (e) (* e e))) []) })
 
-    (test:eq (list:reduce a (fun (x y) (- x y))) -4)
+    (test:case "reduce" {
+        (test:eq (list:reduce a (fun (x y) (- x y))) -4) })
 
-    (test:eq (list:flatten []) [])
-    (test:eq (list:flatten [[]]) [])
-    (test:eq (list:flatten [[1]]) [1])
-    (test:eq (list:flatten zipped) [1 5 2 6 3 7 4 8])
+    (test:case "flatten" {
+        (test:eq (list:flatten []) [])
+        (test:eq (list:flatten [[]]) [])
+        (test:eq (list:flatten [[1]]) [1])
+        (test:eq (list:flatten zipped) [1 5 2 6 3 7 4 8]) })
 
-    (test:eq (list:flatMap [] (fun (a) [a a])) [])
-    (test:eq (list:flatMap a (fun (a) (* 2 a))) [2 4 6])
-    (test:eq (list:flatMap a (fun (a) [a a])) [1 1 2 2 3 3])
+    (test:case "flatMap" {
+        (test:eq (list:flatMap [] (fun (a) [a a])) [])
+        (test:eq (list:flatMap a (fun (a) (* 2 a))) [2 4 6])
+        (test:eq (list:flatMap a (fun (a) [a a])) [1 1 2 2 3 3]) })
 
-    (test:eq (list:take a 1) [1])
-    (test:eq (list:take a 100) a)
+    (test:case "take" {
+        (test:eq (list:take a 1) [1])
+        (test:eq (list:take a 100) a) })
 
-    (test:eq (list:takeWhile a (fun (c) (< c 0))) [])
-    (test:eq (list:takeWhile a (fun (c) (< c 2))) [1])
-    (test:eq (list:takeWhile a (fun (c) (< c 3))) [1 2])
-    (test:eq (list:takeWhile a (fun (c) (< c 5))) [1 2 3])
+    (test:case "takeWhile" {
+        (test:eq (list:takeWhile a (fun (c) (< c 0))) [])
+        (test:eq (list:takeWhile a (fun (c) (< c 2))) [1])
+        (test:eq (list:takeWhile a (fun (c) (< c 3))) [1 2])
+        (test:eq (list:takeWhile a (fun (c) (< c 5))) [1 2 3]) })
 
-    (test:eq (list:partition a (fun (c i) (= 0 (mod c 2)))) [[2] [1 3]])
-    (test:eq (list:partition a (fun (c i) (= 0 c))) [[] [1 2 3]])
-    (test:eq (list:partition [] (fun (c i) (= 0 c))) [[] []])
+    (test:case "partition" {
+        (test:eq (list:partition a (fun (c i) (= 0 (mod c 2)))) [[2] [1 3]])
+        (test:eq (list:partition a (fun (c i) (= 0 c))) [[] [1 2 3]])
+        (test:eq (list:partition [] (fun (c i) (= 0 c))) [[] []]) })
 
-    (test:eq (list:unzip zipped) [[1 2 3 4] [5 6 7 8]])
-    (test:eq (list:unzip []) [[] []])
+    (test:case "unzip" {
+        (test:eq (list:unzip zipped) [[1 2 3 4] [5 6 7 8]])
+        (test:eq (list:unzip []) [[] []]) })
 
-    (test:eq (list:zip a b) [[1 4] [2 5] [3 6]])
-    (test:eq (list:zip [] []) [])
+    (test:case "zip" {
+        (test:eq (list:zip a b) [[1 4] [2 5] [3 6]])
+        (test:eq (list:zip [] []) []) })
 
-    (test:eq (list:foldLeft [] 0 (fun (x y) (+ x y))) 0)
-    (test:eq (list:foldLeft ["1" "2" "3"] "" (fun (x y) (+ x y))) "123")
-    (test:eq (list:foldLeft a 0 (fun (x y) (+ x y))) 6)
+    (test:case "foldLeft" {
+        (test:eq (list:foldLeft [] 0 (fun (x y) (+ x y))) 0)
+        (test:eq (list:foldLeft ["1" "2" "3"] "" (fun (x y) (+ x y))) "123")
+        (test:eq (list:foldLeft a 0 (fun (x y) (+ x y))) 6) })
 
-    (test:eq (list:zipWithIndex a) [[0 1] [1 2] [2 3]])
-    (test:eq (list:zipWithIndex []) [])
+    (test:case "zipWithIndex" {
+        (test:eq (list:zipWithIndex a) [[0 1] [1 2] [2 3]])
+        (test:eq (list:zipWithIndex []) []) })
 
     (test:eq a [1 2 3])
     (test:eq b [4 5 6])
 
-    (test:expect (list:forAll a (fun (e) (< e 4))))
-    (test:expect (not (list:forAll a (fun (e) (< e 2)))))
-    (test:expect (list:forAll [] (fun (e) (= e 2))))
-    (test:expect (list:any a (fun (e) (< e 2))))
-    (test:expect (not (list:any a (fun (e) (> e 8)))))
-    (test:expect (not (list:any [] (fun (e) (= e 8)))))
+    (test:case "forAll, any" {
+        (test:expect (list:forAll a (fun (e) (< e 4))))
+        (test:expect (not (list:forAll a (fun (e) (< e 2)))))
+        (test:expect (list:forAll [] (fun (e) (= e 2))))
+        (test:expect (list:any a (fun (e) (< e 2))))
+        (test:expect (not (list:any a (fun (e) (> e 8)))))
+        (test:expect (not (list:any [] (fun (e) (= e 8))))) })
 
-    (test:eq (list:countIf a (fun (e) (= 0 (mod e 2)))) 1)
-    (test:eq (list:countIf a (fun (e) (= 1 (mod e 2)))) 2)
-    (test:eq (list:countIf [] (fun (e) (= 1 (mod e 2)))) 0)
+    (test:case "countIf" {
+        (test:eq (list:countIf a (fun (e) (= 0 (mod e 2)))) 1)
+        (test:eq (list:countIf a (fun (e) (= 1 (mod e 2)))) 2)
+        (test:eq (list:countIf [] (fun (e) (= 1 (mod e 2)))) 0) })
 
-    (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 5) [0 1 2 3 4])
-    (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 5) (list:iota 0 5))
-    (test:eq (list:iterate "" (fun (x) (+ x "a")) 5) ["" "a" "aa" "aaa" "aaaa"])
-    (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 1) [0])
+    (test:case "iterate" {
+        (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 5) [0 1 2 3 4])
+        (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 5) (list:iota 0 5))
+        (test:eq (list:iterate "" (fun (x) (+ x "a")) 5) ["" "a" "aa" "aaa" "aaaa"])
+        (test:eq (list:iterate 0 (fun (x) (+ 1 x)) 1) [0]) })
 
-    (test:eq (list:chunkBy [1 2] 1) [[1] [2]])
-    (test:eq (list:chunkBy [1 2 3] 3) [[1 2 3]])
-    (test:eq (list:chunkBy [1 2 3 4] 3) [[1 2 3] [4]])
-    (test:eq (list:chunkBy [1 2 3 4 5] 3) [[1 2 3] [4 5]])
-    (test:eq (list:chunkBy [1 2 3 4 5 6] 3) [[1 2 3] [4 5 6]])
+    (test:case "chunkBy" {
+        (test:eq (list:chunkBy [1 2] 1) [[1] [2]])
+        (test:eq (list:chunkBy [1 2 3] 3) [[1 2 3]])
+        (test:eq (list:chunkBy [1 2 3 4] 3) [[1 2 3] [4]])
+        (test:eq (list:chunkBy [1 2 3 4 5] 3) [[1 2 3] [4 5]])
+        (test:eq (list:chunkBy [1 2 3 4 5 6] 3) [[1 2 3] [4 5 6]]) })
 
-    (test:eq (list:insert [0] 1 4) [0 4])
-    (test:eq (list:insert [0] 0 4) [4 0])
-    (test:eq (list:insert [0 9] 0 4) [4 0 9])
-    (test:eq (list:insert [0 9] 1 4) [0 4 9])
-    (test:eq (list:insert [0] 1 [1 2]) [0 1 2])
-    (test:eq (list:insert [0] 0 [1 2]) [1 2 0])
-    (test:eq (list:insert [0 9] 0 [1 2]) [1 2 0 9])
-    (test:eq (list:insert [0 9] 1 [1 2]) [0 1 2 9]) })
+    (test:case "insert" {
+        (test:eq (list:insert [0] 1 4) [0 4])
+        (test:eq (list:insert [0] 0 4) [4 0])
+        (test:eq (list:insert [0 9] 0 4) [4 0 9])
+        (test:eq (list:insert [0 9] 1 4) [0 4 9])
+        (test:eq (list:insert [0] 1 [1 2]) [0 1 2])
+        (test:eq (list:insert [0] 0 [1 2]) [1 2 0])
+        (test:eq (list:insert [0 9] 0 [1 2]) [1 2 0 9])
+        (test:eq (list:insert [0 9] 1 [1 2]) [0 1 2 9]) })
+
+    (test:case "window" {
+        (list:window [] 1 (fun (l) (test:expect false)))
+        (mut i 1)
+        (list:window [1 2 3 4] 2
+            (fun (l) {
+                (test:eq (@ l 0) i)
+                (test:eq (@ l 1) (+ 1 i))
+                (set i (+ 1 i))
+                (test:eq 2 (len l)) }))
+        (test:eq i 4) }) })
