@@ -133,7 +133,7 @@
   (while (< _i (len _keys)) {
     (let _key (@ _keys _i))
     (add _D _key (_f _key (get _D _key)))
-    (set _i (+ 1 _i)) })}))
+    (set _i (+ 1 _i)) }) }))
 
 # @brief Iterate over the pairs of a dictionary with a given function
 # @param _D dictionary
@@ -151,7 +151,7 @@
   (while (< _i (len _keys)) {
     (let _key (@ _keys _i))
     (_f _key (get _D _key))
-    (set _i (+ 1 _i)) })}))
+    (set _i (+ 1 _i)) }) }))
 
 # @brief Filter a dictionary with a predicate
 # @details The original dictionary is not modified
@@ -171,8 +171,7 @@
   (while (< _i (len _keys)) {
     (let _key (@ _keys _i))
     (let _val (get _D _key))
-    (if (_f _key _val)
-      (add _new _key _val))
+    (if (_f _key _val) (add _new _key _val))
     (set _i (+ 1 _i)) })
   _new }))
 
@@ -192,8 +191,7 @@
   (while (< _i (len _keys)) {
     (let _key (@ _keys _i))
     (let _val (get _D _key))
-    (if (not (_f _key _val))
-      (remove _D _key))
+    (if (not (_f _key _val)) (remove _D _key))
     (set _i (+ 1 _i)) }) }))
 
 # @brief Copy a dictionary
@@ -234,4 +232,4 @@
   (while (< _i (len _keys)) {
     (let _key (@ _keys _i))
     (add _D _key (get _D2 _key))
-    (set _i (+ 1 _i)) })}))
+    (set _i (+ 1 _i)) }) }))

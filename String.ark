@@ -1,6 +1,7 @@
 # @brief Upper and lowercase ASCII letters
 # @author https://github.com/SuperFola
-(let asciiLetters "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+(let asciiLetters
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 # @brief Lowercase ASCII letters
 # @author https://github.com/SuperFola
@@ -24,11 +25,13 @@
 
 # @brief All printable characters
 # @author https://github.com/SuperFola
-(let printable "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r")
+(let printable
+  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r")
 
 # @brief Punctuation characters
 # @author https://github.com/SuperFola
-(let punctuation "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")
+(let punctuation
+  "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")
 
 # @brief Whitespace characters
 # @author https://github.com/SuperFola
