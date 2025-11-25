@@ -22,7 +22,23 @@
 # @author https://github.com/SuperFola
 (let add (fun (_D _key _value) (builtin__dict:add _D _key _value)))
 
-# @brief
+# @brief Updates an entry or create it from a default value
+# @details The dictionary is modified in place
+# @param _D dictionary
+# @param _key key to create or update
+# @param _f function called with the existing value, returning an updated value
+# @param _default default value to use if the key doesn't exist
+# =begin
+# (let data (dict "count" 0))
+# (dict:updateOrDefault data "count" (fun (c) (+ c 1)) 1)  # count = 1
+# =end
+# @author https://github.com/SuperFola
+(let updateOrDefault (fun (_D _key _f _default)
+  (if (contains _D _key)
+    (add _D _key (_f (get _D _key)))
+    (add _D _key _default))))
+
+# @brief Checks if the dictionary has a given key
 # @param _D dictionary
 # =begin
 # (let data (dict "key" "value"))

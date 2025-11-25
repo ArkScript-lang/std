@@ -82,6 +82,16 @@
         (dict:add d "key" 2)
         (test:eq (dict:get d "key") 2) })
 
+    (test:case "updateOrDefault" {
+        (let d5 (dict))
+        (test:eq (dict:get d5 "count") nil)
+
+        (dict:updateOrDefault d5 "count" (fun (c) (+ 1 c)) 1)
+        (test:eq (dict:get d5 "count") 1)
+
+        (dict:updateOrDefault d5 "count" (fun (c) (+ 1 c)) 1)
+        (test:eq (dict:get d5 "count") 2) })
+
     (test:case "remove" {
         (test:eq (dict:size d) 7)
         (dict:remove d "test")
