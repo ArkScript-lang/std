@@ -30,7 +30,15 @@
     (test:case "forEach" {
         (list:forEach a (fun (e) {
             # just assert we have something, basically it's just a while + @
-            (test:neq e nil)})) })
+            (test:neq e nil) })) })
+
+    (test:case "enumerate" {
+        (mut position 0)
+        (list:enumerate a (fun (idx e) {
+            (test:eq position idx)
+            (set position (+ 1 position))
+            # just assert we have something, basically it's just a while + @
+            (test:eq (type e) "Number") })) })
 
     (test:case "product" {
         (test:eq (list:product b) (* 4 5 6))

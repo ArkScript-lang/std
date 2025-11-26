@@ -75,8 +75,7 @@
 # (import std.List)
 # (let collection [1 2 5 12])
 # (forEach collection (fun (element) {
-#     (print element)
-# }))
+#     (print element) }))
 # =end
 # @author https://github.com/SuperFola
 (let forEach (fun (_L _func) {
@@ -85,6 +84,25 @@
   (while (< _index (len _L)) {
     (mut _element (@ _L _index))
     (_func _element)
+    (set _index (+ 1 _index)) }) }))
+
+# @brief Iterate over a given list and run a given function on every element, passing its index as well.
+# @param _L the list to iterate over
+# @param _func a binary function to call on each element with (index, element)
+# @details The original list is not modified.
+# =begin
+# (import std.List)
+# (let collection [1 2 5 12])
+# (enumerate collection (fun (idx element) {
+#     (print idx " " element) }))
+# =end
+# @author https://github.com/SuperFola
+(let enumerate (fun (_L _func) {
+  (mut _index 0)
+
+  (while (< _index (len _L)) {
+    (mut _element (@ _L _index))
+    (_func _index _element)
     (set _index (+ 1 _index)) }) }))
 
 # @brief Iterate over a given list and multiply all the elements with the others.
@@ -440,7 +458,7 @@
 
 # @brief Check if a condition is verified for all elements of a list
 # @param _L the list to work on
-# @param _f the conditon
+# @param _f the condition
 # =begin
 # (let a [1 2 3 4])
 # (let f (fun (e) (< e 5)))
