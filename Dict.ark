@@ -22,6 +22,21 @@
 # @author https://github.com/SuperFola
 (let add (fun (_D _key _value) (builtin__dict:add _D _key _value)))
 
+# @brief Get a value from a given dictionary using a key, or a default value if it doesn't exist
+# @param _D dictionary
+# @param _key key to get
+# @param _default default value in case the key isn't in the dictionary
+# =begin
+# (let data (dict "key" "value"))
+# (print (dict:getOrElse data "key" "hello"))  # value
+# (print (dict:getOrElse data "count" 5))  # 5
+# =end
+# @author https://github.com/SuperFola
+(let getOrElse (fun (_D _key _default)
+  (if (contains _D _key)
+    (get _D _key)
+    _default)))
+
 # @brief Updates an entry or create it from a default value
 # @details The dictionary is modified in place
 # @param _D dictionary
