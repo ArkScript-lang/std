@@ -100,6 +100,29 @@
 # @author https://github.com/SuperFola
 (let setAt (fun (_str _index _x) (builtin__string:setAt _str _index _x)))
 
+# @brief Check if a string is empty or only consists of whitespaces
+# @param _str the string to check
+# =begin
+# (print (string:emtpyOrWhitespace? "hello"))  # false
+# (print (string:emtpyOrWhitespace? " \t"))  # true
+# =end
+# @author https://github.com/SuperFola
+(let emptyOrWhitespace? (fun (_str)
+  (if (empty? _str)
+    true
+    {
+      (mut _i 0)
+      (mut _all_spaces true)
+      (let _len (len _str))
+      (while (< _i _len) {
+        (let _c (@ _str _i))
+        (if (and (!= _c " ") (!= _c "\t") (!= _c "\n") (!= _c "\r"))
+          {
+            (set _all_spaces false)
+            (set _i _len) })
+        (set _i (+ 1 _i)) })
+      _all_spaces })))
+
 # @brief Count the number of non-overlapping occurrences of a word in a string
 # @param _str string to search into
 # @param _word word to count occurrences of

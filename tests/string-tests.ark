@@ -9,6 +9,18 @@
     (test:eq (builtin__string:removeAt "abcd" 1) (string:removeAt "abcd" 1))
     (test:eq (builtin__string:setAt "abcd" 1 "z") (string:setAt "abcd" 1 "z"))
 
+    (test:eq (string:emptyOrWhitespace? "") true)
+    (test:eq (string:emptyOrWhitespace? " ") true)
+    (test:eq (string:emptyOrWhitespace? "   ") true)
+    (test:eq (string:emptyOrWhitespace? "\t") true)
+    (test:eq (string:emptyOrWhitespace? "\n") true)
+    (test:eq (string:emptyOrWhitespace? "\r") true)
+    (test:eq (string:emptyOrWhitespace? " \t\r\n") true)
+    (test:eq (string:emptyOrWhitespace? " \t a") false)
+    (test:eq (string:emptyOrWhitespace? "a") false)
+    (test:eq (string:emptyOrWhitespace? "a ") false)
+    (test:eq (string:emptyOrWhitespace? " a ") false)
+
     (test:eq (builtin__string:ord "a") (string:ord "a"))
     (test:eq (builtin__string:chr 65) (string:chr 65))
 
