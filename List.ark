@@ -494,6 +494,19 @@
     (set _index (+ 1 _index)) })
   _verified }))
 
+# @brief Check if a condition can't be verified for any element of a list
+# @param _L the list to work on
+# @param _f the condition
+# =begin
+# (let a [1 2 3 4])
+# (let f (fun (e) (< e 3)))
+# (print (none a f))  # false
+# (print (none [4 5 6] f))  # true
+# =end
+# @author https://github.com/SuperFola
+(let none (fun (_L _f)
+  (not (any _L _f))))
+
 # @brief Count the number of elements in a list that match a condition
 # @param _L the list to work on
 # @param _f the condition

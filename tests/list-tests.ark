@@ -126,13 +126,19 @@
     (test:eq a [1 2 3])
     (test:eq b [4 5 6])
 
-    (test:case "forAll, any" {
+    (test:case "forAll, any, none" {
         (test:expect (list:forAll a (fun (e) (< e 4))))
         (test:expect (not (list:forAll a (fun (e) (< e 2)))))
         (test:expect (list:forAll [] (fun (e) (= e 2))))
+
         (test:expect (list:any a (fun (e) (< e 2))))
         (test:expect (not (list:any a (fun (e) (> e 8)))))
-        (test:expect (not (list:any [] (fun (e) (= e 8))))) })
+        (test:expect (not (list:any [] (fun (e) (= e 8)))))
+
+        (test:expect (list:none a (fun (e) (> e 10))))
+        (test:expect (not (list:none a (fun (e) (< e 2)))))
+        (test:expect (list:none [] (fun (e) (= e 8))))
+        (test:expect (list:none [4 5 6] (fun (e) (< e 3)))) })
 
     (test:case "countIf" {
         (test:eq (list:countIf a (fun (e) (= 0 (mod e 2)))) 1)
