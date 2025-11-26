@@ -44,6 +44,11 @@
         (test:eq (dict:get d foo) "yes")
         (test:eq (dict:get d closure) foo) })
 
+    (test:case "getOrElse" {
+        (test:eq (dict:getOrElse d "key" 5) "value")
+        (test:eq (dict:getOrElse d "non-existing-key" 5) 5)
+        (test:eq (dict:getOrElse empty "key" 0) 0) })
+
     (test:case "contains" {
         (test:expect (dict:contains d "key"))
         (test:expect (dict:contains d 5))
