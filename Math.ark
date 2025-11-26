@@ -194,6 +194,16 @@
     _a
     _b)))
 
+# @brief Increment a given number by 1
+# @param _x number
+# @author https://github.com/SuperFola
+(let increment (fun (_x) (+ 1 _x)))
+
+# @brief Decrement a given number by 1
+# @param _x number
+# @author https://github.com/SuperFola
+(let decrement (fun (_x) (- _x 1)))
+
 # @brief Get a number to a given power
 # @details Note that it's defined as exp(a * ln(x)), thus won't work for negative numbers
 # @param _x the number to pow
