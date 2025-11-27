@@ -342,6 +342,57 @@
     (set _index (+ 1 _index)) })
   _output }))
 
+# _dir = 1 -> left to right, -1 -> right to left
+(let __strip_in_dir (fun (_str _dir)
+  (if (emptyOrWhitespace? _str)
+    ""
+    {
+      (mut _i (if (= 1 _dir) 0 (- (len _str) 1)))
+      (mut _whitespaces (or (= (@ _str _i) " ") (= (@ _str _i) "\t") (= (@ _str _i) "\n") (= (@ _str _i) "\r")))
+
+      (while (and _whitespaces (< _i (len _str)) (>= _i 0)) {
+        (let _c (@ _str _i))
+        (if (and (!= _c " ") (!= _c "\t") (!= _c "\n") (!= _c "\r"))
+          (set _whitespaces false)
+          (set _i (+ _dir _i))) })
+
+      (if (= 1 _dir)
+        (slice _str _i (len _str))
+        (slice _str 0 (+ 1 _i))) })))
+
+# @brief Removes whitespaces from the left side of a string
+# @details The original string isn't modified
+# @param _str string to sanitize
+# =begin
+# (import std.String)
+# (print (string:lstrip " a b c"))  # "a b c"
+# =end
+# @author https://github.com/SuperFola
+(let lstrip (fun (_str)
+  (__strip_in_dir _str 1)))
+
+# @brief Removes whitespaces from the right side of a string
+# @details The original string isn't modified
+# @param _str string to sanitize
+# =begin
+# (import std.String)
+# (print (string:rstrip " a b c     "))  # " a b c"
+# =end
+# @author https://github.com/SuperFola
+(let rstrip (fun (_str)
+  (__strip_in_dir _str -1)))
+
+# @brief Removes whitespaces from both sides of a string
+# @details The original string isn't modified
+# @param _str string to sanitize
+# =begin
+# (import std.String)
+# (print (string:strip " a b c    "))  # "a b c"
+# =end
+# @author https://github.com/SuperFola
+(let strip (fun (_str)
+  (rstrip (lstrip _str))))
+
 # @brief Strip the margin of a multiline string
 # @param _str multiline string, margin is (space)*(|)
 # =begin
