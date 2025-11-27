@@ -500,8 +500,7 @@
 # (print (list:none [4 5 6] f))  # true
 # =end
 # @author https://github.com/SuperFola
-(let none (fun (_L _f)
-  (not (any _L _f))))
+(let none (fun (_L _f) (not (any _L _f))))
 
 # @brief Count the number of elements in a list that match a condition
 # @param _L the list to work on
