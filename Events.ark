@@ -2,7 +2,7 @@
 
 # @brief Allows to register events listeners and emit events
 # =begin
-# (let em (manager:make))
+# (let em (events:manager:make))
 # (em.on "myType" (fun (value) (print "This is a callback")))
 # (em.emit "myType")  # => prints "This is a callback" thanks to the registered listener
 # =end

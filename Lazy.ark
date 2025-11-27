@@ -4,7 +4,7 @@
 # (let complex_stuff (fun () {
 #     # do complex work in the function
 #     42 }))
-# (let lazy (eval complex_stuff))
+# (let lazy (lazy:eval complex_stuff))
 # (print (lazy))
 # =end
 # @author https://github.com/SuperFola
