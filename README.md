@@ -18,4 +18,4 @@ python -m arkdoc <version> . --html out
 cd out && python -m http.server
 ```
 
-Then, open your webbrowser to go to `http://localhost:8000/`.
+Then, open your browser to go to `http://localhost:8000/`.

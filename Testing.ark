@@ -237,7 +237,7 @@
 # @param _body body of the test, a begin block
 # =begin
 # (test:suite name {
-#     (_suite.toggle_display_cases_success true)  # default: false, when true, display all the cases names on success and failures
+#     (testing:_suite.toggle_display_cases_success true)  # default: false, when true, display all the cases names on success and failures
 #     (test:eq 6 (my_function 1 2 3))
 #     (test:eq 128 (* 8 16))})
 # =end

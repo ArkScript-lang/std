@@ -2,8 +2,8 @@
 # @details If the list is empty, returns nil
 # @param _L list of elements
 # =begin
-# (import std.Random)
-# (print (random:choice [1 2 3]))
+# (let data [1 2 3 4 5])
+# (print (random:choice data))
 # =end
 # @author https://github.com/SuperFola
 (let choice (fun (_L)
@@ -17,7 +17,6 @@
 # @details The original list is not modified
 # @param _L list to shuffle
 # =begin
-# (import std.Random)
 # (let data [1 2 3 4 5])
 # (let randomized (random:shuffle data))
 # =end
