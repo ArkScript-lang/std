@@ -61,6 +61,25 @@
     (test:eq "hello" (string:join ["hello"] ";"))
     (test:eq "" (string:join [] ";;"))
 
+    (test:eq "abc" (string:lstrip "abc"))
+    (test:eq "abc" (string:lstrip " \t\n\rabc"))
+    (test:eq "abc \t\n\r" (string:lstrip "abc \t\n\r"))
+    (test:eq "" (string:lstrip ""))
+    (test:eq "" (string:lstrip " \t\n\r"))
+
+    (test:eq "abc" (string:rstrip "abc"))
+    (test:eq "abc" (string:rstrip "abc \t\n\r"))
+    (test:eq " \t\n\rabc" (string:rstrip " \t\n\rabc"))
+    (test:eq "" (string:rstrip ""))
+    (test:eq "" (string:rstrip " \t\n\r"))
+
+    (test:eq "abc" (string:strip "\t\n\r abc \t\n\r"))
+    (test:eq "" (string:strip "\t\n\r "))
+    (test:eq "abc" (string:strip "abc"))
+    (test:eq "" (string:strip ""))
+    (test:eq "abc" (string:strip " \t\n\rabc"))
+    (test:eq "abc" (string:strip "abc \t\n\r"))
+
     (test:eq "" (string:stripMargin ""))
     (test:eq "   hello" (string:stripMargin "   hello"))
     (test:eq "hello" (string:stripMargin "   |hello"))
