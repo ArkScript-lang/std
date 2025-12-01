@@ -203,8 +203,8 @@
     (testing:_report_success)) })
 
 # @brief Compare two values that should be equal and generate a test case
-# @param _expected expected value
 # @param _expr computed value to test
+# @param _expected expected value
 # @param _desc an optional description (string) for the test
 # =begin
 # (test:suite name {
@@ -212,21 +212,21 @@
 #     (test:eq 5 (foo) "foo should return 5")})
 # =end
 # @author https://github.com/SuperFola
-(macro test:eq (_expected _expr ..._desc) {
+(macro test:eq (_expr _expected ..._desc) {
   (if (= ($as-is _expected) ($as-is _expr))
     (testing:_report_success)
     (testing:_report_error ($as-is _expected) ($as-is _expr) ($repr _expected) ($repr _expr) _desc)) })
 
 # @brief Compare two values that should **not** be equal and generate a test case
-# @param _unexpected the value we don't want
 # @param _value tested value
+# @param _unexpected the value we don't want
 # @param _desc an optional description (string) for the test
 # =begin
 # (test:suite name {
 #     (test:neq 0 (my_function 1 2 3))})
 # =end
 # @author https://github.com/SuperFola
-(macro test:neq (_unexpected _value ..._desc) {
+(macro test:neq (_value _unexpected ..._desc) {
   (if (!= ($as-is _unexpected) ($as-is _value))
     (testing:_report_success)
     (testing:_report_error ($as-is _unexpected) ($as-is _value) ($repr _unexpected) ($repr _value) _desc)) })
