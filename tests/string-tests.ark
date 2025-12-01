@@ -9,6 +9,17 @@
     (test:eq (builtin__string:removeAt "abcd" 1) (string:removeAt "abcd" 1))
     (test:eq (builtin__string:setAt "abcd" 1 "z") (string:setAt "abcd" 1 "z"))
 
+    (test:expect (string:contains? "hello, world" "h"))
+    (test:expect (string:contains? "hello, world" "hello"))
+    (test:expect (string:contains? "hello, world" "world"))
+    (test:expect (string:contains? "hello, world" ","))
+    (test:expect (not (string:contains? "hello, world" "!")))
+
+    (test:expect (string:containsAnyOf? "Hello, world" ["world" "one"]))
+    (test:expect (string:containsAnyOf? "Hello, world" string:punctuation))
+    (test:expect (not (string:containsAnyOf? "Hello, world" [])))
+    (test:expect (not (string:containsAnyOf? "Hello, world" ["nice" "cool"])))
+
     (test:eq (string:emptyOrWhitespace? "") true)
     (test:eq (string:emptyOrWhitespace? " ") true)
     (test:eq (string:emptyOrWhitespace? "   ") true)

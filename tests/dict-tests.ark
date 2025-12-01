@@ -50,15 +50,15 @@
         (test:eq (dict:getOrElse empty "key" 0) 0) })
 
     (test:case "contains" {
-        (test:expect (dict:contains d "key"))
-        (test:expect (dict:contains d 5))
-        (test:expect (dict:contains d true))
-        (test:expect (dict:contains d false))
-        (test:expect (dict:contains d foo))
-        (test:expect (dict:contains d closure))
-        (test:expect (not (dict:contains d -1)))
-        (test:expect (not (dict:contains d "hello")))
-        (test:expect (not (dict:contains d d))) })
+        (test:expect (dict:contains? d "key"))
+        (test:expect (dict:contains? d 5))
+        (test:expect (dict:contains? d true))
+        (test:expect (dict:contains? d false))
+        (test:expect (dict:contains? d foo))
+        (test:expect (dict:contains? d closure))
+        (test:expect (not (dict:contains? d -1)))
+        (test:expect (not (dict:contains? d "hello")))
+        (test:expect (not (dict:contains? d d))) })
 
     (test:case "size" {
         (test:eq (dict:size d) 6)
@@ -153,9 +153,9 @@
     (test:case "filter!" {
         (dict:filter! d2 filter_odd)
         (test:eq (dict:size d2) 2)
-        (test:expect (dict:contains d2 "a"))
-        (test:expect (not (dict:contains d2 "b")))
-        (test:expect (dict:contains d2 "c"))
+        (test:expect (dict:contains? d2 "a"))
+        (test:expect (not (dict:contains? d2 "b")))
+        (test:expect (dict:contains? d2 "c"))
         (test:eq (dict:get d2 "a") 1)
         (test:eq (dict:get d2 "c") 3)
 
