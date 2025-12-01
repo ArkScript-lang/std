@@ -22,6 +22,27 @@
 # @author https://github.com/SuperFola
 (let add (fun (_D _key _value) (builtin__dict:add _D _key _value)))
 
+# @brief Checks if the dictionary has a given key
+# @param _D dictionary
+# =begin
+# (let data (dict "key" "value"))
+# (print (dict:contains? data "key"))  # true
+# (print (dict:contains? data "test"))  # false
+# =end
+# @author https://github.com/SuperFola
+(let contains? (fun (_D _key) (builtin__dict:contains _D _key)))
+
+# @brief Checks if the dictionary has a given key
+# @details **Deprecated, use `contains?`**
+# @param _D dictionary
+# =begin
+# (let data (dict "key" "value"))
+# (print (dict:contains data "key"))  # true
+# (print (dict:contains data "test"))  # false
+# =end
+# @author https://github.com/SuperFola
+(let contains contains?)
+
 # @brief Get a value from a given dictionary using a key, or a default value if it doesn't exist
 # @param _D dictionary
 # @param _key key to get
@@ -52,16 +73,6 @@
   (if (contains _D _key)
     (add _D _key (_f (get _D _key)))
     (add _D _key _default))))
-
-# @brief Checks if the dictionary has a given key
-# @param _D dictionary
-# =begin
-# (let data (dict "key" "value"))
-# (print (dict:contains data "key"))  # true
-# (print (dict:contains data "test"))  # false
-# =end
-# @author https://github.com/SuperFola
-(let contains (fun (_D _key) (builtin__dict:contains _D _key)))
 
 # @brief Deletes an entry from a dictionary, given a key
 # @details The dictionary is modified in place

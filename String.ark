@@ -100,6 +100,31 @@
 # @author https://github.com/SuperFola
 (let setAt (fun (_str _index _x) (builtin__string:setAt _str _index _x)))
 
+# @brief Check if a string contains a word
+# @param _str String where the lookup occurs
+# @param _word Word to look up for
+# @author https://github.com/SuperFola
+(let contains? (fun (_str _word)
+  (!= -1 (find _str _word))))
+
+# @brief Check if a string contains a word for a set of words
+# @param _str String where the lookup occurs
+# @param _set_of_words Words to look for
+# =begin
+# (let words ["hello" "world"])
+# (print (containsAnyOf "Hello, world! I like almonds" words))  # true
+# (print (containsAnyOf "Hello, world!" string:punctuation))  # true
+# =end
+# @author https://github.com/SuperFola
+(let containsAnyOf? (fun (_str _set_of_words) {
+  (mut _contains false)
+  (mut _i 0)
+  (while (and (not _contains) (< _i (len _set_of_words))) {
+    (if (!= -1 (find _str (@ _set_of_words _i)))
+      (set _contains true))
+    (set _i (+ 1 _i)) })
+  _contains }))
+
 # @brief Check if a string is empty or only consists of whitespaces
 # @param _str the string to check
 # =begin
@@ -254,7 +279,7 @@
 # @details Returns a list of strings. Example :
 # =begin
 # (let message "hello world, I like boats")
-# (let splitted (string:split message " "))
+# (let as-list (string:split message " "))
 # =end
 # @author https://github.com/Natendrtfm
 (let split (fun (_string _separator) {
