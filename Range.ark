@@ -61,7 +61,7 @@
 # =begin
 # (import std.Math)
 # (let obj (range:range 1 10))
-# (print (range:filter obj math:even))  # [2 4 6 8]
+# (print (range:filter obj math:even?))  # [2 4 6 8]
 # =end
 # @author https://github.com/SuperFola
 (let filter (fun (_range _fun) {

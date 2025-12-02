@@ -1,5 +1,5 @@
 (import std.Range:*)
-(import std.Math :even)
+(import std.Math :even?)
 (import std.Testing)
 
 (test:suite range {
@@ -17,7 +17,7 @@
     (range:forEach r (fun (e)
         (test:neq e nil)))
 
-    (let filtered (range:filter r math:even))
+    (let filtered (range:filter r math:even?))
     (test:eq filtered [0 2 4 6 8])
 
     (let mapped (range:map r (fun (e) (* e e))))
