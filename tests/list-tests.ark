@@ -1,5 +1,5 @@
 (import std.List)
-(import std.Math :even)
+(import std.Math :even?)
 (import std.Testing)
 
 (let a [1 2 3])
@@ -69,7 +69,7 @@
         (test:eq (list:dropWhile a (fun (c) (< c 5))) []) })
 
     (test:case "filter" {
-        (test:eq (list:filter a math:even) [2])
+        (test:eq (list:filter a math:even?) [2])
         (test:eq (list:filter a (fun (e) (> e 100))) [])
         (test:eq (list:filter [] (fun (e) (> e 100))) []) })
 
