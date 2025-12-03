@@ -18,6 +18,17 @@
 # @author https://github.com/SuperFola
 (let find (fun (_L _x) (builtin__list:find _L _x)))
 
+# @brief Search if an element is in a List
+# @details The original list is not modified
+# @param list the List to search in
+# @param value the element to search
+# =begin
+# (list:contains? [1 2 3] 1)  # true
+# (list:contains? [1 2 3] 0)  # false
+# =end
+# @author https://github.com/SuperFola
+(let contains? (fun (_L _x) (!= -1 (find _L _x))))
+
 # @brief Get a slice from a List
 # @details The original list is not modified
 # @param list the list to reverse

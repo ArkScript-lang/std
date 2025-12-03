@@ -23,6 +23,11 @@
 
         (test:eq (builtin__list:setAt a 0 5) (list:setAt a 0 5)) })
 
+    (test:case "contains?" {
+        (test:expect (list:contains? [1 2 3] 1))
+        (test:expect (not (list:contains? [1 2 3] "1")))
+        (test:expect (list:contains? ["1" "2" "3"] "1")) })
+
     (test:case "size" {
         (test:eq (list:size []) 0)
         (test:eq (list:size [1 2 3]) 3) })
