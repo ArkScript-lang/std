@@ -12,7 +12,7 @@
 # (print (obj.asList))  # [1 2 3 4 5 6 7 8 9]
 # =end
 # @author https://github.com/SuperFola
-(let range (fun (i _b) {
+(let range (fun ((mut i) _b) {
   (let asList (fun () {
     # i and _b are going to be captured by the caller
     (mut _output [])
