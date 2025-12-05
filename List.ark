@@ -246,6 +246,29 @@
     (set _index (+ 1 _index)) })
   _output }))
 
+# @brief Sort elements in a list using a function to compute the key
+# @details Use the quicksort algorithm, the original list is not modified.
+# @param _L list to sort
+# @param _key function called on each element of the list, returning a unique key to use for sorting
+# =begin
+# (let ranges [[3 5] [10 14] [16 20] [12 18]])
+# (let sorted (sortByKey ranges (fun (e) (head e))))
+# (print sorted)  # [[3 5] [10 14] [12 18] [16 20]]
+# =end
+# @author https://github.com/SuperFola
+(let sortByKey (fun (_L _key) {
+  (if (empty? _L)
+    []
+    {
+      (let _pivot_val (head _L))
+      (let _pivot (_key _pivot_val))
+
+      (mut _less (sortByKey (filter (tail _L) (fun (e) (< (_key e) _pivot))) _key))
+      (let _more (sortByKey (filter (tail _L) (fun (e) (>= (_key e) _pivot))) _key))
+
+      (concat! _less [_pivot_val] _more)
+      _less }) }))
+
 # @brief Apply a given function to each element of a list
 # @param _L the list to work on
 # @param _f the function to apply to each element

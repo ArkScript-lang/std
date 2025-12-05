@@ -5,6 +5,7 @@
 (let a [1 2 3])
 (let b [4 5 6])
 (let zipped [[1 5] [2 6] [3 7] [4 8]])
+(let reversedZipped [[4 8] [3 7] [2 6] [1 5]])
 
 (test:suite list {
     (test:case "builtins" {
@@ -77,6 +78,11 @@
         (test:eq (list:filter a math:even?) [2])
         (test:eq (list:filter a (fun (e) (> e 100))) [])
         (test:eq (list:filter [] (fun (e) (> e 100))) []) })
+
+    (test:case "sortByKey" {
+        (test:eq (list:sortByKey reversedZipped (fun (e) (head e))) zipped)
+        (test:eq (list:sortByKey [9 8 1] (fun (e) e)) [1 8 9])
+        (test:eq (list:sortByKey [] (fun (e) e)) []) })
 
     (test:case "map" {
         (test:eq (list:map b (fun (e) (* e e))) [16 25 36])
