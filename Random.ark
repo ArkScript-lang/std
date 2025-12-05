@@ -21,7 +21,7 @@
 # (let randomized (random:shuffle data))
 # =end
 # @author https://github.com/SuperFola
-(let shuffle (fun (_L) {
+(let shuffle (fun ((mut _L)) {
   (mut _output [])
 
   (while (not (empty? _L)) {

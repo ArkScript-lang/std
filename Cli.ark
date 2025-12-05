@@ -108,7 +108,7 @@
 
   (+ headers synopsis "\n\nOPTIONS\n" options) }))
 
-(let _match_group (fun (parsed args param) {
+(let _match_group (fun (parsed (mut args) param) {
   (mut missing_param false)
   (mut i 0)
   (while (and (not missing_param) (< i (len param.children))) {
