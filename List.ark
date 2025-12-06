@@ -674,3 +674,29 @@
     (if (>= (+ _i _size) (len _L))
       (set _i (len _L)))
     (set _i (+ 1 _i)) }) }))
+
+# @brief Transpose a list of lists or list of strings
+# @details The original list is not modified. Each element should have the same length
+# @param _L list of lists/strings to transpose
+# =begin
+# (let data [[1 2 3] [4 5 6] [7 8 9])
+# (print (list:transpose data))  # [[1 4 7] [2 5 8] [3 6 9]]
+# =end
+# @author https://github.com/SuperFola
+(let transpose (fun (_L) {
+  (mut _output [])
+  (mut _i 0)
+  (let _width (len (head _L)))
+  (let _height (len _L))
+
+  (while (< _i _width) {
+    (mut _column [])
+    (mut _k 0)
+    (while (< _k _height) {
+      (append! _column (@@ _L _k _i))
+      (set _k (+ _k 1)) })
+
+    (append! _output _column)
+    (set _i (+ 1 _i)) })
+  _output }))
+
