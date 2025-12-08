@@ -429,6 +429,16 @@
 
   _result }))
 
-(let asPercentage (fun (_a _b)
+# @brief Compute a percentage of how much b is better than a
+# @details Returns a positive number when _a is bigger than _b, negative otherwise
+# @param _a the base
+# @param _b new measure to compare
+# =begin
+# (let base 55)  # something takes 55ms to run
+# (let new 43)  # now it takes 43ms
+# (print (math:improvementRatioPercentage base new))  # 27.9069767442
+# # 'base' is 27%~ slower than 'new'
+# =end
+# @author https://github.com/SuperFola
+(let improvementRatioPercentage (fun (_a _b)
   (* 100 (- (/ _a _b) 1))))
-
