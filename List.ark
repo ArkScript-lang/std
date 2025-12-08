@@ -88,7 +88,7 @@
 #     (print element) }))
 # =end
 # @author https://github.com/SuperFola
-(let forEach (fun (_L _func) {
+(let forEach (fun ((ref _L) _func) {
   (mut _index 0)
 
   (while (< _index (len _L)) {
@@ -106,7 +106,7 @@
 #     (print idx " " element) }))
 # =end
 # @author https://github.com/SuperFola
-(let enumerate (fun (_L _func) {
+(let enumerate (fun ((ref _L) _func) {
   (mut _index 0)
 
   (while (< _index (len _L)) {
@@ -122,7 +122,7 @@
 # (let p (list:product collection))  # => 120
 # =end
 # @author https://github.com/Unactived
-(let product (fun (_L) {
+(let product (fun ((ref _L)) {
   (mut _index 0)
   (mut _output 1)
 
@@ -139,7 +139,7 @@
 # (let p (list:sum collection))  # => 20
 # =end
 # @author https://github.com/Unactived
-(let sum (fun (_L) {
+(let sum (fun ((ref _L)) {
   (mut _index 0)
   (mut _output 0)
 
@@ -155,7 +155,7 @@
 # (let value (list:min [0 1 2 3 5 8]))  # 0
 # =end
 # @author https://github.com/SuperFola
-(let min (fun (_L) {
+(let min (fun ((ref _L)) {
   (mut _index 0)
   (mut _output nil)
 
@@ -172,7 +172,7 @@
 # (let value (list:max [0 1 2 3 5 8]))  # 8
 # =end
 # @author https://github.com/SuperFola
-(let max (fun (_L) {
+(let max (fun ((ref _L)) {
   (mut _index 0)
   (mut _output nil)
 
@@ -193,7 +193,7 @@
 # (print (list:drop cool-stuff 4))  # [5 6 7 8 9]
 # =end
 # @author https://github.com/rstefanic, https://github.com/SuperFola
-(let drop (fun (_L _n)
+(let drop (fun ((ref _L) _n)
   (if (< _n (/ (len _L) 2))
     (if (> _n 0)
       (drop (tail _L) (- _n 1))
@@ -216,7 +216,7 @@
 # (print (list:dropWhile cool-stuff (fun (a) (< a 4))))  # [4 5 6 7 8 9]
 # =end
 # @author https://github.com/SuperFola
-(let dropWhile (fun (_L _f) {
+(let dropWhile (fun ((ref _L) _f) {
   (mut _index 0)
   (mut _output [])
 
@@ -237,7 +237,7 @@
 # (print (list:filter [1 2 3 4 5 6 7 8 9] math:even?))  # [2 4 6 8]
 # =end
 # @author https://github.com/rstefanic
-(let filter (fun (_L _f) {
+(let filter (fun ((ref _L) _f) {
   (mut _index 0)
   (mut _output [])
 
@@ -256,15 +256,16 @@
 # (print sorted)  # [[3 5] [10 14] [12 18] [16 20]]
 # =end
 # @author https://github.com/SuperFola
-(let sortByKey (fun (_L _key) {
+(let sortByKey (fun ((ref _L) _key) {
   (if (empty? _L)
     []
     {
       (let _pivot_val (head _L))
       (let _pivot (_key _pivot_val))
 
-      (mut _less (sortByKey (filter (tail _L) (fun (e) (< (_key e) _pivot))) _key))
-      (let _more (sortByKey (filter (tail _L) (fun (e) (>= (_key e) _pivot))) _key))
+      (mut _rest (tail _L))
+      (mut _less (sortByKey (filter _rest (fun (e) (< (_key e) _pivot))) _key))
+      (let _more (sortByKey (filter _rest (fun (e) (>= (_key e) _pivot))) _key))
 
       (concat! _less [_pivot_val] _more)
       _less }) }))
@@ -277,7 +278,7 @@
 # (print (list:map [1 2 3 4 5 6 7 8 9] (fun (e) (* e e))))  # [1 4 9 25 36 49 64 81]
 # =end
 # @author https://github.com/rstefanic
-(let map (fun (_L _f) {
+(let map (fun ((ref _L) _f) {
   (mut _index 0)
   (mut _output [])
 
@@ -295,7 +296,7 @@
 # (print (list:reduce cool (fun (a b) (+ a b))))  # 45
 # =end
 # @author https://github.com/Unactived
-(let reduce (fun (_L _f) {
+(let reduce (fun ((ref _L) _f) {
   (mut _index 1)
   (mut _output (@ _L 0))
 
@@ -312,7 +313,7 @@
 # (print (list:flatten cool))  # [1 2 3 4 5 6 7 8 9]
 # =end
 # @author https://github.com/SuperFola
-(let flatten (fun (_L) {
+(let flatten (fun ((ref _L)) {
   (mut _index 0)
   (mut _output [])
 
@@ -334,7 +335,7 @@
 # (print (list:flatMap cool (fun (a) [a a])))  # [1 1 2 2 3 3 4 4]
 # =end
 # @author https://github.com/SuperFola
-(let flatMap (fun (_L _f) {
+(let flatMap (fun ((ref _L) _f) {
   (mut _index 0)
   (mut _output [])
 
@@ -355,7 +356,7 @@
 # (print (list:take [1 2 3 4 5 6 7 8 9] 4))  # [1 2 3 4]
 # =end
 # @author https://github.com/rstefanic
-(let take (fun (_L (mut _n)) {
+(let take (fun ((ref _L) (mut _n)) {
   (mut _index 0)
   (mut _output [])
   (set _n (math:min _n (len _L)))
@@ -373,7 +374,7 @@
 # (print (list:takeWhile [1 2 3 4 5 6 7 8 9 10] (fun (a) (< a 4))))  # [1 2 3]
 # =end
 # @author https://github.com/rakista112
-(let takeWhile (fun (_L _f) {
+(let takeWhile (fun ((ref _L) _f) {
   (mut _index 0)
   (mut _output [])
   (mut _continue true)
@@ -395,7 +396,7 @@
 # (print (list:partition a (fun (c i) (= 0 (mod c 2)))))  # [[2] [1 3]]
 # =end
 # @author https://github.com/rakista112
-(let partition (fun (_L _f) {
+(let partition (fun ((ref _L) _f) {
   (mut _index 0)
   (mut _pass [])
   (mut _fail [])
@@ -417,7 +418,7 @@
 # (print (list:unzip zipped))  # [[1 2 3 4] [5 6 7 8]]
 # =end
 # @author https://github.com/Unactived
-(let unzip (fun (_L) {
+(let unzip (fun ((ref _L)) {
   (let _m (len _L))
   (mut _list1 [])
   (mut _list2 [])
@@ -440,7 +441,7 @@
 # (print (list:zip a b))  # [[1 5] [2 6] [3 7] [4 8]]
 # =end
 # @author https://github.com/Unactived
-(let zip (fun (_a _b) {
+(let zip (fun ((ref _a) (ref _b)) {
   (let _m (math:min (len _a) (len _b)))
   (mut _c [])
   (mut _index 0)
@@ -458,7 +459,7 @@
 # (print (list:zipWithIndex a))  # [[0 5] [1 6] [2 7] [3 8]]
 # =end
 # @author https://github.com/SuperFola
-(let zipWithIndex (fun (_L) {
+(let zipWithIndex (fun ((ref _L)) {
   (mut _output [])
   (mut _index 0)
   (let _len (len _L))
@@ -477,7 +478,7 @@
 # (print (list:foldLeft a 0 (fun (a b) (+ a b))))  # 10
 # =end
 # @author https://github.com/SuperFola
-(let foldLeft (fun (_L _init _f) {
+(let foldLeft (fun ((ref _L) _init _f) {
   (mut _index 0)
   (mut _val _init)
 
@@ -495,7 +496,7 @@
 # (print (list:forAll a f))  # true
 # =end
 # @author https://github.com/Gryfenfer97
-(let forAll (fun (_L _f) {
+(let forAll (fun ((ref _L) _f) {
   (mut _verified true)
   (mut _index 0)
 
@@ -514,7 +515,7 @@
 # (print (list:any a f))  # true
 # =end
 # @author https://github.com/Gryfenfer97
-(let any (fun (_L _f) {
+(let any (fun ((ref _L) _f) {
   (mut _verified false)
   (mut _index 0)
 
@@ -534,7 +535,7 @@
 # (print (list:none [4 5 6] f))  # true
 # =end
 # @author https://github.com/SuperFola
-(let none (fun (_L _f) (not (any _L _f))))
+(let none (fun ((ref _L) _f) (not (any _L _f))))
 
 # @brief Count the number of elements in a list that match a condition
 # @param _L the list to work on
@@ -545,7 +546,7 @@
 # (print (list:countIf lst is_even))  # 4
 # =end
 # @author https://github.com/SuperFola
-(let countIf (fun (_L _f) {
+(let countIf (fun ((ref _L) _f) {
   (let _inner (fun (lst cond acc)
     (if (not (empty? lst))
       (_inner
@@ -595,7 +596,7 @@
 # (print (list:chunkBy indices 3))  # [[1 2 3] [4 5 6] [7 8 9]]
 # =end
 # @author https://github.com/SuperFola
-(let chunkBy (fun (_L _length) {
+(let chunkBy (fun ((ref _L) _length) {
   (assert (> _length 0) "list:chunkBy needs a chunk size of at least 1")
   (mut _output [])
   (mut _current [])
@@ -627,7 +628,7 @@
 # (print (list:insert b 1 [1 2]))  # [0 1 2 9]
 # =end
 # @author https://github.com/SuperFola
-(let insert (fun (_L _index (mut _value)) {
+(let insert (fun ((ref _L) _index (mut _value)) {
   (let _size (len _L))
   (assert (<= _index _size) "list:insert can not insert a value outside the list")
 
@@ -658,7 +659,7 @@
 # # [3 4 5]
 # =end
 # @author https://github.com/SuperFola
-(let window (fun (_L _size _f) {
+(let window (fun ((ref _L) _size _f) {
   (assert (> _size 0) "window size must be at least 1")
 
   (mut _i 0)
