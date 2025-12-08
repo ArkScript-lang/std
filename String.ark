@@ -276,7 +276,7 @@
 # @brief Split a string in multiple substrings in a list, given a separator
 # @param _string the string to split
 # @param _separator the separator to use for splitting
-# @details Returns a list of strings. Example :
+# @details Returns a list of strings
 # =begin
 # (let message "hello world, I like boats")
 # (let as-list (string:split message " "))

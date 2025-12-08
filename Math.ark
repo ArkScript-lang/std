@@ -428,3 +428,7 @@
     (set _i (+ 1 _i)) })
 
   _result }))
+
+(let asPercentage (fun (_a _b)
+  (* 100 (- (/ _a _b) 1))))
+
