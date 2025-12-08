@@ -24,6 +24,14 @@
 # @author https://github.com/SuperFola
 (let readFile (fun (_name) (builtin__io:readFile _name)))
 
+# @brief Read the content from a file as a List of Strings
+# @param filename the path of the file to read
+# =begin
+# (io:readLinesFile "hello.json")
+# =end
+# @author https://github.com/SuperFola
+(let readLinesFile (fun (_name) (builtin__io:readLinesFile _name)))
+
 # @brief Check if a file exists, return True or False
 # @param filename the path of the file
 # =begin
