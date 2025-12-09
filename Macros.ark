@@ -116,3 +116,20 @@
 # =end
 # @author https://github.com/SuperFola
 (macro until (cond body) (while (not cond) body))
+
+# @brief Unpack a pair of two elements into two new variables
+# @param pair list of two elements to unpack
+# @param outx name of the variable which will hold the first element
+# @param outy name of the variable which will hold the second element
+# =begin
+# (let data [[1, 2], [2, 3], [5, 8]])
+# (list:forEach data
+#   (fun (pair) {
+#     (unpackPair pair x y)
+#     (print (+ x y)) }))
+# =end
+# @author https://github.com/SuperFola
+(macro unpackPair (pair outx outy) {
+  (let outx ($as-is (@ pair 0)))
+  (let outy ($as-is (@ pair 1))) })
+
