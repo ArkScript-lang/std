@@ -7,6 +7,7 @@
     (test:eq (builtin__string:find "aaacd" "a" 1) (string:findAfter "aaacd" "a" 1))
 
     (test:eq (builtin__string:removeAt "abcd" 1) (string:removeAt "abcd" 1))
+    (test:eq (builtin__string:removeAt "abcd" -1) "abc")
     (test:eq (builtin__string:setAt "abcd" 1 "z") (string:setAt "abcd" 1 "z"))
 
     (test:expect (string:contains? "hello, world" "h"))
