@@ -201,7 +201,24 @@
     (set _index (+ 1 _index)) })
   _output }))
 
-(import std.Math :min :max)
+(import std.Math :min :max :even)
+
+# @brief Find the median in a list of numbers
+# @param _L list of numbers
+# @details The original list is not modified.
+# =begin
+# (let value (list:median [0 1 2 3 5 8]))  # 2.5
+# =end
+# @author https://github.com/SuperFola
+(let median (fun ((ref _L)) {
+  (let _n (len _L))
+  (if (= 0 _n)
+    nil
+    {
+      (let _s (sort _L))
+      (if (math:even _n)
+        (/ (+ (@ _s (- (/ _n 2) 1)) (@ _s (/ _n 2))) 2)
+        (@ _s (/ _n 2))) }) }))
 
 # @brief Drop the first n elements of a list
 # @param _L the list to work on
