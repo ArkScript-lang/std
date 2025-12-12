@@ -64,6 +64,14 @@
         (test:eq (list:max b) 6)
         (test:eq (list:max [-1]) -1) })
 
+    (test:case "median" {
+        (test:eq (list:median []) nil)
+        (test:eq (list:median [1]) 1)
+        (test:eq (list:median [1 2]) 1.5)
+        (test:eq (list:median [2 1 3]) 2)
+        (test:eq (list:median [1 2 2 1]) 1.5)
+        (test:eq (list:median [1 2 2 1 3]) 2) })
+
     (test:case "drop" {
         (test:eq (list:drop a 0) [1 2 3])
         (test:eq (list:drop a 1) [2 3])
