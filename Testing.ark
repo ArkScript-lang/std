@@ -198,10 +198,16 @@
 # =end
 # @author https://github.com/SuperFola
 (macro test:expect (_cond ..._desc) {{
-  (mut _cond_res ($as-is _cond))
-  (if (!= true _cond_res)
-    (testing:_report_error true _cond_res "true" ($repr _cond) _desc)
+  (set testing:_cond_res ($as-is _cond))
+  (if (!= true testing:_cond_res)
+    (testing:_report_error true testing:_cond_res "true" ($repr _cond) _desc)
     (testing:_report_success)) }})
+
+(mut _cond_res nil)
+(mut _expr_res nil)
+(mut _expected_res nil)
+(mut _unexpected_res nil)
+(mut _value_res nil)
 
 # @brief Compare two values that should be equal and generate a test case
 # @param _expr computed value to test
@@ -214,11 +220,11 @@
 # =end
 # @author https://github.com/SuperFola
 (macro test:eq (_expr _expected ..._desc) {{
-  (mut _expected_res ($as-is _expected))
-  (mut _expr_res ($as-is _expr))
-  (if (= _expected_res _expr_res)
+  (set testing:_expected_res ($as-is _expected))
+  (set testing:_expr_res ($as-is _expr))
+  (if (= testing:_expected_res testing:_expr_res)
     (testing:_report_success)
-    (testing:_report_error _expected_res _expr_res ($repr _expected) ($repr _expr) _desc)) }})
+    (testing:_report_error testing:_expected_res testing:_expr_res ($repr _expected) ($repr _expr) _desc)) }})
 
 # @brief Compare two values that should **not** be equal and generate a test case
 # @param _value tested value
@@ -230,11 +236,11 @@
 # =end
 # @author https://github.com/SuperFola
 (macro test:neq (_value _unexpected ..._desc) {{
-  (mut _unexpected_res ($as-is _unexpected))
-  (mut _value_res ($as-is _value))
-  (if (!= _unexpected_res _value_res)
+  (set testing:_unexpected_res ($as-is _unexpected))
+  (set testing:_value_res ($as-is _value))
+  (if (!= testing:_unexpected_res testing:_value_res)
     (testing:_report_success)
-    (testing:_report_error _unexpected_res _value_res ($repr _unexpected) ($repr _value) _desc)) }})
+    (testing:_report_error testing:_unexpected_res testing:_value_res ($repr _unexpected) ($repr _value) _desc)) }})
 
 # @brief Generate the code for a test suite
 # @details Create two variables: _name-output (a list: [successes, failures]) and _name-status (boolean, true on success)
