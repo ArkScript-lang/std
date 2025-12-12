@@ -78,10 +78,16 @@
 # @author https://github.com/SuperFola
 (let setAt (fun (_L _index _x) (builtin__list:setAt _L _index _x)))
 
+(let _stopIteration_helper (fun () (assert false "This shouldn't be called")))
+
+# @brief Value to return from functions passed to forEach, enumerate, window... to stop iteration early
+# @author https://github.com/SuperFola
+(let stopIteration _stopIteration_helper)
+
 # @brief Iterate over a given list and run a given function on every element.
 # @param _L the list to iterate over
-# @param _func the function to call on each element
-# @details The original list is not modified.
+# @param _func the function to call on each element. It can return list:stopIteration to stop iteration early
+# @details The original list is not modified. Returns true if it returns early, false otherwise
 # =begin
 # (let collection [1 2 5 12])
 # (list:forEach collection (fun (element) {
@@ -90,16 +96,22 @@
 # @author https://github.com/SuperFola
 (let forEach (fun ((ref _L) _func) {
   (mut _index 0)
+  (mut _early false)
 
   (while (< _index (len _L)) {
     (mut _element (@ _L _index))
-    (_func _element)
-    (set _index (+ 1 _index)) }) }))
+    (if (= (_func _element) stopIteration)
+      {
+        (set _index (len _L))
+        (set _early true) })
+    (set _index (+ 1 _index)) })
+
+  _early }))
 
 # @brief Iterate over a given list and run a given function on every element, passing its index as well.
 # @param _L the list to iterate over
-# @param _func a binary function to call on each element with (index, element)
-# @details The original list is not modified.
+# @param _func a binary function to call on each element with (index, element). It can return list:stopIteration to stop iteration early
+# @details The original list is not modified. Returns true if it returns early, false otherwise
 # =begin
 # (let collection [1 2 5 12])
 # (list:enumerate collection (fun (idx element) {
@@ -108,11 +120,18 @@
 # @author https://github.com/SuperFola
 (let enumerate (fun ((ref _L) _func) {
   (mut _index 0)
+  (mut _early false)
 
   (while (< _index (len _L)) {
     (mut _element (@ _L _index))
-    (_func _index _element)
-    (set _index (+ 1 _index)) }) }))
+    (if (= (_func _index _element) stopIteration)
+      {
+        (set _index (len _L))
+        (set _early true)
+      })
+    (set _index (+ 1 _index)) })
+
+  _early }))
 
 # @brief Iterate over a given list and multiply all the elements with the others.
 # @param _L the list to iterate over
@@ -340,7 +359,7 @@
   (mut _output [])
 
   (while (< _index (len _L)) {
-    (mut _res (_f (@ _L _index)))
+    (let _res (_f (@ _L _index)))
 
     (if (= "List" (type _res))
       (concat! _output _res)
@@ -647,10 +666,10 @@
         (concat (head _parts) _value (@ _parts 1)) })) }))
 
 # @brief Create a sliding window of a given size on a list
-# @details The original list is not modified
+# @details The original list is not modified. Returns true if it returns early, false otherwise
 # @param _L list to iterate over
 # @param _size window size, must be at least 1
-# @param _f function to call with the window
+# @param _f function to call with the window. It can return list:stopIteration to stop iteration early
 # =begin
 # (let f (fun (lst) (print lst))
 # (list:window [1 2 3 4 5] 3 f)
@@ -662,6 +681,7 @@
 (let window (fun ((ref _L) _size _f) {
   (assert (> _size 0) "window size must be at least 1")
 
+  (mut _early false)
   (mut _i 0)
   (while (< _i (len _L)) {
     (mut _win [])
@@ -670,11 +690,17 @@
       (append! _win (@ _L (+ _i _j)))
       (set _j (+ 1 _j)) })
 
-    (_f _win)
+    (if (= (_f _win) stopIteration)
+      {
+        (set _i (len _L))
+        (set _early true)
+      })
 
     (if (>= (+ _i _size) (len _L))
       (set _i (len _L)))
-    (set _i (+ 1 _i)) }) }))
+    (set _i (+ 1 _i)) })
+
+  _early }))
 
 # @brief Transpose a list of lists or list of strings
 # @details The original list is not modified. Each element should have the same length

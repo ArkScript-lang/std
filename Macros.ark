@@ -122,7 +122,7 @@
 # @param outx name of the variable which will hold the first element
 # @param outy name of the variable which will hold the second element
 # =begin
-# (let data [[1, 2], [2, 3], [5, 8]])
+# (let data [[1 2] [2 3] [5 8]])
 # (list:forEach data
 #   (fun (pair) {
 #     (unpackPair pair x y)
