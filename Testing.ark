@@ -198,8 +198,9 @@
 # =end
 # @author https://github.com/SuperFola
 (macro test:expect (_cond ..._desc) {
-  (if (!= true ($as-is _cond))
-    (testing:_report_error true ($as-is _cond) "true" ($repr _cond) _desc)
+  (mut _cond_res ($as-is _cond))
+  (if (!= true _cond_res)
+    (testing:_report_error true _cond_res "true" ($repr _cond) _desc)
     (testing:_report_success)) })
 
 # @brief Compare two values that should be equal and generate a test case
@@ -213,9 +214,11 @@
 # =end
 # @author https://github.com/SuperFola
 (macro test:eq (_expr _expected ..._desc) {
-  (if (= ($as-is _expected) ($as-is _expr))
+  (mut _expected_res ($as-is _expected))
+  (mut _expr_res ($as-is _expr))
+  (if (= _expected_res _expr_res)
     (testing:_report_success)
-    (testing:_report_error ($as-is _expected) ($as-is _expr) ($repr _expected) ($repr _expr) _desc)) })
+    (testing:_report_error _expected_res _expr_res ($repr _expected) ($repr _expr) _desc)) })
 
 # @brief Compare two values that should **not** be equal and generate a test case
 # @param _value tested value
@@ -227,9 +230,11 @@
 # =end
 # @author https://github.com/SuperFola
 (macro test:neq (_value _unexpected ..._desc) {
-  (if (!= ($as-is _unexpected) ($as-is _value))
+  (mut _unexpected_res ($as-is _unexpected))
+  (mut _value_res ($as-is _value))
+  (if (!= _unexpected_res _value_res)
     (testing:_report_success)
-    (testing:_report_error ($as-is _unexpected) ($as-is _value) ($repr _unexpected) ($repr _value) _desc)) })
+    (testing:_report_error _unexpected_res _value_res ($repr _unexpected) ($repr _value) _desc)) })
 
 # @brief Generate the code for a test suite
 # @details Create two variables: _name-output (a list: [successes, failures]) and _name-status (boolean, true on success)
