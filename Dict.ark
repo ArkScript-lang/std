@@ -24,6 +24,7 @@
 
 # @brief Checks if the dictionary has a given key
 # @param _D dictionary
+# @param _key key to check for its presence in the dict
 # =begin
 # (let data (dict "key" "value"))
 # (print (dict:contains? data "key"))  # true
