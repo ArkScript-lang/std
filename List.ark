@@ -727,3 +727,21 @@
     (set _i (+ 1 _i)) })
   _output }))
 
+# @brief Get the unique values in a given list
+# @details The original list is not modified.
+# @param _L list to extract unique values from
+# =begin
+# (let data [1 1 2 3 4 3 4 5])
+# (print (list:unique data))  # [1 2 3 4 5]
+# =end
+# @author https://github.com/SuperFola
+(let unique (fun ((ref _L)) {
+  (mut _vals (dict))
+  (mut _i 0)
+  (while (< _i (len _L)) {
+    (let v (@ _L _i))
+    (if (not (builtin__dict:contains _vals v))
+      (builtin__dict:add _vals v _i))
+    (set _i (+ 1 _i)) })
+
+  (builtin__dict:keys _vals) }))
