@@ -37,7 +37,7 @@ jobs:
       - uses: robinraju/release-downloader@v1.9
         with:
           latest: true
-          preRelease: true
+          preRelease: false
           repository: ArkScript-lang/Ark
           fileName: ${{ env.ARTIFACT_NAME }}
 
