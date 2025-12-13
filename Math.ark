@@ -324,8 +324,7 @@
 # =end
 # @author https://github.com/SuperFola
 (let complex (fun (real imag)
-  (fun (&real
-    &imag) ())))
+  (fun (&real &imag) ())))
 
 # @brief Compute the addition of two complex number
 # @param _c0 the first complex number
@@ -440,5 +439,4 @@
 # # 'base' is 27%~ slower than 'new'
 # =end
 # @author https://github.com/SuperFola
-(let improvementRatioPercentage (fun (_a _b)
-  (* 100 (- (/ _a _b) 1))))
+(let improvementRatioPercentage (fun (_a _b) (* 100 (- (/ _a _b) 1))))

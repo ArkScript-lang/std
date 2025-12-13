@@ -28,14 +28,11 @@
   (let reset (fun ()
     (set i _a)))
 
-  (fun (&i
-    &_a
-    &_b
-    &asList
-    &reset) {
-    (if (< i _b) {
-      (set i (+ i 1))
-      (- i 1) }) }) }))
+  (fun (&i &_a &_b &asList &reset) {
+    (if (< i _b)
+      {
+        (set i (+ i 1))
+        (- i 1) }) }) }))
 
 # @brief Run a function on each element of the range
 # @param _r the range object

@@ -4,7 +4,8 @@
 # @author https://github.com/SuperFola
 (macro measureOnce (tag code) {
   (mut _start (time))
-  { code }
+  {
+    code }
   (print (format "{} took {:.4} ms" tag (* 1000 (- (time) _start)))) })
 
 (import std.List)
@@ -29,7 +30,8 @@
   (mut _data [])
   (while (< _i times) {
     (let _start (time))
-    { ($as-is code) }
+    {
+      ($as-is code) }
     (let _end (time))
     (append! _data (* 1000 (- _end _start)))
     (set _i (+ 1 _i)) })
@@ -41,4 +43,9 @@
   (print
     (format
       "{}, {} times\n  ↪︎ range: [{:.3} - {:.3}] ms\n  ↪︎ mean: {:.3}ms\n  ↪︎ median: {:.3}ms"
-      ($repr code) times _min _max _mean _median)) })
+      ($repr code)
+      times
+      _min
+      _max
+      _mean
+      _median)) })

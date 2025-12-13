@@ -1,7 +1,6 @@
 # @brief Upper and lowercase ASCII letters
 # @author https://github.com/SuperFola
-(let asciiLetters
-  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+(let asciiLetters "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 # @brief Lowercase ASCII letters
 # @author https://github.com/SuperFola
@@ -25,13 +24,11 @@
 
 # @brief All printable characters
 # @author https://github.com/SuperFola
-(let printable
-  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r")
+(let printable "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r")
 
 # @brief Punctuation characters
 # @author https://github.com/SuperFola
-(let punctuation
-  "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")
+(let punctuation "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")
 
 # @brief Whitespace characters
 # @author https://github.com/SuperFola
@@ -104,8 +101,7 @@
 # @param _str String where the lookup occurs
 # @param _word Word to look up for
 # @author https://github.com/SuperFola
-(let contains? (fun (_str _word)
-  (!= -1 (find _str _word))))
+(let contains? (fun (_str _word) (!= -1 (find _str _word))))
 
 # @brief Check if a string contains a word for a set of words
 # @param _str String where the lookup occurs
@@ -141,9 +137,10 @@
       (let _len (len _str))
       (while (< _i _len) {
         (let _c (@ _str _i))
-        (if (and (!= _c " ") (!= _c "\t") (!= _c "\n") (!= _c "\r")) {
-          (set _all_spaces false)
-          (set _i _len) })
+        (if (and (!= _c " ") (!= _c "\t") (!= _c "\n") (!= _c "\r"))
+          {
+            (set _all_spaces false)
+            (set _i _len) })
         (set _i (+ 1 _i)) })
       _all_spaces })))
 
@@ -258,7 +255,9 @@
   (if (= _length 0)
     ""
     {
-      (assert (and (>= _startingIndex 0) (< _startingIndex (len _string))) "slice start index must be in range [0, string length[")
+      (assert
+        (and (>= _startingIndex 0) (< _startingIndex (len _string)))
+        "slice start index must be in range [0, string length[")
 
       (mut _returnedString "")
       (mut _index _startingIndex)

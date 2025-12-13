@@ -127,8 +127,8 @@
     (if (= (_func _index _element) stopIteration)
       {
         (set _index (len _L))
-        (set _early true)
-      })
+        (set _early true) })
+
     (set _index (+ 1 _index)) })
 
   _early }))
@@ -641,9 +641,10 @@
   (mut _i 0)
   (while (< _i _source_len) {
     (append! _current (@ _L _i))
-    (if (= (len _current) _length) {
-      (append! _output _current)
-      (set _current []) })
+    (if (= (len _current) _length)
+      {
+        (append! _output _current)
+        (set _current []) })
     (set _i (+ 1 _i)) })
 
   (if (not (empty? _current)) (append! _output _current))
@@ -710,8 +711,7 @@
     (if (= (_f _win) stopIteration)
       {
         (set _i (len _L))
-        (set _early true)
-      })
+        (set _early true) })
 
     (if (>= (+ _i _size) (len _L))
       (set _i (len _L)))
@@ -757,8 +757,7 @@
   (mut _i 0)
   (while (< _i (len _L)) {
     (let v (@ _L _i))
-    (if (not (builtin__dict:contains _vals v))
-      (builtin__dict:add _vals v _i))
+    (if (not (builtin__dict:contains _vals v)) (builtin__dict:add _vals v _i))
     (set _i (+ 1 _i)) })
 
   (builtin__dict:keys _vals) }))
