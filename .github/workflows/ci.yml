@@ -61,3 +61,16 @@ jobs:
           ./arkscript --version
           mkdir -p std && mv *.ark std/
           ./arkscript --lib ./ tests/all.ark
+
+  update-docs:
+    runs-on: ubuntu-24.04
+    name: "Update website documentation"
+    needs: [ build ]
+
+    steps:
+      - name: Create repository dispatch event
+        if: github.ref == 'refs/heads/master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.READONLY_GITHUB_TOKEN }}
+        run: |
+          gh api repos/ArkScript-lang/website/dispatches --raw-field event_type=my_update_docs
