@@ -2,11 +2,20 @@
 (import std.Testing)
 
 (let invert (fun (x)
-    (if (= x 0)
-        (throw "cannot divide by zero")
-        (return (/ 1 x)))))
+  (if (= x 0)
+    (throw "cannot divide by zero")
+    (return (/ 1 x)))))
+
+(let identity (fun (x) x))
 
 (test:suite exceptions {
+  (test:case "invert 0 throws" {
     (try (invert 0)
-        (fun (inverted) (test:expect false))
-        (fun (err) (test:expect (= err "cannot divide by zero"))))})
+      (fun (inverted) (test:expect false "shouldn't be able to divide by 0"))
+      (fun (err) (test:eq err "cannot divide by zero"))) })
+
+  (test:case "throw" {
+    (test:eq ((throw "message") identity identity) "message") })
+
+  (test:case "return" {
+    (test:eq ((return 1) identity identity) 1) }) })

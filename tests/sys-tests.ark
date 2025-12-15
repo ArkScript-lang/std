@@ -2,14 +2,14 @@
 (import std.Testing)
 
 (test:suite sys {
-    (test:case "platform" {
-        (test:eq builtin__sys:platform sys:platform)
-        (test:expect (!= "" sys:platform)) })
+  (test:case "platform" {
+    (test:eq builtin__sys:platform sys:platform)
+    (test:expect (!= "" sys:platform)) })
 
-    (test:case "args" {
-        (test:eq builtin__sys:args sys:args)
-        (test:eq (type sys:args) "List") })
+  (test:case "args" {
+    (test:eq builtin__sys:args sys:args)
+    (test:eq (type sys:args) "List") })
 
-    (test:case "programName" {
-        (test:eq builtin__sys:programName sys:programName)
-        (test:eq (type sys:programName) "String") })})
+  (test:case "programName" {
+    (test:eq builtin__sys:programName sys:programName)
+    (test:eq (type sys:programName) "String") })})

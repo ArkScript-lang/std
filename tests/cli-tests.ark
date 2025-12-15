@@ -3,34 +3,35 @@
 (import std.Testing)
 
 (test:suite cli {
-    (let command_line
-        (cli:oneOf [
-            (cli:flag "--help" "Display an help message")
-            (cli:flag "--repl" "Start the REPL")
-            (cli:group [
-                (cli:flag "-c" "Compile a given file")
-                (cli:value "file" "Path to the file to run" nil) ])]))
+  (let command_line
+    (cli:oneOf [
+      (cli:flag "--help" "Display an help message")
+      (cli:flag "--repl" "Start the REPL")
+      (cli:group [
+        (cli:flag "-c" "Compile a given file")
+        (cli:value "file" "Path to the file to run" nil) ])]))
 
-    (test:eq (cli:help "miniark" "A mini ArkScript CLI" command_line)
-             (stripMargin "DESCRIPTION
-                          |\tA mini ArkScript CLI
-                          |
-                          |SYNOPSIS
-                          |\tminiark [--help]
-                          |\tminiark [--repl]
-                          |\tminiark [-c] <file>
-                          |
-                          |OPTIONS
-                          |\t--help                       Display an help message
-                          |\t--repl                       Start the REPL
-                          |\t-c                           Compile a given file
-                          |\t<file>                       Path to the file to run"))
+  (test:eq
+    (cli:help "miniark" "A mini ArkScript CLI" command_line)
+    (stripMargin "DESCRIPTION
+                 |\tA mini ArkScript CLI
+                 |
+                 |SYNOPSIS
+                 |\tminiark [--help]
+                 |\tminiark [--repl]
+                 |\tminiark [-c] <file>
+                 |
+                 |OPTIONS
+                 |\t--help                       Display an help message
+                 |\t--repl                       Start the REPL
+                 |\t-c                           Compile a given file
+                 |\t<file>                       Path to the file to run"))
 
-    (test:eq (cli:parseArgs [] command_line) (dict "--help" false "--repl" false "-c" false))
-    (test:eq (cli:parseArgs ["a" "b" "c" "d"] command_line) (dict "--help" false "--repl" false "-c" false))
-    (test:eq (cli:parseArgs ["asdf" "-c" "path.ark"] command_line) (dict "--help" false "--repl" false "-c" false))
+  (test:eq (cli:parseArgs [] command_line) (dict "--help" false "--repl" false "-c" false))
+  (test:eq (cli:parseArgs ["a" "b" "c" "d"] command_line) (dict "--help" false "--repl" false "-c" false))
+  (test:eq (cli:parseArgs ["asdf" "-c" "path.ark"] command_line) (dict "--help" false "--repl" false "-c" false))
 
-    (test:eq (cli:parseArgs ["--help" "--repl"] command_line) (dict "--help" true))
-    (test:eq (cli:parseArgs ["--repl"] command_line) (dict "--help" false "--repl" true))
-    (test:eq (cli:parseArgs ["-c" "path.ark"] command_line) (dict "--help" false "--repl" false "-c" true "file" "path.ark")) })
+  (test:eq (cli:parseArgs ["--help" "--repl"] command_line) (dict "--help" true))
+  (test:eq (cli:parseArgs ["--repl"] command_line) (dict "--help" false "--repl" true))
+  (test:eq (cli:parseArgs ["-c" "path.ark"] command_line) (dict "--help" false "--repl" false "-c" true "file" "path.ark")) })
 

@@ -2,25 +2,30 @@
 (import std.Testing)
 
 (test:suite string {
+  (test:case "find" {
     (test:eq (builtin__string:find "abcd" "a") (string:find "abcd" "a"))
     (test:eq (builtin__string:find "abcd" "e") (string:find "abcd" "e"))
-    (test:eq (builtin__string:find "aaacd" "a" 1) (string:findAfter "aaacd" "a" 1))
+    (test:eq (builtin__string:find "aaacd" "a" 1) (string:findAfter "aaacd" "a" 1)) })
 
+  (test:case "removeAt, setAt" {
     (test:eq (builtin__string:removeAt "abcd" 1) (string:removeAt "abcd" 1))
     (test:eq (builtin__string:removeAt "abcd" -1) "abc")
-    (test:eq (builtin__string:setAt "abcd" 1 "z") (string:setAt "abcd" 1 "z"))
+    (test:eq (builtin__string:setAt "abcd" 1 "z") (string:setAt "abcd" 1 "z")) })
 
+  (test:case "contains?" {
     (test:expect (string:contains? "hello, world" "h"))
     (test:expect (string:contains? "hello, world" "hello"))
     (test:expect (string:contains? "hello, world" "world"))
     (test:expect (string:contains? "hello, world" ","))
-    (test:expect (not (string:contains? "hello, world" "!")))
+    (test:expect (not (string:contains? "hello, world" "!"))) })
 
+  (test:case "containsAnyOf?" {
     (test:expect (string:containsAnyOf? "Hello, world" ["world" "one"]))
     (test:expect (string:containsAnyOf? "Hello, world" string:punctuation))
     (test:expect (not (string:containsAnyOf? "Hello, world" [])))
-    (test:expect (not (string:containsAnyOf? "Hello, world" ["nice" "cool"])))
+    (test:expect (not (string:containsAnyOf? "Hello, world" ["nice" "cool"]))) })
 
+  (test:case "emptyOrWhitespace?" {
     (test:eq (string:emptyOrWhitespace? "") true)
     (test:eq (string:emptyOrWhitespace? " ") true)
     (test:eq (string:emptyOrWhitespace? "   ") true)
@@ -31,80 +36,95 @@
     (test:eq (string:emptyOrWhitespace? " \t a") false)
     (test:eq (string:emptyOrWhitespace? "a") false)
     (test:eq (string:emptyOrWhitespace? "a ") false)
-    (test:eq (string:emptyOrWhitespace? " a ") false)
+    (test:eq (string:emptyOrWhitespace? " a ") false) })
 
+  (test:case "ord, chr" {
     (test:eq (builtin__string:ord "a") (string:ord "a"))
-    (test:eq (builtin__string:chr 65) (string:chr 65))
+    (test:eq (builtin__string:chr 65) (string:chr 65)) })
 
-    (test:eq 3 (string:count "the three truths" "th"))
-    (test:eq 0 (string:count "the three truths" "thz"))
-    (test:eq 2 (string:count "ababababab" "abab"))
+  (test:case "count" {
+    (test:eq (string:count "the three truths" "th") 3)
+    (test:eq (string:count "the three truths" "thz") 0)
+    (test:eq (string:count "ababababab" "abab") 2) })
 
-    (test:eq "abcdefghijklmnopqrstuvwxyz" (string:toLower "ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
-    (test:eq "abcdefghijklmnopqrstuvwxyz" (string:toLower "abcdefghijklmnopqrstuvwxyz"))
-    (test:eq "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (string:toUpper "abcdefghijklmnopqrstuvwxyz"))
-    (test:eq "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (string:toUpper "ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
+  (test:case "toLower, toUpper" {
+    (test:eq (string:toLower "ABCDEFGHIJKLMNOPQRSTUVWXYZ") "abcdefghijklmnopqrstuvwxyz")
+    (test:eq (string:toLower "abcdefghijklmnopqrstuvwxyz") "abcdefghijklmnopqrstuvwxyz")
+    (test:eq (string:toUpper "abcdefghijklmnopqrstuvwxyz") "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    (test:eq (string:toUpper "ABCDEFGHIJKLMNOPQRSTUVWXYZ") "ABCDEFGHIJKLMNOPQRSTUVWXYZ") })
 
-    (test:eq "hello world" (string:reverse "dlrow olleh"))
-    (test:eq "" (string:reverse ""))
-    (test:eq "a" (string:reverse "a"))
+  (test:case "reverse" {
+    (test:eq (string:reverse "dlrow olleh") "hello world" )
+    (test:eq (string:reverse "") "")
+    (test:eq (string:reverse "a") "a") })
 
-    (test:eq "" (string:repeat "" 5))
-    (test:eq "a" (string:repeat "a" 1))
-    (test:eq "aaaaa" (string:repeat "a" 5))
+  (test:case "repeat" {
+    (test:eq (string:repeat "" 5) "")
+    (test:eq (string:repeat "a" 1) "a")
+    (test:eq (string:repeat "a" 5) "aaaaa") })
 
-    (test:eq "hello" (string:slice "hello world" 0 5))
-    (test:eq "hello world" (string:slice "hello world" 0 100))
-    (test:eq "h" (string:slice "hello world" 0 1))
-    (test:eq "ello" (string:slice "hello world" 1 4))
+  (test:case "slice" {
+    (test:eq (string:slice "hello world" 0 5) "hello")
+    (test:eq (string:slice "hello world" 0 100) "hello world")
+    (test:eq (string:slice "hello world" 0 1) "h")
+    (test:eq (string:slice "hello world" 1 4) "ello") })
 
-    (test:eq ["a" "bc" "def"] (string:split "a,bc,def" ","))
-    (test:eq ["a" "bc" "def"] (string:split "a-;-bc-;-def" "-;-"))
-    (test:eq ["abcdef"] (string:split "abcdef" ";;;;"))
-    (test:eq ["a"] (string:split "a" ","))
-    (test:eq [""] (string:split "" ","))
+  (test:case "split" {
+    (test:eq (string:split "a,bc,def" ",") ["a" "bc" "def"])
+    (test:eq (string:split "a-;-bc-;-def" "-;-") ["a" "bc" "def"])
+    (test:eq (string:split "abcdef" ";;;;") ["abcdef"])
+    (test:eq (string:split "a" ",") ["a"])
+    (test:eq (string:split "" ",") [""]) })
 
-    (test:eq "hello world" (string:replace "hello world" "coucou" "not"))
-    (test:eq "not world" (string:replace "hello world" "hello" "not"))
-    (test:eq "not not " (string:replace "hello hello " "hello" "not"))
-    (test:eq "hello worldworldABC" (string:replace "hello worldABC" "ABC" "worldABC"))
+  (test:case "replace" {
+    (test:eq (string:replace "hello world" "coucou" "not") "hello world")
+    (test:eq (string:replace "hello world" "hello" "not") "not world")
+    (test:eq (string:replace "hello hello " "hello" "not") "not not ")
+    (test:eq (string:replace "hello worldABC" "ABC" "worldABC") "hello worldworldABC") })
 
-    (test:eq "hello;3.14;true;world" (string:join ["hello" 3.14 true "world"] ";"))
-    (test:eq "hello" (string:join ["hello"] ";"))
-    (test:eq "" (string:join [] ";;"))
+  (test:case "join" {
+  (test:eq (string:join ["hello" 3.14 true "world"] ";") "hello;3.14;true;world")
+  (test:eq (string:join ["hello"] ";") "hello")
+  (test:eq (string:join [] ";;") "") })
 
-    (test:eq "abc" (string:lstrip "abc"))
-    (test:eq "abc" (string:lstrip " \t\n\rabc"))
-    (test:eq "abc \t\n\r" (string:lstrip "abc \t\n\r"))
-    (test:eq "" (string:lstrip ""))
-    (test:eq "" (string:lstrip " \t\n\r"))
+  (test:case "lstrip" {
+    (test:eq (string:lstrip "abc") "abc")
+    (test:eq (string:lstrip " \t\n\rabc") "abc")
+    (test:eq (string:lstrip "abc \t\n\r") "abc \t\n\r")
+    (test:eq (string:lstrip "") "")
+    (test:eq (string:lstrip " \t\n\r") "") })
 
-    (test:eq "abc" (string:rstrip "abc"))
-    (test:eq "abc" (string:rstrip "abc \t\n\r"))
-    (test:eq " \t\n\rabc" (string:rstrip " \t\n\rabc"))
-    (test:eq "" (string:rstrip ""))
-    (test:eq "" (string:rstrip " \t\n\r"))
+  (test:case "rstrip" {
+    (test:eq (string:rstrip "abc") "abc")
+    (test:eq (string:rstrip "abc \t\n\r") "abc")
+    (test:eq (string:rstrip " \t\n\rabc") " \t\n\rabc")
+    (test:eq (string:rstrip "") "")
+    (test:eq (string:rstrip " \t\n\r") "") })
 
-    (test:eq "abc" (string:strip "\t\n\r abc \t\n\r"))
-    (test:eq "" (string:strip "\t\n\r "))
-    (test:eq "abc" (string:strip "abc"))
-    (test:eq "" (string:strip ""))
-    (test:eq "abc" (string:strip " \t\n\rabc"))
-    (test:eq "abc" (string:strip "abc \t\n\r"))
+  (test:case "strip" {
+    (test:eq (string:strip "\t\n\r abc \t\n\r") "abc")
+    (test:eq (string:strip "\t\n\r ") "")
+    (test:eq (string:strip "abc") "abc")
+    (test:eq (string:strip "") "")
+    (test:eq (string:strip " \t\n\rabc") "abc")
+    (test:eq (string:strip "abc \t\n\r") "abc") })
 
-    (test:eq "" (string:stripMargin ""))
-    (test:eq "   hello" (string:stripMargin "   hello"))
-    (test:eq "hello" (string:stripMargin "   |hello"))
-    (test:eq "hello\nabc"
+  (test:case "stripMargin" {
+    (test:eq (string:stripMargin "") "")
+    (test:eq (string:stripMargin "   hello") "   hello")
+    (test:eq (string:stripMargin "   |hello") "hello")
+    (test:eq
       (string:stripMargin "   |hello
-                              |abc"))
-    (test:eq "hello\nabc\nd"
-      (string:stripMargin "hello
-                          |abc
-                          |d"))
-    (test:eq "hello\n\nabc\nd"
-      (string:stripMargin "hello
-                          |
-                          |abc
-                          |d"))
-    })
+                              |abc")
+      "hello\nabc")
+  (test:eq
+    (string:stripMargin "hello
+                        |abc
+                        |d")
+    "hello\nabc\nd")
+  (test:eq
+    (string:stripMargin "hello
+                        |
+                        |abc
+                        |d")
+    "hello\n\nabc\nd") }) })

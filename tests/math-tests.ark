@@ -2,133 +2,169 @@
 (import std.Testing)
 
 (test:suite math {
-    (test:case "builtins" {
-        (test:eq (builtin__math:exp 5) (math:exp 5))
-        (test:eq (builtin__math:ln 5) (math:ln 5))
-        (test:eq (builtin__math:ceil 5) (math:ceil 5))
-        (test:eq (builtin__math:floor 5) (math:floor 5))
-        (test:eq (builtin__math:round 5) (math:round 5))
-        (test:eq (builtin__math:NaN? 5) (math:NaN? 5))
-        (test:expect (not (math:NaN? "hello")))
-        (test:eq (builtin__math:Inf? 5) (math:Inf? 5))
-        (test:expect (not (math:Inf? "hello")))
-        (test:eq builtin__math:pi math:pi)
-        (test:eq builtin__math:e math:e)
-        (test:eq builtin__math:tau math:tau)
-        (test:eq builtin__math:Inf math:Inf)
-        (test:expect (math:NaN? builtin__math:NaN))
-        (test:expect (builtin__math:NaN? math:NaN))
-        (test:eq (builtin__math:cos 5) (math:cos 5))
-        (test:eq (builtin__math:sin 5) (math:sin 5))
-        (test:eq (builtin__math:tan 5) (math:tan 5))
-        (test:eq (builtin__math:arccos 0.5) (math:arccos 0.5))
-        (test:eq (builtin__math:arcsin 0.5) (math:arcsin 0.5))
-        (test:eq (builtin__math:arctan 0.5) (math:arctan 0.5))
-        (test:eq (builtin__math:cosh 5) (math:cosh 5))
-        (test:eq (builtin__math:sinh 5) (math:sinh 5))
-        (test:eq (builtin__math:tanh 5) (math:tanh 5))
-        (test:eq (builtin__math:acosh 5) (math:acosh 5))
-        (test:eq (builtin__math:asinh 5) (math:asinh 5))
-        (test:eq (builtin__math:atanh 0.5) (math:atanh 0.5)) })
+  (test:case "builtins" {
+    (test:eq (builtin__math:exp 5) (math:exp 5))
+    (test:eq (builtin__math:ln 5) (math:ln 5))
+    (test:eq (builtin__math:ceil 5) (math:ceil 5))
+    (test:eq (builtin__math:floor 5) (math:floor 5))
+    (test:eq (builtin__math:round 5) (math:round 5))
+    (test:eq (builtin__math:NaN? 5) (math:NaN? 5))
+    (test:expect (not (math:NaN? "hello")))
+    (test:eq (builtin__math:Inf? 5) (math:Inf? 5))
+    (test:expect (not (math:Inf? "hello")))
+    (test:eq builtin__math:pi math:pi)
+    (test:eq builtin__math:e math:e)
+    (test:eq builtin__math:tau math:tau)
+    (test:eq builtin__math:Inf math:Inf)
+    (test:expect (math:NaN? builtin__math:NaN))
+    (test:expect (builtin__math:NaN? math:NaN))
+    (test:eq (builtin__math:cos 5) (math:cos 5))
+    (test:eq (builtin__math:sin 5) (math:sin 5))
+    (test:eq (builtin__math:tan 5) (math:tan 5))
+    (test:eq (builtin__math:arccos 0.5) (math:arccos 0.5))
+    (test:eq (builtin__math:arcsin 0.5) (math:arcsin 0.5))
+    (test:eq (builtin__math:arctan 0.5) (math:arctan 0.5))
+    (test:eq (builtin__math:cosh 5) (math:cosh 5))
+    (test:eq (builtin__math:sinh 5) (math:sinh 5))
+    (test:eq (builtin__math:tanh 5) (math:tanh 5))
+    (test:eq (builtin__math:acosh 5) (math:acosh 5))
+    (test:eq (builtin__math:asinh 5) (math:asinh 5))
+    (test:eq (builtin__math:atanh 0.5) (math:atanh 0.5)) })
 
+  (test:case "abs" {
     (test:eq (math:abs -1) 1)
-    (test:eq (math:abs 1) 1)
+    (test:eq (math:abs 0) 0)
+    (test:eq (math:abs math:Inf) math:Inf)
+    (test:eq (math:abs 1) 1) })
+
+  (test:case "even?" {
     (test:expect (math:even? 2))
+    (test:expect (math:even? 0))
     (test:expect (math:even? -2))
+    (test:expect (not (math:even 1)))
+    (test:expect (not (math:even -1))) })
+
+  (test:case "odd?" {
     (test:expect (math:odd? 1))
     (test:expect (math:odd? -1))
+    (test:expect (not (math:odd? 0)))
+    (test:expect (not (math:odd? 2)))
+    (test:expect (not (math:odd? -2))) })
+
+  (test:case "min" {
     (test:eq (math:min 1 2) 1)
     (test:eq (math:min 1 -2) -2)
-    (test:eq (math:min 0.5 0.2) 0.2)
+    (test:eq (math:min 0.5 0.2) 0.2) })
+
+  (test:case "max" {
     (test:eq (math:max 1 2) 2)
     (test:eq (math:max 1 -2) 1)
-    (test:eq (math:max 0.5 0.2) 0.5)
+    (test:eq (math:max 0.5 0.2) 0.5) })
+
+  (test:case "increment" {
     (test:eq (math:increment 1) 2)
     (test:eq (math:increment -1) 0)
+    (test:eq (math:increment 1.5) 2.5) })
+
+  (test:case "decrement" {
     (test:eq (math:decrement 0) -1)
     (test:eq (math:decrement 1) 0)
+    (test:eq (math:decrement 1.5) 0.5) })
+
+  (test:case "pow" {
     (test:eq (math:pow 2 2) 4)
-    (test:eq (math:pow 4 0.5) 2)
+    (test:eq (math:pow 4 0.5) 2) })
+
+  (test:case "clamp" {
     (test:eq (math:clamp 5 0 2) 2)
     (test:eq (math:clamp 5 0 10) 5)
     (test:eq (math:clamp -5 0 10) 0)
-    (test:eq (math:clamp 0 0 10) 0)
+    (test:eq (math:clamp 0 0 10) 0) })
+
+  (test:case "lerp" {
     (test:eq (math:lerp 0.22 15 132) 40.74)
     (test:eq (math:lerp 0 15 132) 15)
-    (test:eq (math:lerp 1 15 132) 132)
+    (test:eq (math:lerp 1 15 132) 132) })
 
+  (test:case "fibonacci" {
     (test:eq (math:fibo 31) 1346269)
-    (test:eq (math:fibo 32) 2178309)
+    (test:eq (math:fibo 32) 2178309) })
 
+  (test:case "divisors" {
     (test:eq (math:divs 6) [1 2 3 6])
     (test:eq (math:divs 2) [1 2])
-    (test:eq (math:divs 931) [1 7 19 49 133 931])
+    (test:eq (math:divs 931) [1 7 19 49 133 931]) })
+
+  (test:case "logarithms" {
     (test:eq (math:log 27 3) 3)
     (test:eq (math:log 1953125 5) 9)
     (test:eq (math:log2 128) 7)
     (test:eq (math:log2 2048) 11)
-    (test:eq (math:log10 1000) 3)
+    (test:eq (math:log10 1000) 3) })
+
+  (test:case "floordiv" {
     (test:eq (math:floordiv 14 6) 2)
     (test:eq (math:floordiv 14 14) 1)
-    (test:eq (math:floordiv 14 15) 0)
+    (test:eq (math:floordiv 14 15) 0) })
 
-    (test:case "complex" {
-        (let c0 (math:complex 1 2))
-        (let c1 (math:complex 0 -1))
-        (let c2 (math:complex -43 24))
-        (let c3 (math:complex -67 -89))
-        (let c4 (math:complex 4 12))
+  (test:case "complex" {
+    (let c0 (math:complex 1 2))
+    (let c1 (math:complex 0 -1))
+    (let c2 (math:complex -43 24))
+    (let c3 (math:complex -67 -89))
+    (let c4 (math:complex 4 12))
 
-        (mut c_add (math:complex-add c0 c1))
-        (test:eq c_add.real 1)
-        (test:eq c_add.imag 1)
+    (mut c_add (math:complex-add c0 c1))
+    (test:eq c_add.real 1)
+    (test:eq c_add.imag 1)
 
-        (set c_add (math:complex-add c2 c3))
-        (test:eq c_add.real -110)
-        (test:eq c_add.imag -65)
+    (set c_add (math:complex-add c2 c3))
+    (test:eq c_add.real -110)
+    (test:eq c_add.imag -65)
 
-        (mut c_sub (math:complex-sub c0 c1))
-        (test:eq c_sub.real 1)
-        (test:eq c_sub.imag 3)
+    (mut c_sub (math:complex-sub c0 c1))
+    (test:eq c_sub.real 1)
+    (test:eq c_sub.imag 3)
 
-        (set c_sub (math:complex-sub c2 c3))
-        (test:eq c_sub.real 24)
-        (test:eq c_sub.imag 113)
+    (set c_sub (math:complex-sub c2 c3))
+    (test:eq c_sub.real 24)
+    (test:eq c_sub.imag 113)
 
-        (mut c_mul (math:complex-mul c0 c1))
-        (test:eq c_mul.real 2)
-        (test:eq c_mul.imag -1)
+    (mut c_mul (math:complex-mul c0 c1))
+    (test:eq c_mul.real 2)
+    (test:eq c_mul.imag -1)
 
-        (set c_mul (math:complex-mul c2 c3))
-        (test:eq c_mul.real 5017)
-        (test:eq c_mul.imag 2219)
+    (set c_mul (math:complex-mul c2 c3))
+    (test:eq c_mul.real 5017)
+    (test:eq c_mul.imag 2219)
 
-        (mut c_div (math:complex-div c0 c1))
-        (test:eq c_div.real -2)
-        (test:eq c_div.imag 1)
+    (mut c_div (math:complex-div c0 c1))
+    (test:eq c_div.real -2)
+    (test:eq c_div.imag 1)
 
-        (set c_div (math:complex-div c4 c0))
-        (test:eq c_div.real 5.6)
-        (test:eq c_div.imag 0.8)
+    (set c_div (math:complex-div c4 c0))
+    (test:eq c_div.real 5.6)
+    (test:eq c_div.imag 0.8)
 
-        (mut c_conj (math:complex-conjugate c0))
-        (test:eq c_conj.real 1)
-        (test:eq c_conj.imag -2)
+    (mut c_conj (math:complex-conjugate c0))
+    (test:eq c_conj.real 1)
+    (test:eq c_conj.imag -2)
 
-        (set c_conj (math:complex-conjugate c3))
-        (test:eq c_conj.real -67)
-        (test:eq c_conj.imag 89)
+    (set c_conj (math:complex-conjugate c3))
+    (test:eq c_conj.real -67)
+    (test:eq c_conj.imag 89)
 
-        (test:expect (< (math:abs (- (math:complex-module c0) 2.236067977499789)) 0.0001))
-        (test:expect (< (math:abs (- (math:complex-module c1) 1)) 0.0001))
-        (test:expect (< (math:abs (- (math:complex-module c2) 49.244289008980523)) 0.0001))
-        (test:expect (< (math:abs (- (math:complex-module c3) 111.400179533068976)) 0.0001))
-        (test:expect (< (math:abs (- (math:complex-module c4) 12.649110640673517)) 0.0001)) })
+    (test:expect (< (math:abs (- (math:complex-module c0) 2.236067977499789)) 0.0001))
+    (test:expect (< (math:abs (- (math:complex-module c1) 1)) 0.0001))
+    (test:expect (< (math:abs (- (math:complex-module c2) 49.244289008980523)) 0.0001))
+    (test:expect (< (math:abs (- (math:complex-module c3) 111.400179533068976)) 0.0001))
+    (test:expect (< (math:abs (- (math:complex-module c4) 12.649110640673517)) 0.0001)) })
 
-    (test:case "vectors" {
-        (test:eq 32 (math:dotProduct [1 2 3] [4 5 6]))
-        (test:eq 3 (math:dotProduct [1 3 -5] [4 -2 -1])) })
+  (test:case "vectors" {
+    (test:eq 32 (math:dotProduct [1 2 3] [4 5 6]))
+    (test:eq 3 (math:dotProduct [1 3 -5] [4 -2 -1])) })
 
+  (test:case "improvementRatioPercentage" {
     (test:eq 0 (math:improvementRatioPercentage 12 12))
     (test:eq 100 (math:improvementRatioPercentage 24 12))
-    (test:eq 50 (math:improvementRatioPercentage 18 12)) })
+    (test:eq 50 (math:improvementRatioPercentage 18 12)) }) })

@@ -2,39 +2,51 @@
 (import std.Testing)
 
 (test:suite io {
-    (test:case "builtin__ files" {
-        (test:expect (not (builtin__io:fileExists? "test.txt")))
-        (builtin__io:writeFile "test.txt" "hello, world!")
-        (test:expect (builtin__io:fileExists? "test.txt"))
-        (test:eq (builtin__io:readFile "test.txt") "hello, world!")
-        (builtin__io:appendToFile "test.txt" "bis")
-        (test:eq (builtin__io:readFile "test.txt") "hello, world!bis")
-        (test:expect (> (len (builtin__io:listFiles "./")) 0))
-        (test:expect (not (builtin__io:dir? "test.txt")))
-        (test:expect (not (builtin__io:fileExists? "temp")))
-        (builtin__io:makeDir "temp")
-        (test:expect (builtin__io:fileExists? "temp"))
-        (test:expect (builtin__io:dir? "temp")) })
+  (test:case "builtin__ files" {
+    (test:expect (not (builtin__io:fileExists? "test.txt")))
 
-    # clean up
-    (builtin__io:removeFile "test.txt")
-    (builtin__io:removeFile "temp/")
+    (builtin__io:writeFile "test.txt" "hello, world!")
+    (test:expect (builtin__io:fileExists? "test.txt"))
 
-    (test:case "files" {
-        (test:expect (not (io:fileExists? "test.txt")))
-        (io:writeFile "test.txt" "hello, world!")
-        (test:expect (io:fileExists? "test.txt"))
-        (test:eq (io:readFile "test.txt") "hello, world!")
-        (test:eq (io:readLinesFile "test.txt") ["hello, world!"])
-        (io:appendToFile "test.txt" "bis")
-        (test:eq (io:readFile "test.txt") "hello, world!bis")
-        (test:expect (> (len (io:listFiles "./")) 0))
-        (test:expect (not (io:dir? "test.txt")))
-        (test:expect (not (io:fileExists? "temp")))
-        (io:makeDir "temp")
-        (test:expect (io:fileExists? "temp"))
-        (test:expect (io:dir? "temp")) })
+    (test:eq (builtin__io:readFile "test.txt") "hello, world!")
 
-    # clean up
-    (io:removeFile "test.txt")
-    (io:removeFile "temp/") })
+    (builtin__io:appendToFile "test.txt" "bis")
+    (test:eq (builtin__io:readFile "test.txt") "hello, world!bis")
+
+    (test:expect (> (len (builtin__io:listFiles "./")) 0))
+
+    (test:expect (not (builtin__io:dir? "test.txt")))
+    (test:expect (not (builtin__io:fileExists? "temp")))
+
+    (builtin__io:makeDir "temp")
+    (test:expect (builtin__io:fileExists? "temp"))
+    (test:expect (builtin__io:dir? "temp")) })
+
+  # clean up
+  (builtin__io:removeFile "test.txt")
+  (builtin__io:removeFile "temp/")
+
+  (test:case "files" {
+    (test:expect (not (io:fileExists? "test.txt")))
+
+    (io:writeFile "test.txt" "hello, world!")
+    (test:expect (io:fileExists? "test.txt"))
+
+    (test:eq (io:readFile "test.txt") "hello, world!")
+    (test:eq (io:readLinesFile "test.txt") ["hello, world!"])
+
+    (io:appendToFile "test.txt" "bis")
+    (test:eq (io:readFile "test.txt") "hello, world!bis")
+
+    (test:expect (> (len (io:listFiles "./")) 0))
+
+    (test:expect (not (io:dir? "test.txt")))
+    (test:expect (not (io:fileExists? "temp")))
+
+    (io:makeDir "temp")
+    (test:expect (io:fileExists? "temp"))
+    (test:expect (io:dir? "temp")) })
+
+  # clean up
+  (io:removeFile "test.txt")
+  (io:removeFile "temp/") })

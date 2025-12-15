@@ -4,27 +4,31 @@
 (let em (events:manager:make))
 
 (test:suite events {
-    # _check_valid tests
+  (test:case "_check_valid" {
     (test:expect (em._check_valid (fun () ())) "a function is valid")
-    (test:expect (not (em._check_valid 4)))
+    (test:expect (not (em._check_valid 4)) "a number is not valid") })
 
-    # on tests
+  (test:case "on event" {
     (em.on "myType" 4)
-    (test:eq [] em._listeners)
+    (test:eq em._listeners [])
+
     (em.on "myType" (fun (_) ()))
-    (test:neq [] em._listeners)
+    (test:neq em._listeners []) })
 
-    # emit tests
+  (test:case "emit" {
     (test:expect (not (em.emit "emitType")))
+
     (em.on "emitType" (fun (_) ()))
-    (test:expect (em.emit "emitType"))
+    (test:expect (em.emit "emitType")) })
 
-    # emitWith tests
+  (test:case "emitWith" {
     (test:expect (not (em.emitWith 1 "emitWithType")))
-    (em.on "emitWithType" (fun (_) ()))
-    (test:expect (em.emitWith 2 "emitWithType"))
 
-    # removeListenersOfType
+    (em.on "emitWithType" (fun (_) ()))
+    (test:expect (em.emitWith 2 "emitWithType")) })
+
+  (test:case "removeListenersOfType" {
     (test:expect (not (em.removeListenersOfType "removeType")))
+
     (em.on "removeType" (fun (_) ()))
-    (test:expect (em.removeListenersOfType "removeType"))})
+    (test:expect (em.removeListenersOfType "removeType")) }) })

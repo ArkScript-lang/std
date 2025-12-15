@@ -2,11 +2,11 @@
 (import std.Testing)
 
 (let f1 (fun (data)
-    (+ data "-f1")))
+  (+ data "-f1")))
 (let f2 (fun (data)
-    (+ data "-f2")))
+  (+ data "-f2")))
 (let f3 (fun (data)
-    (+ data "-f3")))
+  (+ data "-f3")))
 (let apply (fun (data f)
   (f data)))
 
@@ -16,34 +16,34 @@
 (let test_func3 (partial2 test_func 1 _ 3))
 
 (test:suite macros {
-    (test:case "->" {
-        (test:eq (-> "f0" f1) "f0-f1")
-        (test:eq (-> "f0" f1 f2 f3) "f0-f1-f2-f3")
-        (test:eq (-> "f0" f1 (apply _ f2) (apply _ f3)) "f0-f1-f2-f3") })
+  (test:case "->" {
+    (test:eq (-> "f0" f1) "f0-f1")
+    (test:eq (-> "f0" f1 f2 f3) "f0-f1-f2-f3")
+    (test:eq (-> "f0" f1 (apply _ f2) (apply _ f3)) "f0-f1-f2-f3") })
 
-    (test:case "partial & partial2" {
-        (test:eq (test_func1 2 3) 6)
-        (test:eq ($argcount test_func1) 2)
-        (test:eq ($argcount test_func2) 1)
-        (test:eq (test_func3 2) 6) })
+  (test:case "partial & partial2" {
+    (test:eq (test_func1 2 3) 6)
+    (test:eq ($argcount test_func1) 2)
+    (test:eq ($argcount test_func2) 1)
+    (test:eq (test_func3 2) 6) })
 
-    (test:case "unless" {
-        (unless false
-          (test:expect true "unless true worked")
-          (test:expect false "this shouldn't trigger"))
+  (test:case "unless" {
+    (unless false
+      (test:expect true "unless true worked")
+      (test:expect false "this shouldn't trigger"))
 
-        (unless (= "abracadabra" (f1 "f0"))
-          (test:expect true)
-          (test:expect false "this shouldn't trigger"))
+    (unless (= "abracadabra" (f1 "f0"))
+      (test:expect true)
+      (test:expect false "this shouldn't trigger"))
 
-        (unless true
-          (test:expect true "unless with one argument")) })
+    (unless true
+      (test:expect true "unless with one argument")) })
 
-    (test:case "until" {
-      (mut i 0)
-      (until (= i 10) {
-        (set i (+ 1 i)) })
-      (test:eq i 10)
+  (test:case "until" {
+    (mut i 0)
+    (until (= i 10) {
+      (set i (+ 1 i)) })
+    (test:eq i 10)
 
-      (until true
-        (test:expect false "this shouldn't trigger")) })})
+    (until true
+      (test:expect false "this shouldn't trigger")) })})

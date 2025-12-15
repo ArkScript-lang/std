@@ -6,11 +6,11 @@
 (let memo (lazy:eval calculate_the_sun_weight))
 
 (test:suite lazy {
-    (mut timer-0 (time))
-    (test:eq 42 (memo))
-    # test execution time, should be long because the function wasn't memoized yet
-    (test:expect (> (- (time) timer-0) 0.050))
+  (mut timer-0 (time))
+  (test:eq (memo) 42)
+  # test execution time, should be long because the function wasn't memoized yet
+  (test:expect (> (- (time) timer-0) 0.050))
 
-    (set timer-0 (time))
-    (test:eq 42 (memo))
-    (test:expect (< (- (time) timer-0) 0.050))})
+  (set timer-0 (time))
+  (test:eq (memo) 42)
+  (test:expect (< (- (time) timer-0) 0.050)) })
