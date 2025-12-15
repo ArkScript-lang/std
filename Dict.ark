@@ -88,6 +88,7 @@
 (let remove (fun (_D _key) (builtin__dict:remove _D _key)))
 
 # @brief Returns a list of the keys of a dictionary
+# @details Keys are returned in the order they were added, unless a removal occurred
 # @param _D dictionary
 # =begin
 # (let data (dict "key" "value" 5 12))
