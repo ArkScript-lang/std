@@ -71,6 +71,6 @@ jobs:
       - name: Create repository dispatch event
         if: github.ref == 'refs/heads/master'
         env:
-          GITHUB_TOKEN: ${{ secrets.READONLY_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.WEBSITE_PUSH_COMMIT_GITHUB_TOKEN }}
         run: |
           gh api repos/ArkScript-lang/website/dispatches --raw-field event_type=my_update_docs
