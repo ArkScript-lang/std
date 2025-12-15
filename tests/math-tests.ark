@@ -35,6 +35,7 @@
     (test:eq (math:abs -1) 1)
     (test:eq (math:abs 0) 0)
     (test:eq (math:abs math:Inf) math:Inf)
+    (test:eq (math:abs (math:negate math:Inf)) math:Inf)
     (test:eq (math:abs 1) 1) })
 
   (test:case "even?" {
@@ -70,6 +71,12 @@
     (test:eq (math:decrement 0) -1)
     (test:eq (math:decrement 1) 0)
     (test:eq (math:decrement 1.5) 0.5) })
+
+  (test:case "negate" {
+    (test:eq (math:negate 0) 0)
+    (test:eq (math:negate 1) -1)
+    (test:eq (math:negate -1) 1)
+    (test:eq (math:negate (math:negate 1)) 1) })
 
   (test:case "pow" {
     (test:eq (math:pow 2 2) 4)

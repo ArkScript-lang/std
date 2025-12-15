@@ -216,6 +216,11 @@
 # @author https://github.com/SuperFola
 (let decrement (fun (_x) (- _x 1)))
 
+# @brief Multiply a number by -1, turning positive numbers negative and negative numbers positive
+# #param _x number
+# @author https://github.com/SuperFola
+(let negate (fun (_x) (* -1 _x)))
+
 # @brief Get a number to a given power
 # @details Note that it's defined as exp(a * ln(x)), thus won't work for negative numbers
 # @param _x the number to pow
