@@ -127,4 +127,39 @@
                         |
                         |abc
                         |d")
-    "hello\n\nabc\nd") }) })
+    "hello\n\nabc\nd") })
+
+  (test:case "startsWith?" {
+    (test:expect (string:startsWith? "hello world" "hello"))
+    (test:expect (not (string:startsWith? "hello world" "Hello")))
+    (test:expect (not (string:startsWith? "hello world" "world")))
+    (test:expect (not (string:startsWith? "hello world" "ello")))
+    (test:expect (string:startsWith? "" "")) })
+
+  (test:case "endsWith?" {
+      (test:expect (string:endsWith? "hello world" "world"))
+      (test:expect (not (string:endsWith? "hello world" "World")))
+      (test:expect (not (string:endsWith? "hello world" "hello")))
+      (test:expect (not (string:endsWith? "hello world" "worl")))
+      (test:expect (string:endsWith? "" "")) })
+
+  (test:case "zfill" {
+    (test:eq (string:zfill "" 4) "0000")
+    (test:eq (string:zfill "1" 4) "0001")
+    (test:eq (string:zfill "11" 4) "0011")
+    (test:eq (string:zfill "111" 4) "0111")
+    (test:eq (string:zfill "1111" 4) "1111")
+    (test:eq (string:zfill "11111" 4) "11111") })
+
+  (test:case "center" {
+    (test:eq (string:center "ArkScript" 15) "   ArkScript   ")
+    (test:eq (string:center "ArkScript" 14) "  ArkScript   ")
+    (test:eq (string:center "ArkScript" 4) "ArkScript") })
+
+  (test:case "removePrefix, removeSuffix" {
+    (test:eq (string:removePrefix "TestCase" "Test") "Case")
+    (test:eq (string:removePrefix "BaseTestCase" "Test") "BaseTestCase")
+
+    (test:eq (string:removeSuffix "TestCase" "Case") "Test")
+    (test:eq (string:removeSuffix "BaseTestCase" "Test") "BaseTestCase") })
+})

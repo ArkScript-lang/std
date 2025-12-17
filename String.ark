@@ -431,3 +431,82 @@
       (set _output (+ _output "\n"))) })
 
   _output }))
+
+# @brief Check if a string starts with a given prefix
+# @param _str string
+# @param _prefix prefix to look for
+# =begin
+# (print (string:startsWith? "Hello, world" "Hell"))  # true
+# (print (string:startsWith? "Hello, world" ", world"))  # false
+# =end
+# @author https://github.com/SuperFola
+(let startsWith? (fun (_str _prefix)
+  (= 0 (find _str _prefix))))
+
+# @brief Check if a string ends with a given suffix
+# @param _str string
+# @param _suffix suffix to look for
+# =begin
+# (print (string:endsWith? "Hello, world" "ld"))  # true
+# (print (string:endsWith? "Hello, world" "worl"))  # false
+# =end
+# @author https://github.com/SuperFola
+(let endsWith? (fun (_str _suffix)
+  (= 0 (find (reverse _str) (reverse _suffix)))))
+
+# @brief Return a string filled with '0' digits to make a string of length _n
+# @param _str string to left fill
+# @param _n width of the final string
+# =begin
+# (print (string:zfill "42" 4))  # 0042
+# =end
+# @author https://github.com/SuperFola
+(let zfill (fun (_str _n)
+  (if (>= (len _str) _n)
+    _str
+    (+ (repeat "0" (- _n (len _str))) _str))))
+
+# @brief Return a centered string of length _len, using spaces as fill chars
+# @param _str string to center
+# @param _len width of the final string
+# =begin
+# (print (string:center "ArkScript" 15))  # "   ArkScript   "
+# =end
+# @author https://github.com/SuperFola
+(let center (fun (_str _len)
+  (if (>= (len _str) _len)
+    _str
+    {
+      (let _fill (- _len (len _str)))
+      (let _fill_left (if (= 1 (mod _fill 2)) (/ (- _fill 1) 2) (/ _fill 2)))
+      (let _fill_right (if (= 1 (mod _fill 2)) (/ (+ _fill 1) 2) (/ _fill 2)))
+      (+
+        (repeat " " _fill_left)
+        _str
+        (repeat " " _fill_right)) })))
+
+# @brief If a string starts with a given prefix, remove it
+# @param _str string
+# @param _prefix prefix to remove
+# =begin
+# (print (string:removePrefix "TestCase" "Test"))  # Case
+# (print (string:removePrefix "BaseTestCase" "Test"))  # BaseTestCase
+# =end
+# @author https://github.com/SuperFola
+(let removePrefix (fun (_str _prefix)
+  (if (startsWith? _str _prefix)
+    (slice _str (len _prefix) (len _str))
+    _str)))
+
+# @brief If a string ends with a given suffix, remove it
+# @param _str string
+# @param _suffix suffix to remove
+# =begin
+# (print (string:removeSuffix "TestCase" "Case"))  # Test
+# (print (string:removeSuffix "BaseTestCase" "Test"))  # BaseTestCase
+# =end
+# @author https://github.com/SuperFola
+(let removeSuffix (fun (_str _suffix)
+  (if (endsWith? _str _suffix)
+    (slice _str 0 (- (len _str) (len _suffix)))
+    _str)))
