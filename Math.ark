@@ -232,7 +232,10 @@
 # @details Square roots can't be taken for negative numbers for obvious reasons.
 # @param _x the number
 # @author https://github.com/SuperFola
-(let sqrt (fun (_x) (exp (* 0.5 (ln _x)))))
+(let sqrt (fun (_x)
+  (if (= 0 _x)
+    0
+    (exp (* 0.5 (ln _x))))))
 
 # @brief Run the fibonacci function on a number
 # @param n the number
@@ -311,7 +314,7 @@
 # @author https://github.com/Gryfenfer97
 (let log10 (fun (x) (log x 10)))
 
-# @brief Returns the quotient of the euclidian division of a and b
+# @brief Returns the quotient of the euclidean division of a and b
 # @param a the dividend
 # @param b the divisor
 # =begin
@@ -445,3 +448,138 @@
 # =end
 # @author https://github.com/SuperFola
 (let improvementRatioPercentage (fun (_a _b) (* 100 (- (/ _a _b) 1))))
+
+# @brief Copy the sign of a given number
+# @param _x number
+# =begin
+# (print (math:copySign 5))  # 1
+# (print (math:copySign -3))  # -1
+# =end
+# @author https://github.com/SuperFola
+(let copySign (fun (_x)
+  (if (< _x 0)
+    -1
+    1)))
+
+# @brief Convert an angle in degrees to radians
+# @param _degrees
+# =begin
+# (print (math:radians 90))   # pi/2
+# =end
+# @author https://github.com/SuperFola
+(let radians (fun (_degrees)
+  (/ (* _degrees pi) 180)))
+
+# @brief Convert an angle in radians to degrees
+# @param _radians
+# =begin
+# (print (math:radians (/ math:pi 2)))   # 90
+# =end
+# @author https://github.com/SuperFola
+(let degrees (fun (_radians)
+  (/ (* 180 _radians) pi)))
+
+# @brief Check if a given number is an integer
+# @param _x
+# =begin
+# (print (math:integer 1))   # true
+# (print (math:integer 1.000001))   # false
+# =end
+# @author https://github.com/SuperFola
+(let integer? (fun (_x)
+  (= (ceil _x) (floor _x))))
+
+# @brief Compute the factorial of a number
+# @param _n
+# =begin
+# (print (math:factorial 5))   # 120
+# =end
+# @author https://github.com/SuperFola
+(let factorial (fun ((mut _n))
+  (if (< _n 0)
+    0
+    {
+      (mut _res 1)
+      (while (> _n 0) {
+        (set _res (* _res _n))
+        (set _n (- _n 1)) })
+      _res })))
+
+# @brief Compute the binomial coefficient (n k)
+# @details Evaluates to n! / (k! * (n - k)!) when k <= n and evaluates to zero when k > n.
+# @param _n total number of items
+# @param _k number of items that will be picked
+# @author https://github.com/SuperFola
+(let binomialCoeff (fun (_n _k)
+  (if (<= _k _n)
+    (/
+      (factorial _n)
+      (*
+        (factorial _k)
+        (factorial (- _n _k))))
+    0)))
+
+# @brief Compute the number of ways to choose k items from n items without repetition and with order
+# @details Evaluates to n! / (n - k)! when k <= n and evaluates to zero when k > n.
+# @param _n total number of items
+# @param _k number of items to pick
+# @author https://github.com/SuperFola
+(let permutations (fun (_n _k)
+  (if (<= _k _n)
+    (/
+      (factorial _n)
+      (factorial (- _n _k)))
+    0)))
+
+# @brief Compare two real numbers and return true if the first one is near the second one (1e-7 precision)
+# @param _n first number
+# @param _target target number
+# @author https://github.com/SuperFola
+(let close? (fun (_n _target) {
+  # todo: make epsilon configurable
+  (let _epsilon 1e-7)
+  (and (< (- _target _epsilon) _n) (< _n (+ _target _epsilon))) }))
+
+# @brief Compute the euclidean distance between two vectors of the same size
+# @param _a first vector, eg [1 4]
+# @param _b second vector, eg [5 8]
+# =begin
+# (let v1 [1 2 3])
+# (let v2 [7 9 8])
+# (print (math:euclideanDistance v1 v2))  # 10.488088481701517
+# =end
+# @author https://github.com/SuperFola
+(let euclideanDistance (fun (_a _b) {
+  (assert (and (= (len _a) (len _b)) (!= 0 (len _a))) "Expected non-empty vectors to have the same size")
+
+  (mut _dist 0)
+  (mut _i 0)
+  (while (< _i (len _a)) {
+    (let _diff (- (@ _a _i) (@ _b _i)))
+    (set _dist (+ _dist (* _diff _diff)))
+    (set _i (+ _i 1)) })
+  (sqrt _dist) }))
+
+# @brief Compute the greatest common divisor of two numbers
+# @param _a number
+# @param _b number
+# =begin
+# (print (math:gcd 48 18))  # 6
+# =end
+# @author https://github.com/SuperFola
+(let gcd (fun (_a _b)
+  (if (= 0 _b)
+    _a
+    (gcd _b (mod _a _b)))))
+
+# @brief Compute the least common multiplier of two numbers
+# @param _a number
+# @param _b number
+# =begin
+# (print (math:lcm 4 6))  # 12
+# =end
+# @author https://github.com/SuperFola
+(let lcm (fun (_a _b)
+  (*
+    (abs _a)
+    (/ (abs _b) (gcd _a _b)))))
