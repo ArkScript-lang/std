@@ -487,6 +487,29 @@
     (set _index (+ 1 _index)) })
   _c }))
 
+# @brief Zip two lists into one, using a filler is one list is shorter: [1 2 3] and [5 6 7 8] will give [[1 5] [2 6] [3 7] [0 8]]
+# @param _a the first list to work on
+# @param _b the second list to work on
+# @param _filler value to use if there is not enough items in one of the lists
+# @details The original lists are not modified.
+# =begin
+# (let a [1 2 3])
+# (let b [5 6 7 8])
+# (print (list:zipLongest a b 0))  # [[1 5] [2 6] [3 7] [0 8]]
+# =end
+# @author https://github.com/SuperFola
+(let zipLongest (fun ((ref _a) (ref _b) _filler) {
+  (let _m (math:max (len _a) (len _b)))
+  (mut _c [])
+  (mut _index 0)
+
+  (while (< _index _m) {
+    (append! _c [
+      (if (< _index (len _a)) (@ _a _index) _filler)
+      (if (< _index (len _b)) (@ _b _index) _filler)])
+    (set _index (+ 1 _index)) })
+  _c }))
+
 # @brief Zip a list elements with their index. [5 6 7 8] will give [[0 5] [1 6] [2 7] [3 8]]
 # @param _L the list to iterate over
 # @details The original list is not modified.

@@ -133,6 +133,11 @@
     (test:eq (list:zip a b) [[1 4] [2 5] [3 6]])
     (test:eq (list:zip [] []) []) })
 
+  (test:case "zipLongest" {
+    (test:eq (list:zipLongest [1 2] b nil) [[1 4] [2 5] [nil 6]])
+    (test:eq (list:zipLongest a [4 5] nil) [[1 4] [2 5] [3 nil]])
+    (test:eq (list:zipLongest [] [] nil) []) })
+
   (test:case "foldLeft" {
     (test:eq (list:foldLeft [] 0 (fun (x y) (+ x y))) 0)
     (test:eq (list:foldLeft ["1" "2" "3"] "" (fun (x y) (+ x y))) "123")
