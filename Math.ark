@@ -462,7 +462,7 @@
     1)))
 
 # @brief Convert an angle in degrees to radians
-# @param _degrees
+# @param _degrees angle in degrees
 # =begin
 # (print (math:radians 90))   # pi/2
 # =end
@@ -471,7 +471,7 @@
   (/ (* _degrees pi) 180)))
 
 # @brief Convert an angle in radians to degrees
-# @param _radians
+# @param _radians angle in radians
 # =begin
 # (print (math:radians (/ math:pi 2)))   # 90
 # =end
@@ -480,7 +480,7 @@
   (/ (* 180 _radians) pi)))
 
 # @brief Check if a given number is an integer
-# @param _x
+# @param _x number
 # =begin
 # (print (math:integer 1))   # true
 # (print (math:integer 1.000001))   # false
@@ -490,7 +490,7 @@
   (= (ceil _x) (floor _x))))
 
 # @brief Compute the factorial of a number
-# @param _n
+# @param _n integer
 # =begin
 # (print (math:factorial 5))   # 120
 # =end
