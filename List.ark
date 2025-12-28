@@ -220,50 +220,6 @@
         (/ (+ (@ _s (- (/ _n 2) 1)) (@ _s (/ _n 2))) 2)
         (@ _s (/ _n 2))) }) }))
 
-# @brief Drop the first n elements of a list
-# @param _L the list to work on
-# @param _n the number of elements to drop
-# @details The original list is not modified.
-# =begin
-# (let cool-stuff [1 2 3 4 5 6 7 8 9])
-# (print (list:drop cool-stuff 4))  # [5 6 7 8 9]
-# =end
-# @author https://github.com/rstefanic, https://github.com/SuperFola
-(let drop (fun ((ref _L) _n)
-  (if (< _n (/ (len _L) 2))
-    (if (> _n 0)
-      (drop (tail _L) (- _n 1))
-      _L)
-    {
-      (mut _index (math:max 0 _n))
-      (mut _output [])
-
-      (while (< _index (len _L)) {
-        (append! _output (@ _L _index))
-        (set _index (+ 1 _index)) })
-      _output })))
-
-# @brief Drop the first elements of a list, while they match a given predicate
-# @param _L the list to work on
-# @param _f the predicate
-# @details The original list is not modified.
-# =begin
-# (let cool-stuff [1 2 3 4 5 6 7 8 9])
-# (print (list:dropWhile cool-stuff (fun (a) (< a 4))))  # [4 5 6 7 8 9]
-# =end
-# @author https://github.com/SuperFola
-(let dropWhile (fun ((ref _L) _f) {
-  (mut _index 0)
-  (mut _output [])
-
-  (while (< _index (len _L))
-    (if (_f (@ _L _index))
-      (set _index (+ 1 _index))
-      (while (< _index (len _L)) {
-        (append! _output (@ _L _index))
-        (set _index (+ 1 _index)) })))
-  _output }))
-
 # @brief Keep elements in a given list if they follow a predicate
 # @param _L the list to work on
 # @param _f the predicate
@@ -322,6 +278,25 @@
     (append! _output (_f (@ _L _index)))
     (set _index (+ 1 _index)) })
   _output }))
+
+# @brief Fold a given list, starting from the left side
+# @param _L the list to work on
+# @param _init an init value
+# @param _f a function to apply to the list
+# @details The original list is not modified.
+# =begin
+# (let a [1 2 3 4])
+# (print (list:foldLeft a 0 (fun (a b) (+ a b))))  # 10
+# =end
+# @author https://github.com/SuperFola
+(let foldLeft (fun ((ref _L) _init _f) {
+  (mut _index 0)
+  (mut _val _init)
+
+  (while (< _index (len _L)) {
+    (set _val (_f _val (@ _L _index)))
+    (set _index (+ 1 _index)) })
+  _val }))
 
 # @brief Apply a function to the elements of a list to reduce it
 # @param _L the list to work on
@@ -421,6 +396,50 @@
         (append! _output (@ _L _index))
         (set _index (+ 1 _index)) }
       (set _continue false)))
+  _output }))
+
+# @brief Drop the first n elements of a list
+# @param _L the list to work on
+# @param _n the number of elements to drop
+# @details The original list is not modified.
+# =begin
+# (let cool-stuff [1 2 3 4 5 6 7 8 9])
+# (print (list:drop cool-stuff 4))  # [5 6 7 8 9]
+# =end
+# @author https://github.com/rstefanic, https://github.com/SuperFola
+(let drop (fun ((ref _L) _n)
+  (if (< _n (/ (len _L) 2))
+    (if (> _n 0)
+      (drop (tail _L) (- _n 1))
+      _L)
+    {
+      (mut _index (math:max 0 _n))
+      (mut _output [])
+
+      (while (< _index (len _L)) {
+        (append! _output (@ _L _index))
+        (set _index (+ 1 _index)) })
+      _output })))
+
+# @brief Drop the first elements of a list, while they match a given predicate
+# @param _L the list to work on
+# @param _f the predicate
+# @details The original list is not modified.
+# =begin
+# (let cool-stuff [1 2 3 4 5 6 7 8 9])
+# (print (list:dropWhile cool-stuff (fun (a) (< a 4))))  # [4 5 6 7 8 9]
+# =end
+# @author https://github.com/SuperFola
+(let dropWhile (fun ((ref _L) _f) {
+  (mut _index 0)
+  (mut _output [])
+
+  (while (< _index (len _L))
+    (if (_f (@ _L _index))
+      (set _index (+ 1 _index))
+      (while (< _index (len _L)) {
+        (append! _output (@ _L _index))
+        (set _index (+ 1 _index)) })))
   _output }))
 
 # @brief Partition a list in two, given a predicate
@@ -526,25 +545,6 @@
     (append! _output [_index (@ _L _index)])
     (set _index (+ 1 _index)) })
   _output }))
-
-# @brief Fold a given list, starting from the left side
-# @param _L the list to work on
-# @param _init an init value
-# @param _f a function to apply to the list
-# @details The original list is not modified.
-# =begin
-# (let a [1 2 3 4])
-# (print (list:foldLeft a 0 (fun (a b) (+ a b))))  # 10
-# =end
-# @author https://github.com/SuperFola
-(let foldLeft (fun ((ref _L) _init _f) {
-  (mut _index 0)
-  (mut _val _init)
-
-  (while (< _index (len _L)) {
-    (set _val (_f _val (@ _L _index)))
-    (set _index (+ 1 _index)) })
-  _val }))
 
 # @brief Check if a condition is verified for all elements of a list
 # @param _L the list to work on
@@ -784,3 +784,62 @@
     (set _i (+ 1 _i)) })
 
   (builtin__dict:keys _vals) }))
+
+# @brief Create a new list from a list of values and indices to get from the first list
+# @details The original list is not modified.
+# @param _L list to get values from
+# @param _indices list of indices of values in _L
+# =begin
+# (let data [1 1 2 3 4 3 4 5])
+# (print (list:select data [0 0 0]))  # [1 1 1]
+# (print (list:select data [0 2 3 4]))  # [1 2 3 4]
+# =end
+# @author https://github.com/SuperFola
+(let select (fun ((ref _L) (ref _indices)) {
+  (mut _output [])
+  (mut _i 0)
+  (while (< _i (len _indices)) {
+    (let _idx (@ _indices _i))
+    (if (< _idx (len _L))
+      (append! _output (@ _L _idx)))
+    (set _i (+ 1 _i)) })
+  _output }))
+
+# @brief Compute permutations of length _r from a given list
+# @details The original list is not modified.
+# @param _L list to get values from
+# @param _r number of elements per permutation
+# @param _f function to call on each permutation. It can return list:stopIteration to stop iteration early
+# =begin
+# (let data [0 1 2 3])
+# (list:permutations data 3 (fun (perm) (print perm)))
+# # [0 1 2]
+# # [0 1 3]
+# # [0 2 3]
+# # [1 2 3]
+# =end
+# @author https://github.com/SuperFola
+(let permutations (fun ((ref _L) _r _f) {
+  (let _len (len _L))
+  (if (and (<= _r _len) (> _r 0))
+    {
+      (mut _indices (iota 0 _r))
+      (if (!= stopIteration (_f (select _L _indices)))
+        {
+          (mut _continue true)
+          (let _reversed_indices (reverse _indices))
+          (while _continue {
+            (mut _i nil)
+            (if
+              (forEach _reversed_indices (fun (_val) {
+                (set _i _val)
+                (if (!= (@ _indices _i) (+ _i _len (* -1 _r))) stopIteration) }))
+              {
+                (@= _indices _i (+ 1 (@ _indices _i)))
+                (mut _j (+ 1 _i))
+                (while (< _j _r) {
+                  (@= _indices _j (+ 1 (@ _indices (- _j 1))))
+                  (set _j (+ 1 _j)) })
+                (if (= stopIteration (_f (select _L _indices)))
+                  (set _continue false)) }
+              (set _continue false)) }) }) }) }))
