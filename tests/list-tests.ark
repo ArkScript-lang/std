@@ -239,4 +239,17 @@
 
     (set perms [])
     (list:permutations [] 0 (fun (data) (append! perms data)))
+    (test:eq perms []) })
+
+  (test:case "permutations_with_replacement" {
+    (mut perms [])
+    (list:permutations_with_replacement "ABC" 2 (fun (data) (append! perms data)))
+    (test:eq perms [["A" "A"] ["A" "B"] ["A" "C"] ["B" "B"] ["B" "C"] ["C" "C"]])
+
+    (set perms [])
+    (list:permutations_with_replacement "ABC" 0 (fun (data) (append! perms data)))
+    (test:eq perms [])
+
+    (set perms [])
+    (list:permutations_with_replacement "" 2 (fun (data) (append! perms data)))
     (test:eq perms []) }) })

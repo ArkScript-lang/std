@@ -57,7 +57,7 @@
 # (list:fill 4 nil)  # [nil nil nil nil]
 # =end
 # @author https://github.com/SuperFola
-(let fill (fun (_val _count) (builtin__list:fill _val _count)))
+(let fill (fun (_count _val) (builtin__list:fill _count _val)))
 
 # @brief Function to call the `len` operator on a list
 # @param _L list to get the size of
@@ -839,6 +839,47 @@
                 (mut _j (+ 1 _i))
                 (while (< _j _r) {
                   (@= _indices _j (+ 1 (@ _indices (- _j 1))))
+                  (set _j (+ 1 _j)) })
+                (if (= stopIteration (_f (select _L _indices)))
+                  (set _continue false)) }
+              (set _continue false)) }) }) }) }))
+
+# @brief Compute permutations of length _r from a given list, allowing individual elements to be repeated more than once
+# @details The original list is not modified.
+# @param _L list to get values from
+# @param _r number of elements per permutation
+# @param _f function to call on each permutation. It can return list:stopIteration to stop iteration early
+# =begin
+# (let data [0 1 2])
+# (list:permutations_with_replacement data 2 (fun (perm) (print perm)))
+# # [0 0]
+# # [0 1]
+# # [0 2]
+# # [1 1]
+# # [1 2]
+# # [2 2]
+# =end
+# @author https://github.com/SuperFola
+(let permutations_with_replacement (fun ((ref _L) _r _f) {
+  (let _len (len _L))
+  (if (and (!= 0 _len) (> _r 0))
+    {
+      (mut _indices (fill _r 0))
+      (if (!= stopIteration (_f (select _L _indices)))
+        {
+          (mut _continue true)
+          (let _reversed_range (iterate (- _r 1) (fun (_x) (- _x 1)) _r))
+          (while _continue {
+            (mut _i nil)
+            (if
+              (forEach _reversed_range (fun (_val) {
+                (set _i _val)
+                (if (!= (@ _indices _i) (- _len 1)) stopIteration) }))
+              {
+                (mut _j _i)
+                (let _val (+ 1 (@ _indices _i)))
+                (while (< _j _r) {
+                  (@= _indices _j _val)
                   (set _j (+ 1 _j)) })
                 (if (= stopIteration (_f (select _L _indices)))
                   (set _continue false)) }
