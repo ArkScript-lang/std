@@ -172,7 +172,7 @@
 (let even? (fun (_n) (= 0 (mod _n 2))))
 
 # @brief Return true if the number is even, false otherwise
-# @details **Deprecated, use `even?`**
+# @deprecated Use `math:even?`
 # @param _n the number
 # @author https://github.com/rstefanic
 (let even even?)
@@ -183,7 +183,7 @@
 (let odd? (fun (_n) (= 1 (abs (mod _n 2)))))
 
 # @brief Return true if the number is odd, false otherwise
-# @details **Deprecated, use `odd?`**
+# @deprecated Use `math:odd?`
 # @param _n the number
 # @author https://github.com/rstefanic
 (let odd odd?)
@@ -217,7 +217,7 @@
 (let decrement (fun (_x) (- _x 1)))
 
 # @brief Multiply a number by -1, turning positive numbers negative and negative numbers positive
-# #param _x number
+# @param _x number
 # @author https://github.com/SuperFola
 (let negate (fun (_x) (* -1 _x)))
 

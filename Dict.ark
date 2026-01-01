@@ -34,7 +34,7 @@
 (let contains? (fun (_D _key) (builtin__dict:contains _D _key)))
 
 # @brief Checks if the dictionary has a given key
-# @details **Deprecated, use `contains?`**
+# @deprecated Use `dict:contains?`
 # @param _D dictionary
 # =begin
 # (let data (dict "key" "value"))
