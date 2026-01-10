@@ -66,8 +66,7 @@
   (mut _output [])
 
   (while (not (nil? _value)) {
-    (if (_fun _value)
-      (set _output (append _output _value)))
+    (if (_fun _value) (append! _output _value))
     (set _value (_range)) })
   (_range.reset)
   _output }))
@@ -86,7 +85,7 @@
   (mut _output [])
 
   (while (not (nil? _value)) {
-    (set _output (append _output (_fun _value)))
+    (append! _output (_fun _value))
     (set _value (_range)) })
   (_range.reset)
   _output }))

@@ -71,7 +71,6 @@
         (__replace_placeholders (tail replacements) ...xs) }
       {
         x
-
         (__replace_placeholders replacements ...xs) })) })
 
 # @brief Create a partial function with prefilled arguments, allowing some arguments to be skipped

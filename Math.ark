@@ -237,7 +237,7 @@
     0
     (exp (* 0.5 (ln _x))))))
 
-# @brief Run the fibonacci function on a number
+# @brief Compute the nth fibonacci term
 # @param n the number
 # @author https://github.com/SuperFola
 (let fibo (fun (n) {
@@ -275,14 +275,13 @@
 # =end
 # @author https://github.com/Wafelack
 (let divs (fun (n) {
-  (assert (>= n 2) "divs: n must be greater or equal to 2")
-  (mut i 2)
-  (mut divisors [1])
+  (assert (>= n 1) "divs: n must be greater or equal to 1")
+  (mut i 1)
+  (mut divisors [])
   (let top (ceil (/ n 2)))
 
   (while (and (<= i top) (!= top n)) {
-    (if (= (mod n i) 0)
-      (set divisors (append divisors i)))
+    (if (= (mod n i) 0) (append! divisors i))
     (set i (+ i 1)) })
   (append divisors n) }))
 
@@ -294,8 +293,7 @@
 # =end
 # @author https://github.com/Gryfenfer97
 (let log (fun (x n) {
-  (assert (> x 0) "log: x must be greater than 0")
-  (assert (>= n 1) "log: n must be greater or equal to 1")
+  (assert (and (> x 0) (>= n 1)) "log: x must be greater than 0, and n must be greater or equal to 1")
   (round (/ (ln x) (ln n))) }))
 
 # @brief Returns the logarithm base 2 of a number
@@ -444,7 +442,7 @@
 # (let base 55)  # something takes 55ms to run
 # (let new 43)  # now it takes 43ms
 # (print (math:improvementRatioPercentage base new))  # 27.9069767442
-# # 'base' is 27%~ slower than 'new'
+# # 'new' is 27%~ faster than 'base'
 # =end
 # @author https://github.com/SuperFola
 (let improvementRatioPercentage (fun (_a _b) (* 100 (- (/ _a _b) 1))))
@@ -467,8 +465,7 @@
 # (print (math:radians 90))   # pi/2
 # =end
 # @author https://github.com/SuperFola
-(let radians (fun (_degrees)
-  (/ (* _degrees pi) 180)))
+(let radians (fun (_degrees) (/ (* _degrees pi) 180)))
 
 # @brief Convert an angle in radians to degrees
 # @param _radians angle in radians
@@ -476,8 +473,7 @@
 # (print (math:radians (/ math:pi 2)))   # 90
 # =end
 # @author https://github.com/SuperFola
-(let degrees (fun (_radians)
-  (/ (* 180 _radians) pi)))
+(let degrees (fun (_radians) (/ (* 180 _radians) pi)))
 
 # @brief Check if a given number is an integer
 # @param _x number
@@ -486,8 +482,7 @@
 # (print (math:integer 1.000001))   # false
 # =end
 # @author https://github.com/SuperFola
-(let integer? (fun (_x)
-  (= (ceil _x) (floor _x))))
+(let integer? (fun (_x) (= (ceil _x) (floor _x))))
 
 # @brief Compute the factorial of a number
 # @param _n integer
@@ -512,11 +507,7 @@
 # @author https://github.com/SuperFola
 (let binomialCoeff (fun (_n _k)
   (if (<= _k _n)
-    (/
-      (factorial _n)
-      (*
-        (factorial _k)
-        (factorial (- _n _k))))
+    (/ (factorial _n) (* (factorial _k) (factorial (- _n _k))))
     0)))
 
 # @brief Compute the number of ways to choose k items from n items without repetition and with order
@@ -526,9 +517,7 @@
 # @author https://github.com/SuperFola
 (let permutations (fun (_n _k)
   (if (<= _k _n)
-    (/
-      (factorial _n)
-      (factorial (- _n _k)))
+    (/ (factorial _n) (factorial (- _n _k)))
     0)))
 
 # @brief Compare two real numbers and return true if the first one is near the second one (1e-7 precision)
@@ -537,7 +526,7 @@
 # @author https://github.com/SuperFola
 (let close? (fun (_n _target) {
   # todo: make epsilon configurable
-  (let _epsilon 1e-7)
+  (let _epsilon 1e-07)
   (and (< (- _target _epsilon) _n) (< _n (+ _target _epsilon))) }))
 
 # @brief Compute the euclidean distance between two vectors of the same size
@@ -579,7 +568,4 @@
 # (print (math:lcm 4 6))  # 12
 # =end
 # @author https://github.com/SuperFola
-(let lcm (fun (_a _b)
-  (*
-    (abs _a)
-    (/ (abs _b) (gcd _a _b)))))
+(let lcm (fun (_a _b) (* (abs _a) (/ (abs _b) (gcd _a _b)))))

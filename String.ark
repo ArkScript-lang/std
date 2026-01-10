@@ -440,8 +440,7 @@
 # (print (string:startsWith? "Hello, world" ", world"))  # false
 # =end
 # @author https://github.com/SuperFola
-(let startsWith? (fun (_str _prefix)
-  (= 0 (find _str _prefix))))
+(let startsWith? (fun (_str _prefix) (= 0 (find _str _prefix))))
 
 # @brief Check if a string ends with a given suffix
 # @param _str string
@@ -451,8 +450,9 @@
 # (print (string:endsWith? "Hello, world" "worl"))  # false
 # =end
 # @author https://github.com/SuperFola
-(let endsWith? (fun (_str _suffix)
-  (= 0 (find (reverse _str) (reverse _suffix)))))
+(let endsWith? (fun (_str _suffix) {
+  (let _end (- (len _str) (len _suffix)))
+  (= _end (findAfter _str _suffix _end)) }))
 
 # @brief Return a string filled with '0' digits to make a string of length _n
 # @param _str string to left fill
@@ -478,12 +478,15 @@
     _str
     {
       (let _fill (- _len (len _str)))
-      (let _fill_left (if (= 1 (mod _fill 2)) (/ (- _fill 1) 2) (/ _fill 2)))
-      (let _fill_right (if (= 1 (mod _fill 2)) (/ (+ _fill 1) 2) (/ _fill 2)))
-      (+
-        (repeat " " _fill_left)
-        _str
-        (repeat " " _fill_right)) })))
+      (let _fill_left
+        (if (= 1 (mod _fill 2))
+          (/ (- _fill 1) 2)
+          (/ _fill 2)))
+      (let _fill_right
+        (if (= 1 (mod _fill 2))
+          (/ (+ _fill 1) 2)
+          (/ _fill 2)))
+      (+ (repeat " " _fill_left) _str (repeat " " _fill_right)) })))
 
 # @brief If a string starts with a given prefix, remove it
 # @param _str string

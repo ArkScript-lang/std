@@ -487,6 +487,7 @@
   [_list1 _list2] }))
 
 # @brief Zip two lists into one: [1 2 3 4] and [5 6 7 8] will give [[1 5] [2 6] [3 7] [4 8]]
+# @details Lists must have the same size. Otherwise, only the first (min (len _a) (len _b)) elements will be used.
 # @param _a the first list to work on
 # @param _b the second list to work on
 # @details The original lists are not modified.
@@ -523,9 +524,15 @@
   (mut _index 0)
 
   (while (< _index _m) {
-    (append! _c [
-      (if (< _index (len _a)) (@ _a _index) _filler)
-      (if (< _index (len _b)) (@ _b _index) _filler)])
+    (append!
+      _c
+      [
+        (if (< _index (len _a))
+          (@ _a _index)
+          _filler)
+        (if (< _index (len _b))
+          (@ _b _index)
+          _filler)])
     (set _index (+ 1 _index)) })
   _c }))
 
@@ -743,7 +750,7 @@
   _early }))
 
 # @brief Transpose a list of lists or list of strings
-# @details The original list is not modified. Each element should have the same length
+# @details The original list is not modified. Elements should have the same length
 # @param _L list of lists/strings to transpose
 # =begin
 # (let data [[1 2 3] [4 5 6] [7 8 9])
@@ -800,8 +807,7 @@
   (mut _i 0)
   (while (< _i (len _indices)) {
     (let _idx (@ _indices _i))
-    (if (< _idx (len _L))
-      (append! _output (@ _L _idx)))
+    (if (< _idx (len _L)) (append! _output (@ _L _idx)))
     (set _i (+ 1 _i)) })
   _output }))
 
@@ -831,9 +837,11 @@
           (while _continue {
             (mut _i nil)
             (if
-              (forEach _reversed_indices (fun (_val) {
-                (set _i _val)
-                (if (!= (@ _indices _i) (+ _i _len (* -1 _r))) stopIteration) }))
+(forEach
+                _reversed_indices
+                (fun (_val) {
+                  (set _i _val)
+                  (if (!= (@ _indices _i) (+ _i _len (* -1 _r))) stopIteration) }))
               {
                 (@= _indices _i (+ 1 (@ _indices _i)))
                 (mut _j (+ 1 _i))
@@ -872,9 +880,11 @@
           (while _continue {
             (mut _i nil)
             (if
-              (forEach _reversed_range (fun (_val) {
-                (set _i _val)
-                (if (!= (@ _indices _i) (- _len 1)) stopIteration) }))
+(forEach
+                _reversed_range
+                (fun (_val) {
+                  (set _i _val)
+                  (if (!= (@ _indices _i) (- _len 1)) stopIteration) }))
               {
                 (mut _j _i)
                 (let _val (+ 1 (@ _indices _i)))
