@@ -837,7 +837,7 @@
           (while _continue {
             (mut _i nil)
             (if
-(forEach
+              (forEach
                 _reversed_indices
                 (fun (_val) {
                   (set _i _val)
@@ -880,7 +880,7 @@
           (while _continue {
             (mut _i nil)
             (if
-(forEach
+              (forEach
                 _reversed_range
                 (fun (_val) {
                   (set _i _val)
