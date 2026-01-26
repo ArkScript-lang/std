@@ -149,6 +149,12 @@
     (let empty_filtered (dict:filter empty filter_str_keys))
     (test:eq (dict:size empty_filtered) 0) })
 
+  (test:case "asJson" {
+      (test:eq (dict:asJson empty) "{}")
+      (test:eq (dict:asJson d2) "{\"a\": 1, \"b\": 2, \"c\": 3}")
+      (test:eq (dict:asJson (dict "a" "hello" "b" d2)) "{\"a\": \"hello\", \"b\": {\"a\": 1, \"b\": 2, \"c\": 3}}")
+      (test:eq (dict:asJson (dict "a" [1 "2" true [false 3 4] [] nil])) "{\"a\": [1, \"2\", true, [false, 3, 4], [], null]}") })
+
   (test:case "filter!" {
     (dict:filter! d2 filter_odd)
     (test:eq (dict:size d2) 2)

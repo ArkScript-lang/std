@@ -277,3 +277,54 @@
     (let _key (@ _keys _i))
     (add _D _key (get _D2 _key))
     (set _i (+ 1 _i)) }) }))
+
+(let _valAsJson (fun (_val)
+  (if (= "Dict" (type _val))
+    (asJson _val)
+    (if (= "String" (type _val))
+      (+ "\"" _val "\"")
+      (if (= "List" (type _val))
+        (_listAsJson _val)
+        (if (nil? _val)
+          "null"
+          (toString _val)))))))
+
+(let _listAsJson (fun ((ref _L)) {
+  (mut _output "[")
+  (mut _i 0)
+  (while (< _i (len _L)) {
+    (set _output
+      (+
+        _output
+        (_valAsJson (@ _L _i))
+        (if (= (len _L) (+ 1 _i))
+          ""
+          ", ")))
+    (set _i (+ 1 _i)) })
+
+  (+ _output "]") }))
+
+(let asJson (fun (_D) {
+  (mut _output [])
+  (let _keys (keys _D))
+  (mut _i 0)
+  (while (< _i (len _keys)) {
+    (let _key (@ _keys _i))
+    (let _val (_valAsJson (get _D _key)))
+
+    (append! _output (format "\"{}\": {}" _key _val))
+    (set _i (+ 1 _i)) })
+
+  (mut _as_str "")
+  (set _i 0)
+  (while (< _i (len _output)) {
+    (set _as_str
+      (+
+        _as_str
+        (@ _output _i)
+        (if (= (len _output) (+ 1 _i))
+          ""
+          ", ")))
+    (set _i (+ 1 _i)) })
+
+  (+ "{" _as_str "}") }))
