@@ -304,6 +304,15 @@
 
   (+ _output "]") }))
 
+# @brief Convert a given dictionary to its JSON representation
+# @details The original dictionary is not modified
+# @param _D dictionary to convert to JSON
+# =begin
+# (let data (dict "key" "value" "hello" nil "a" [1 true]))
+# (let new (dict "key" "new value" 5 12))
+# (print (dict:asJson data new)) # {"key": "value", "hello": null, "a": [1, true]}
+# =end
+# @author https://github.com/SuperFola
 (let asJson (fun (_D) {
   (mut _output [])
   (let _keys (keys _D))
