@@ -25,6 +25,11 @@
   (let filter_odd (fun (k v) (= 1 (mod v 2))))
 
   (test:case "comparison" {
+    # FIXME: the macro processor is using the macro version of `empty?`, even though we have an `$as-is` inside expect
+    (test:expect ($as-is (empty? (dict))))
+    (test:expect ($as-is (not (empty? (dict "a" 2)))))
+    (test:expect (not empty))
+    (test:expect (not (not d)))
     (test:eq empty (dict))
     (test:eq (dict) (dict))
     (test:neq empty d)
@@ -61,8 +66,12 @@
 
   (test:case "size" {
     (test:eq (dict:size d) 6)
+    (test:eq (dict:size d) (len d))
     (test:eq (dict:size (dict)) 0)
+    # FIXME: the macro processor is using the macro version of `len`, even though we have an `$as-is` inside eq
+    (test:eq (dict:size (dict)) ($as-is (len (dict))))
     (test:eq (dict:size d3) 1)
+    (test:eq (dict:size d3) (len d3))
     (test:eq (dict:size d4) 1) })
 
   (test:case "keys" {
