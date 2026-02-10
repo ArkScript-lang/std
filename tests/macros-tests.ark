@@ -7,7 +7,7 @@
   (+ data "-f2")))
 (let f3 (fun (data)
   (+ data "-f3")))
-(let apply (fun (data f)
+(let foo (fun (data f)
   (f data)))
 
 (let test_func (fun (a b c) (* a b c)))
@@ -19,7 +19,7 @@
   (test:case "->" {
     (test:eq (-> "f0" f1) "f0-f1")
     (test:eq (-> "f0" f1 f2 f3) "f0-f1-f2-f3")
-    (test:eq (-> "f0" f1 (apply _ f2) (apply _ f3)) "f0-f1-f2-f3") })
+    (test:eq (-> "f0" f1 (foo _ f2) (foo _ f3)) "f0-f1-f2-f3") })
 
   (test:case "partial & partial2" {
     (test:eq (test_func1 2 3) 6)

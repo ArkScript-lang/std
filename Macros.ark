@@ -19,7 +19,7 @@
 # (import std.Macros)
 # (-> "f0" f1)  # equivalent to (f1 "f0")
 # (-> "f0" f1 f2 f3) # equivalent to (f3 (f2 (f1 "f0")))
-# (-> "f0" f1 (apply _ f2) (apply _ f3))  # equivalent to (apply (apply (f1 "f0") f2) f3)
+# (-> "f0" f1 (foo _ f2) (bar _ f3))  # equivalent to (bar (foo (f1 "f0") f2) f3)
 # =end
 # @author https://github.com/SuperFola
 (macro -> (arg fn1 ...fns) {
