@@ -99,6 +99,7 @@
 
 # @brief Computes the number of (key, value) pairs in a given dictionary
 # @param _D dictionary
+# @deprecated Use the builtin `len` instead
 # =begin
 # (let data (dict "key" "value"))
 # (print (dict:size data))  # 1

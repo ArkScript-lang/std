@@ -35,11 +35,12 @@
 # @param start included, must be positive
 # @param end not included, must be positive and smaller than the list
 # @param step must be greater than 0
+# @deprecated Use the builtin `slice` instead
 # =begin
 # (list:slice [1 2 3 4 5] 1 4 2)  # [2 4]
 # =end
 # @author https://github.com/SuperFola
-(let slice (fun (_L _start _end _step) (builtin__list:slice _L _start _end _step)))
+(let slice_ (fun (_L _start _end _step) (builtin__list:slice _L _start _end _step)))
 
 # @brief Sort a List and return a new one
 # @details The original list is not modified
@@ -61,6 +62,7 @@
 
 # @brief Function to call the `len` operator on a list
 # @param _L list to get the size of
+# @deprecated Use the builtin `len` instead
 # =begin
 # (print (list:size [1 2 3 4]))  # 4
 # =end

@@ -15,7 +15,7 @@
     (test:eq (builtin__list:find a 0) (list:find a 0))
     (test:eq (builtin__list:find a 1) (list:find a 1))
 
-    (test:eq (builtin__list:slice a 1 2 1) (list:slice a 1 2 1))
+    (test:eq (builtin__list:slice a 1 2 1) (list:slice_ a 1 2 1))
 
     (test:eq (builtin__list:sort [9 8 1]) (list:sort [9 8 1]))
     (test:eq (builtin__list:sort []) (list:sort []))
