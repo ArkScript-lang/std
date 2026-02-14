@@ -245,13 +245,14 @@
 # @param _string the string to get a slice of
 # @param _startingIndex the index in the string where to start slicing
 # @param _length the length of the slice
-# @details The original string is left unmodified. Example:
+# @details The original string is left unmodified.
+# @deprecated Use the builtin `slice` instead
 # =begin
 # (let message "hello world, I like goats")
 # (let slice (string:slice message 6 4))  # => worl
 # =end
 # @author https://github.com/Natendrtfm
-(let slice (fun (_string _startingIndex _length)
+(let slice_ (fun (_string _startingIndex _length)
   (if (= _length 0)
     ""
     {
@@ -326,8 +327,8 @@
   (let _pattern_sz (len _pattern))
 
   (while (!= -1 _idx) {
-    (mut _first_segment (slice _out 0 _idx))
-    (mut _next_segment (slice _out (+ _idx _pattern_sz) (- (len _out) (+ _idx _pattern_sz))))
+    (mut _first_segment (slice_ _out 0 _idx))
+    (mut _next_segment (slice_ _out (+ _idx _pattern_sz) (- (len _out) (+ _idx _pattern_sz))))
 
     (set _out (+ _first_segment _new _next_segment))
     (set _idx (find _next_segment _pattern))
