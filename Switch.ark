@@ -18,4 +18,4 @@
     then
     (if (= value case)
       then
-      ($if (>= (len cases) 2) (switch value ...cases)))) })
+      ($if (>= ($len cases) 2) (switch value ...cases)))) })
