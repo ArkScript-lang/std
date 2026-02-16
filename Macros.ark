@@ -1,6 +1,6 @@
 # internal, do not use
 (macro __replace_all_placeholders_with (replacement x ...xs) {
-  ($if (empty? xs)
+  ($if ($empty? xs)
     ($if (= "_" ($repr x))
       replacement
       x)
@@ -26,7 +26,7 @@
   ($if (= "Symbol" ($type fn1))
     (macro call (fn1 arg))
     (macro call ((__replace_all_placeholders_with arg ...fn1))))
-  ($if (> (len fns) 0)
+  ($if (> ($len fns) 0)
     (-> call ...fns)
     call) })
 
@@ -48,11 +48,11 @@
 # =end
 # @author https://github.com/SuperFola
 (macro partial (func ...defargs) {
-  (macro bloc (__suffix-dup a (- ($argcount func) (len defargs))))
+  (macro bloc (__suffix-dup a (- ($argcount func) ($len defargs))))
   (fun (bloc) (func ...defargs bloc))
   ($undef bloc) })
 
-(macro __count_placeholders (acc x ...xs) ($if (empty? xs)
+(macro __count_placeholders (acc x ...xs) ($if ($empty? xs)
     ($if (= "_" ($repr x))
       (+ 1 acc)
       acc)
@@ -61,14 +61,14 @@
       (__count_placeholders acc ...xs))))
 
 (macro __replace_placeholders (replacements x ...xs) {
-  ($if (empty? xs)
+  ($if ($empty? xs)
     ($if (= "_" ($repr x))
-      (head replacements)
+      ($head replacements)
       x)
     ($if (= "_" ($repr x))
       {
-        (head replacements)
-        (__replace_placeholders (tail replacements) ...xs) }
+        ($head replacements)
+        (__replace_placeholders ($tail replacements) ...xs) }
       {
         x
         (__replace_placeholders replacements ...xs) })) })
