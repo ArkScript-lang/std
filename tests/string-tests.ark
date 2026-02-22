@@ -64,10 +64,10 @@
     (test:eq (string:repeat "a" 5) "aaaaa") })
 
   (test:case "slice" {
-    (test:eq (string:slice_ "hello world" 0 5) "hello")
-    (test:eq (string:slice_ "hello world" 0 100) "hello world")
-    (test:eq (string:slice_ "hello world" 0 1) "h")
-    (test:eq (string:slice_ "hello world" 1 4) "ello") })
+    (test:eq (string:slice "hello world" 0 5) "hello")
+    (test:eq (string:slice "hello world" 0 100) "hello world")
+    (test:eq (string:slice "hello world" 0 1) "h")
+    (test:eq (string:slice "hello world" 1 4) "ello") })
 
   (test:case "split" {
     (test:eq (string:split "a,bc,def" ",") ["a" "bc" "def"])
