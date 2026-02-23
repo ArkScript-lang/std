@@ -513,3 +513,46 @@
   (if (endsWith? _str _suffix)
     (slice _str 0 (- (len _str) (len _suffix)))
     _str)))
+
+# @brief Compute the levenshtein distance between two strings
+# @param _str1 string
+# @param _str2 string
+# =begin
+# (print (string:levenshteinDistance "arkscript" "arkscript"))  # 0
+# (print (string:levenshteinDistance "arkscript" "Orkscript"))  # 1
+# (print (string:levenshteinDistance "arkscript" "0rCscript"))  # 2
+# (print (string:levenshteinDistance "arkscript" "OrC"))  # 8
+# =end
+# @author https://github.com/SuperFola
+(let levenshteinDistance (fun (_str1 _str2) {
+  (let _len1 (+ (len _str1) 1))
+  (let _len2 (+ (len _str2) 1))
+  (mut _edit_distances (builtin__list:fill _len1 (builtin__list:fill _len2 0)))
+
+  (mut _i 0)
+  (while (< _i _len1) {
+    (@@= _edit_distances _i 0 _i)
+    (set _i (+ 1 _i)) })
+  (set _i 0)
+  (while (< _i _len2) {
+    (@@= _edit_distances 0 _i _i)
+    (set _i (+ 1 _i)) })
+
+  (set _i 1)
+  (while (< _i _len1) {
+    (mut _j 1)
+    (while (< _j _len2) {
+      (let _dist [
+        (+ 1 (@@ _edit_distances (- _i 1) _j))
+        (+ 1 (@@ _edit_distances _i (- _j 1)))
+        (+ (if (= (@ _str1 (- _i 1)) (@ _str2 (- _j 1))) 0 1) (@@ _edit_distances (- _i 1) (- _j 1))) ])
+      (@@= _edit_distances _i _j
+        (if (and (< (@ _dist 0) (@ _dist 1)) (< (@ _dist 0) (@ _dist 2)))
+          (@ _dist 0)
+          (if (and (< (@ _dist 1) (@ _dist 0)) (< (@ _dist 1) (@ _dist 2)))
+            (@ _dist 1)
+            (@ _dist 2))))
+      (set _j (+ 1 _j)) })
+    (set _i (+ 1 _i)) })
+
+  (@@ _edit_distances (- _len1 1) (- _len2 1)) }))
