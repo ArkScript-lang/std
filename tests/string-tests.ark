@@ -162,4 +162,10 @@
 
     (test:eq (string:removeSuffix "TestCase" "Case") "Test")
     (test:eq (string:removeSuffix "BaseTestCase" "Test") "BaseTestCase") })
+
+  (test:case "levenshteinDistance" {
+    (test:eq (string:levenshteinDistance "arkscript" "arkscript") 0)
+    (test:eq (string:levenshteinDistance "arkscript" "Orkscript") 1)
+    (test:eq (string:levenshteinDistance "arkscript" "0rCscript") 2)
+    (test:eq (string:levenshteinDistance "arkscript" "OrC") 8) })
 })
