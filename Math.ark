@@ -255,7 +255,7 @@
 (let prime? (fun (n)
   (if (= 2 n)
     true
-    (if (or (= 0 (mod n 2)) (= 1 n))
+    (if (or (= 0 (mod n 2)) (= 1 n) (!= 0 (mod n 1)))
       false
       {
         (let k (ceil (+ 1 (sqrt n))))
@@ -276,6 +276,7 @@
 # @author https://github.com/Wafelack
 (let divs (fun (n) {
   (assert (>= n 1) "divs: n must be greater or equal to 1")
+  (assert (= 0 (mod n 1)) "divs: n must be an integer")
   (mut i 1)
   (mut divisors [])
   (let top (ceil (/ n 2)))
