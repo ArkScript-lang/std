@@ -294,13 +294,12 @@
   (mut _output "[")
   (mut _i 0)
   (while (< _i (len _L)) {
-    (set _output
-      (+
-        _output
-        (_valAsJson (@ _L _i))
-        (if (= (len _L) (+ 1 _i))
-          ""
-          ", ")))
+    (set _output (+
+      _output
+      (_valAsJson (@ _L _i))
+      (if (= (len _L) (+ 1 _i))
+        ""
+        ", ")))
     (set _i (+ 1 _i)) })
 
   (+ _output "]") }))
@@ -328,13 +327,12 @@
   (mut _as_str "")
   (set _i 0)
   (while (< _i (len _output)) {
-    (set _as_str
-      (+
-        _as_str
-        (@ _output _i)
-        (if (= (len _output) (+ 1 _i))
-          ""
-          ", ")))
+    (set _as_str (+
+      _as_str
+      (@ _output _i)
+      (if (= (len _output) (+ 1 _i))
+        ""
+        ", ")))
     (set _i (+ 1 _i)) })
 
   (+ "{" _as_str "}") }))
