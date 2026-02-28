@@ -545,8 +545,15 @@
       (let _dist [
         (+ 1 (@@ _edit_distances (- _i 1) _j))
         (+ 1 (@@ _edit_distances _i (- _j 1)))
-        (+ (if (= (@ _str1 (- _i 1)) (@ _str2 (- _j 1))) 0 1) (@@ _edit_distances (- _i 1) (- _j 1))) ])
-      (@@= _edit_distances _i _j
+        (+
+          (if (= (@ _str1 (- _i 1)) (@ _str2 (- _j 1)))
+            0
+            1)
+          (@@ _edit_distances (- _i 1) (- _j 1)))])
+      (@@=
+        _edit_distances
+        _i
+        _j
         (if (and (< (@ _dist 0) (@ _dist 1)) (< (@ _dist 0) (@ _dist 2)))
           (@ _dist 0)
           (if (and (< (@ _dist 1) (@ _dist 0)) (< (@ _dist 1) (@ _dist 2)))
