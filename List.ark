@@ -832,7 +832,7 @@
     (set _i (+ 1 _i)) })
   _output }))
 
-# @brief Compute permutations of length _r from a given list
+# @brief Compute combinations of length _r from a given list
 # @details The original list is not modified.
 # @param _L list to get values from
 # @param _r number of elements per permutation
@@ -873,24 +873,7 @@
                   (set _continue false)) }
               (set _continue false)) }) }) }) }))
 
-# @brief Compute permutations of length _r from a given list
-# @details The original list is not modified.
-# @param _L list to get values from
-# @param _r number of elements per permutation
-# @param _f function to call on each permutation. It can return list:stopIteration to stop iteration early
-# @deprecated Use list:combinations. Will be removed in ArkScript 4.5.0
-# =begin
-# (let data [0 1 2 3])
-# (list:permutations data 3 (fun (perm) (print perm)))
-# # [0 1 2]
-# # [0 1 3]
-# # [0 2 3]
-# # [1 2 3]
-# =end
-# @author https://github.com/SuperFola
-(let permutations combinations)
-
-# @brief Compute permutations of length _r from a given list, allowing individual elements to be repeated more than once
+# @brief Compute combinations of length _r from a given list, allowing individual elements to be repeated more than once
 # @details The original list is not modified.
 # @param _L list to get values from
 # @param _r number of elements per permutation
@@ -933,21 +916,53 @@
                   (set _continue false)) }
               (set _continue false)) }) }) }) }))
 
-# @brief Compute permutations of length _r from a given list, allowing individual elements to be repeated more than once
+# @brief Compute permutations of length _r from a given list
 # @details The original list is not modified.
 # @param _L list to get values from
 # @param _r number of elements per permutation
 # @param _f function to call on each permutation. It can return list:stopIteration to stop iteration early
-# @deprecated Use list:combinationsWithReplacement. Will be removed in ArkScript 4.5.0
 # =begin
-# (let data [0 1 2])
-# (list:permutationsWithReplacement data 2 (fun (perm) (print perm)))
-# # [0 0]
-# # [0 1]
-# # [0 2]
-# # [1 1]
-# # [1 2]
-# # [2 2]
+# (let data [0 1 2 3])
+# (mut out [])
+# (list:permutations data 3 (fun (perm) (append! out perm)))
+# (print out)  # length: 24
+# # [[0 1 2] [0 1 3] [0 2 1] [0 2 3] [0 3 1] [0 3 2] [1 0 2] [1 0 3] [1 2 0] [1 2 3] [1 3 0] [1 3 2]
+# #  [2 0 1] [2 0 3] [2 1 0] [2 1 3] [2 3 0] [2 3 1] [3 0 1] [3 0 2] [3 1 0] [3 1 2] [3 2 0] [3 2 1]]
 # =end
 # @author https://github.com/SuperFola
-(let permutationsWithReplacement combinationsWithReplacement)
+(let permutations (fun ((ref _L) _r _f) {
+  (let _len (len _L))
+  (if (and (<= _r _len) (> _r 0) (> _len 0))
+    {
+      (let _ind_first_r (iota 0 _r))
+      (mut _indices (iota 0 _len))
+      (mut _cycles (iterate _len (fun (x) (- x 1)) _r))
+      (if (!= stopIteration (_f (select _L _ind_first_r)))
+        {
+          (mut _continue true)
+          (let _reversed_indices (reverse _ind_first_r))
+          (while _continue {
+            (if
+              (not (forEach
+                _reversed_indices
+                (fun (_i) {
+                  (@= _cycles _i (- (@ _cycles _i) 1))
+                  (if (= 0 (@ _cycles _i))
+                    {
+                      (let _at_i (@ _indices _i))
+                      (mut _k _i)
+                      (while (< _k _len) {
+                        (if (< (+ 1 _k) _len)
+                          (@= _indices _k (@ _indices (+ 1 _k))))
+                        (set _k (+ 1 _k)) })
+                      (@= _indices -1 _at_i)
+                      (@= _cycles _i (- _len _i)) }
+                    {
+                      (let _j (* -1 (@ _cycles _i)))
+                      (let _ind_j (@ _indices _j))
+                      (@= _indices _j (@ _indices _i))
+                      (@= _indices _i _ind_j)
+                      (if (= stopIteration (_f (select _L (select _indices _ind_first_r))))
+                        (set _continue false))
+                      stopIteration }) })))
+              (set _continue false)) }) }) }) }))
