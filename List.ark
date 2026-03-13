@@ -86,7 +86,7 @@
 (let stopIteration _stopIteration_helper)
 
 # @brief Iterate over a given list and run a given function on every element.
-# @param _L the list to iterate over
+# @param _data the list to iterate over
 # @param _func the function to call on each element. It can return list:stopIteration to stop iteration early
 # @details The original list is not modified. Returns true if it returns early, false otherwise
 # =begin
@@ -95,15 +95,15 @@
 #     (print element) }))
 # =end
 # @author https://github.com/SuperFola
-(let forEach (fun ((ref _L) _func) {
+(let forEach (fun ((ref _data) _func) {
   (mut _index 0)
   (mut _early false)
 
-  (while (< _index (len _L)) {
-    (mut _element (@ _L _index))
+  (while (< _index (len _data)) {
+    (mut _element (@ _data _index))
     (if (= (_func _element) stopIteration)
       {
-        (set _index (len _L))
+        (set _index (len _data))
         (set _early true) })
     (set _index (+ 1 _index)) })
 
@@ -202,7 +202,7 @@
     (set _index (+ 1 _index)) })
   _output }))
 
-(import std.Math :min :max :even)
+(import std.Math :min :max :even?)
 
 # @brief Find the median in a list of numbers
 # @param _L list of numbers
@@ -217,7 +217,7 @@
     nil
     {
       (let _s (sort _L))
-      (if (math:even _n)
+      (if (math:even? _n)
         (/ (+ (@ _s (- (/ _n 2) 1)) (@ _s (/ _n 2))) 2)
         (@ _s (/ _n 2))) }) }))
 
