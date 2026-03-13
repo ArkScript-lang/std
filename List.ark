@@ -938,26 +938,26 @@
           (let _reversed_indices (reverse _ind_first_r))
           (while _continue {
             (if
-              (not (forEach
-                _reversed_indices
-                (fun (_i) {
-                  (@= _cycles _i (- (@ _cycles _i) 1))
-                  (if (= 0 (@ _cycles _i))
-                    {
-                      (let _at_i (@ _indices _i))
-                      (mut _k _i)
-                      (while (< _k _len) {
-                        (if (< (+ 1 _k) _len)
-                          (@= _indices _k (@ _indices (+ 1 _k))))
-                        (set _k (+ 1 _k)) })
-                      (@= _indices -1 _at_i)
-                      (@= _cycles _i (- _len _i)) }
-                    {
-                      (let _j (* -1 (@ _cycles _i)))
-                      (let _ind_j (@ _indices _j))
-                      (@= _indices _j (@ _indices _i))
-                      (@= _indices _i _ind_j)
-                      (if (= stopIteration (_f (select _L (select _indices _ind_first_r))))
-                        (set _continue false))
-                      stopIteration }) })))
+              (not
+                (forEach
+                  _reversed_indices
+                  (fun (_i) {
+                    (@= _cycles _i (- (@ _cycles _i) 1))
+                    (if (= 0 (@ _cycles _i))
+                      {
+                        (let _at_i (@ _indices _i))
+                        (mut _k _i)
+                        (while (< _k _len) {
+                          (if (< (+ 1 _k) _len) (@= _indices _k (@ _indices (+ 1 _k))))
+                          (set _k (+ 1 _k)) })
+                        (@= _indices -1 _at_i)
+                        (@= _cycles _i (- _len _i)) }
+                      {
+                        (let _j (* -1 (@ _cycles _i)))
+                        (let _ind_j (@ _indices _j))
+                        (@= _indices _j (@ _indices _i))
+                        (@= _indices _i _ind_j)
+                        (if (= stopIteration (_f (select _L (select _indices _ind_first_r))))
+                          (set _continue false))
+                        stopIteration }) })))
               (set _continue false)) }) }) }) }))
