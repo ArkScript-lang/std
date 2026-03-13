@@ -235,32 +235,49 @@
     (test:eq (list:select [1 2 3] [0]) [1])
     (test:eq (list:select [1 2 3] [0 4]) [1]) })
 
-  (test:case "permutations" {
+  (test:case "combinations" {
     (mut perms [])
-    (list:permutations "ABCD" 2 (fun (data) (append! perms data)))
+    (list:combinations "ABCD" 2 (fun (data) (append! perms data)))
     (test:eq perms [["A" "B"] ["A" "C"] ["A" "D"] ["B" "C"] ["B" "D"] ["C" "D"]])
 
     (set perms [])
-    (list:permutations [0 1 2 3] 3 (fun (data) (append! perms data)))
+    (list:combinations [0 1 2 3] 3 (fun (data) (append! perms data)))
     (test:eq perms [[0 1 2] [0 1 3] [0 2 3] [1 2 3]])
 
     (set perms [])
-    (list:permutations [0 1 2 3] 5 (fun (data) (append! perms data)))
+    (list:combinations [0 1 2 3] 5 (fun (data) (append! perms data)))
     (test:eq perms [])
 
     (set perms [])
-    (list:permutations [] 0 (fun (data) (append! perms data)))
+    (list:combinations [] 0 (fun (data) (append! perms data)))
     (test:eq perms []) })
 
-  (test:case "permutationsWithReplacement" {
+  (test:case "combinationsWithReplacement" {
     (mut perms [])
-    (list:permutationsWithReplacement "ABC" 2 (fun (data) (append! perms data)))
+    (list:combinationsWithReplacement "ABC" 2 (fun (data) (append! perms data)))
     (test:eq perms [["A" "A"] ["A" "B"] ["A" "C"] ["B" "B"] ["B" "C"] ["C" "C"]])
 
     (set perms [])
-    (list:permutationsWithReplacement "ABC" 0 (fun (data) (append! perms data)))
+    (list:combinationsWithReplacement "ABC" 0 (fun (data) (append! perms data)))
     (test:eq perms [])
 
     (set perms [])
-    (list:permutationsWithReplacement "" 2 (fun (data) (append! perms data)))
-    (test:eq perms []) }) })
+    (list:combinationsWithReplacement "" 2 (fun (data) (append! perms data)))
+    (test:eq perms []) })
+
+  (test:case "permutations" {
+      (mut perms [])
+      (list:permutations "ABCD" 2 (fun (data) (append! perms data)))
+      (test:eq perms [["A" "B"] ["A" "C"] ["A" "D"] ["B" "A"] ["B" "C"] ["B" "D"] ["C" "A"] ["C" "B"] ["C" "D"] ["D" "A"] ["D" "B"] ["D" "C"]])
+
+      (set perms [])
+      (list:permutations [0 1 2 3] 3 (fun (data) (append! perms data)))
+      (test:eq perms [[0 1 2] [0 1 3] [0 2 1] [0 2 3] [0 3 1] [0 3 2] [1 0 2] [1 0 3] [1 2 0] [1 2 3] [1 3 0] [1 3 2] [2 0 1] [2 0 3] [2 1 0] [2 1 3] [2 3 0] [2 3 1] [3 0 1] [3 0 2] [3 1 0] [3 1 2] [3 2 0] [3 2 1]])
+
+      (set perms [])
+      (list:permutations [0 1 2 3] 5 (fun (data) (append! perms data)))
+      (test:eq perms [])
+
+      (set perms [])
+      (list:permutations [] 0 (fun (data) (append! perms data)))
+      (test:eq perms []) }) })
