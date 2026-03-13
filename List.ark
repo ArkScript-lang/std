@@ -839,14 +839,14 @@
 # @param _f function to call on each permutation. It can return list:stopIteration to stop iteration early
 # =begin
 # (let data [0 1 2 3])
-# (list:permutations data 3 (fun (perm) (print perm)))
+# (list:combinations data 3 (fun (perm) (print perm)))
 # # [0 1 2]
 # # [0 1 3]
 # # [0 2 3]
 # # [1 2 3]
 # =end
 # @author https://github.com/SuperFola
-(let permutations (fun ((ref _L) _r _f) {
+(let combinations (fun ((ref _L) _r _f) {
   (let _len (len _L))
   (if (and (<= _r _len) (> _r 0))
     {
@@ -873,6 +873,23 @@
                   (set _continue false)) }
               (set _continue false)) }) }) }) }))
 
+# @brief Compute permutations of length _r from a given list
+# @details The original list is not modified.
+# @param _L list to get values from
+# @param _r number of elements per permutation
+# @param _f function to call on each permutation. It can return list:stopIteration to stop iteration early
+# @deprecated Use list:combinations. Will be removed in ArkScript 4.5.0
+# =begin
+# (let data [0 1 2 3])
+# (list:permutations data 3 (fun (perm) (print perm)))
+# # [0 1 2]
+# # [0 1 3]
+# # [0 2 3]
+# # [1 2 3]
+# =end
+# @author https://github.com/SuperFola
+(let permutations combinations)
+
 # @brief Compute permutations of length _r from a given list, allowing individual elements to be repeated more than once
 # @details The original list is not modified.
 # @param _L list to get values from
@@ -880,7 +897,7 @@
 # @param _f function to call on each permutation. It can return list:stopIteration to stop iteration early
 # =begin
 # (let data [0 1 2])
-# (list:permutationsWithReplacement data 2 (fun (perm) (print perm)))
+# (list:combinationsWithReplacement data 2 (fun (perm) (print perm)))
 # # [0 0]
 # # [0 1]
 # # [0 2]
@@ -889,7 +906,7 @@
 # # [2 2]
 # =end
 # @author https://github.com/SuperFola
-(let permutationsWithReplacement (fun ((ref _L) _r _f) {
+(let combinationsWithReplacement (fun ((ref _L) _r _f) {
   (let _len (len _L))
   (if (and (!= 0 _len) (> _r 0))
     {
@@ -915,3 +932,22 @@
                 (if (= stopIteration (_f (select _L _indices)))
                   (set _continue false)) }
               (set _continue false)) }) }) }) }))
+
+# @brief Compute permutations of length _r from a given list, allowing individual elements to be repeated more than once
+# @details The original list is not modified.
+# @param _L list to get values from
+# @param _r number of elements per permutation
+# @param _f function to call on each permutation. It can return list:stopIteration to stop iteration early
+# @deprecated Use list:combinationsWithReplacement. Will be removed in ArkScript 4.5.0
+# =begin
+# (let data [0 1 2])
+# (list:permutationsWithReplacement data 2 (fun (perm) (print perm)))
+# # [0 0]
+# # [0 1]
+# # [0 2]
+# # [1 1]
+# # [1 2]
+# # [2 2]
+# =end
+# @author https://github.com/SuperFola
+(let permutationsWithReplacement combinationsWithReplacement)
