@@ -131,3 +131,27 @@
 (macro unpackPair (pair outx outy) {
   (let outx ($as-is (@ pair 0)))
   (let outy ($as-is (@ pair 1))) })
+
+# @brief Increment a variable, by generating a `set`
+# @param value symbol to increment
+# =begin
+# (mut n 0)
+# (++ n)
+# (print n)  # 1
+# (++ n)
+# (print n)  # 2
+# =end
+# @author https://github.com/SuperFola
+(macro ++ (value) (set value (+ 1 value)))
+
+# @brief Decrement a variable, by generating a `set`
+# @param value symbol to decrement
+# =begin
+# (mut n 0)
+# (-- n)
+# (print n)  # -1
+# (-- n)
+# (print n)  # -2
+# =end
+# @author https://github.com/SuperFola
+(macro -- (value) (set value (- value 1)))

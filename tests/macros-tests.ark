@@ -49,4 +49,14 @@
     (test:eq i 10)
 
     (until true
-      (test:expect false "this shouldn't trigger")) })})
+      (test:expect false "this shouldn't trigger")) })
+
+  (test:case "++ and --" {
+    (mut i 0)
+    (test:eq (++ i) 1)
+    (test:eq (++ i) 2)
+    (test:eq (++ i) 3)
+    (test:eq (-- i) 2)
+    (test:eq (-- i) 1)
+    (test:eq (-- i) 0)
+    (test:eq (-- i) -1) }) })
