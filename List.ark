@@ -660,9 +660,13 @@
 
   (mut _output [])
   (mut _last _start)
-  (while (if (> _step 0) (< _last _end) (> _last _end)) {
-    (append! _output _last)
-    (set _last (+ _last _step)) })
+  (while
+    (if (> _step 0)
+      (< _last _end)
+      (> _last _end))
+    {
+      (append! _output _last)
+      (set _last (+ _last _step)) })
 
   _output }))
 
