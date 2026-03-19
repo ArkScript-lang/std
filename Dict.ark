@@ -33,17 +33,6 @@
 # @author https://github.com/SuperFola
 (let contains? (fun (_D _key) (builtin__dict:contains _D _key)))
 
-# @brief Checks if the dictionary has a given key
-# @deprecated Use `dict:contains?`
-# @param _D dictionary
-# =begin
-# (let data (dict "key" "value"))
-# (print (dict:contains data "key"))  # true
-# (print (dict:contains data "test"))  # false
-# =end
-# @author https://github.com/SuperFola
-(let contains contains?)
-
 # @brief Get a value from a given dictionary using a key, or a default value if it doesn't exist
 # @param _D dictionary
 # @param _key key to get
@@ -55,7 +44,7 @@
 # =end
 # @author https://github.com/SuperFola
 (let getOrElse (fun (_D _key _default)
-  (if (contains _D _key)
+  (if (contains? _D _key)
     (get _D _key)
     _default)))
 
@@ -71,7 +60,7 @@
 # =end
 # @author https://github.com/SuperFola
 (let updateOrDefault (fun (_D _key _f _default)
-  (if (contains _D _key)
+  (if (contains? _D _key)
     (add _D _key (_f (get _D _key)))
     (add _D _key _default))))
 
@@ -96,16 +85,6 @@
 # =end
 # @author https://github.com/SuperFola
 (let keys (fun (_D) (builtin__dict:keys _D)))
-
-# @brief Computes the number of (key, value) pairs in a given dictionary
-# @param _D dictionary
-# @deprecated Use the builtin `len` instead
-# =begin
-# (let data (dict "key" "value"))
-# (print (dict:size data))  # 1
-# =end
-# @author https://github.com/SuperFola
-(let size (fun (_D) (builtin__dict:size _D)))
 
 # @brief Returns a list of the values of a dictionary
 # @param _D dictionary

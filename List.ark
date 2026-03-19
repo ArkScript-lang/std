@@ -59,15 +59,6 @@
 # @author https://github.com/SuperFola
 (let fill (fun (_count _val) (builtin__list:fill _count _val)))
 
-# @brief Function to call the `len` operator on a list
-# @param _L list to get the size of
-# @deprecated Use the builtin `len` instead
-# =begin
-# (print (list:size [1 2 3 4]))  # 4
-# =end
-# @author https://github.com/SuperFola
-(let size (fun (_L) (len _L)))
-
 # @brief Modify a given list and return a new one
 # @details The original list is not modified
 # @param list the list to modify

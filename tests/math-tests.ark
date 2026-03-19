@@ -42,8 +42,8 @@
     (test:expect (math:even? 2))
     (test:expect (math:even? 0))
     (test:expect (math:even? -2))
-    (test:expect (not (math:even 1)))
-    (test:expect (not (math:even -1))) })
+    (test:expect (not (math:even? 1)))
+    (test:expect (not (math:even? -1))) })
 
   (test:case "odd?" {
     (test:expect (math:odd? 1))

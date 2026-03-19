@@ -35,7 +35,7 @@
     (let mean (recombine
       (fun (a b) (/ a b))
       list:sum
-      list:size))
+      len))
     (test:eq (mean [0 1 1 2 3 5 8 13]) 4.125)
     (test:eq (mean [0]) 0)
 

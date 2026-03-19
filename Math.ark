@@ -171,22 +171,10 @@
 # @author https://github.com/rstefanic
 (let even? (fun (_n) (= 0 (mod _n 2))))
 
-# @brief Return true if the number is even, false otherwise
-# @deprecated Use `math:even?`
-# @param _n the number
-# @author https://github.com/rstefanic
-(let even even?)
-
 # @brief Return true if the number is odd, false otherwise
 # @param _n the number
 # @author https://github.com/rstefanic
 (let odd? (fun (_n) (= 1 (abs (mod _n 2)))))
-
-# @brief Return true if the number is odd, false otherwise
-# @deprecated Use `math:odd?`
-# @param _n the number
-# @author https://github.com/rstefanic
-(let odd odd?)
 
 # @brief Get the minimum between two numbers
 # @param _a the first number

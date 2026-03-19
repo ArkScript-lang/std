@@ -29,9 +29,9 @@
     (test:expect (not (list:contains? [1 2 3] "1")))
     (test:expect (list:contains? ["1" "2" "3"] "1")) })
 
-  (test:case "size" {
-    (test:eq (list:size []) 0)
-    (test:eq (list:size [1 2 3]) 3) })
+  (test:case "len" {
+    (test:eq (len []) 0)
+    (test:eq (len [1 2 3]) 3) })
 
   (test:case "forEach" {
     (list:forEach a (fun (e) {
