@@ -282,6 +282,8 @@
 # =end
 # @author https://github.com/Natendrtfm
 (let split (fun (_string _separator) {
+  (assert (not (empty? _separator)) "string:split expected a non-empty separator")
+
   (mut _at (find _string _separator))
   (let _seplen (len _separator))
   (let _strlen (len _string))
