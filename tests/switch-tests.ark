@@ -1,6 +1,14 @@
 (import std.Switch)
 (import std.Testing)
 
+(mut called 0)
+(let foo (fun () {
+  (set called (+ 1 called))
+  (if (> 1 called)
+    (test:expect false "foo shouldn't be evaluated more than once")
+    (test:expect true))
+  called }))
+
 (test:suite switch {
   (switch 12
     0  (test:expect false)
@@ -17,4 +25,15 @@
   (switch 1
     1 (test:expect true))
   (switch 1
-    2 (test:expect false)) })
+    2 (test:expect false))
+
+  (switch (foo)
+    0 (test:expect false)
+    1 (test:expect true)
+    2 (test:expect false)
+    _ (test:expect false))
+
+  (switch (let n 1)
+    0 (test:expect false)
+    1 (test:expect true)
+    _ (test:expect false)) })

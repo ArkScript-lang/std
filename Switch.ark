@@ -1,3 +1,10 @@
+(macro _switch_impl (var case then ...cases) {
+  ($if (= "_" ($repr case))
+    then
+    (if (= var case)
+      then
+      ($if (>= ($len cases) 2) (_switch_impl var ...cases)))) })
+
 # @brief Takes a value to match against a list of (possible value, code to run)...
 # @param value value to match
 # @param case first case
@@ -14,8 +21,6 @@
 # =end
 # @author https://github.com/SuperFola
 (macro switch (value case then ...cases) {
-  ($if (= "_" ($repr case))
-    then
-    (if (= value case)
-      then
-      ($if (>= ($len cases) 2) (switch value ...cases)))) })
+  (macro var ($gensym))
+  (let var value)
+  (_switch_impl var case then ...cases) })
