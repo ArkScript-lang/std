@@ -478,6 +478,31 @@
     (set _index (+ 1 _index)) })
   [_list1 _list2] }))
 
+# @brief Transpose a list of lists or list of strings
+# @details The original list is not modified. The smallest element size is used as the limit for selecting values
+# @param _L list of lists/strings to transpose
+# =begin
+# (let data [[1 2 3] [4 5 6] [7 8 9])
+# (print (list:transpose data))  # [[1 4 7] [2 5 8] [3 6 9]]
+# =end
+# @author https://github.com/SuperFola
+(let transpose (fun (_L) {
+  (mut _output [])
+  (mut _i 0)
+  (let _width (min (map _L len)))
+  (let _height (len _L))
+
+  (while (< _i _width) {
+    (mut _column [])
+    (mut _k 0)
+    (while (< _k _height) {
+      (append! _column (@@ _L _k _i))
+      (set _k (+ _k 1)) })
+
+    (append! _output _column)
+    (set _i (+ 1 _i)) })
+  _output }))
+
 # @brief Zip two lists into one: [1 2 3 4] and [5 6 7 8] will give [[1 5] [2 6] [3 7] [4 8]]
 # @details Lists must have the same size. Otherwise, only the first (min (len _a) (len _b)) elements will be used.
 # @param _a the first list to work on
@@ -764,31 +789,6 @@
     (set _i (+ 1 _i)) })
 
   _early }))
-
-# @brief Transpose a list of lists or list of strings
-# @details The original list is not modified. Elements should have the same length
-# @param _L list of lists/strings to transpose
-# =begin
-# (let data [[1 2 3] [4 5 6] [7 8 9])
-# (print (list:transpose data))  # [[1 4 7] [2 5 8] [3 6 9]]
-# =end
-# @author https://github.com/SuperFola
-(let transpose (fun (_L) {
-  (mut _output [])
-  (mut _i 0)
-  (let _width (len (head _L)))
-  (let _height (len _L))
-
-  (while (< _i _width) {
-    (mut _column [])
-    (mut _k 0)
-    (while (< _k _height) {
-      (append! _column (@@ _L _k _i))
-      (set _k (+ _k 1)) })
-
-    (append! _output _column)
-    (set _i (+ 1 _i)) })
-  _output }))
 
 # @brief Get the unique values in a given list
 # @details The original list is not modified.

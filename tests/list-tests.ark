@@ -219,7 +219,9 @@
     (test:eq (list:transpose data) [["1" " "] ["2" "4"] ["3" "5"] [" " " "] ["3" "6"] ["2" "4"] ["8" " "] [" " " "] [" " "3"] ["5" "8"] ["1" "7"]])
     (test:eq (list:transpose (list:transpose zipped)) zipped)
     (test:eq (list:transpose [[]]) [])
-    (test:eq (list:transpose [[1]]) [[1]]) })
+    (test:eq (list:transpose [[1]]) [[1]])
+    (test:eq (list:transpose [[1 2] [4 5 6]]) [[1 4] [2 5]])
+    (test:eq (list:transpose [[1 2 3] [4 5]]) [[1 4] [2 5]]) })
 
   (test:case "unique" {
     (test:eq (list:unique []) [])
