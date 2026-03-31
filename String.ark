@@ -68,6 +68,15 @@
 # @author https://github.com/SuperFola
 (let removeAt (fun (_str _index) (builtin__string:removeAt _str _index)))
 
+# @brief Compute the length of an UTF8 string by counting the number of codepoints
+# @param char a String
+# =begin
+# (string:utf8len "h")  # 1
+# (string:utf8len "🏳️‍⚧️")  # 5
+# =end
+# @author https://github.com/SuperFola
+(let utf8len (fun (_str) (builtin__string:utf8len _str)))
+
 # @brief Get the ordinal of a given character
 # @param char a String with a single UTF8 character
 # =begin

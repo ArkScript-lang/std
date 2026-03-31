@@ -38,8 +38,16 @@
     (test:eq (string:emptyOrWhitespace? "a ") false)
     (test:eq (string:emptyOrWhitespace? " a ") false) })
 
+  (test:case "utf8len" {
+    (test:eq (builtin__string:utf8len "hello") (string:utf8len "hello"))
+    (test:eq (string:utf8len "h") 1)
+    (test:eq (string:utf8len "hello") 5)
+    (test:eq (string:utf8len "hello\t") 6)
+    (test:eq (string:utf8len "🏳️‍⚧️") 5) })
+
   (test:case "ord, chr" {
     (test:eq (builtin__string:ord "a") (string:ord "a"))
+    (test:eq (string:ord "ø") 248)
     (test:eq (builtin__string:chr 65) (string:chr 65)) })
 
   (test:case "count" {
