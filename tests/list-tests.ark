@@ -87,6 +87,13 @@
     (test:eq (list:filter a (fun (e) (> e 100))) [])
     (test:eq (list:filter [] (fun (e) (> e 100))) []) })
 
+  (test:case "collect" {
+    (mut f (fun (x) (if (math:even? x) (* 10 x))))
+    (test:eq (list:collect a f) [20])
+    (test:eq (list:collect a (fun (x) ())) [])
+    (test:eq (list:collect [] f) [])
+    (test:eq (list:collect a math:even?) [false true false]) })
+
   (test:case "sortByKey" {
     (test:eq (list:sortByKey reversedZipped (fun (e) (head e))) zipped)
     (test:eq (list:sortByKey [9 8 1] (fun (e) e)) [1 8 9])

@@ -230,6 +230,31 @@
     (set _index (+ 1 _index)) })
   _output }))
 
+# @brief Apply a given function to each element of a list. If nil is returned, the element is discarded
+# @param _L the list to work on
+# @param _f the function to apply to each element
+# @details The original list is not modified.
+# =begin
+# (let nums [1 2 3 4 5 6 7 8 9])
+# (print
+#   (list:collect
+#     nums
+#     (fun (e)
+#       (if (= 0 (mod e 2)) (* 10 e)))))
+# # [20 40 60 80]
+# =end
+# @author https://github.com/SuperFola
+(let collect (fun ((ref _L) _f) {
+  (mut _index 0)
+  (mut _output [])
+
+  (while (< _index (len _L)) {
+    (let _result (_f (@ _L _index)))
+      (if (not (nil? _result))
+        (append! _output _result))
+    (set _index (+ 1 _index)) })
+  _output }))
+
 # @brief Sort elements in a list using a function to compute the key
 # @details Use the quicksort algorithm, the original list is not modified.
 # @param _L list to sort
