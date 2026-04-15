@@ -36,4 +36,8 @@
   (switch (let n 1)
     0 (test:expect false)
     1 (test:expect true)
-    _ (test:expect false)) })
+    _ (test:expect false))
+
+  # (switch ...) should count as a single expression
+  (test:eq (+ 0 (switch 1 1 1)) 1)
+  (test:eq ((fun () (switch 1 1 1))) 1) })

@@ -22,5 +22,6 @@
 # @author https://github.com/SuperFola
 (macro switch (value case then ...cases) {
   (macro var ($gensym))
-  (let var value)
-  (_switch_impl var case then ...cases) })
+  {
+    (let var value)
+    (_switch_impl var case then ...cases) } })
