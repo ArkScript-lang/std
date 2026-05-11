@@ -137,6 +137,15 @@
                           |d")
       "hello\n\nabc\nd") })
 
+  (test:case "first, last" {
+    (test:eq (string:first "" 5) "")
+    (test:eq (string:first "abc" 5) "abc")
+    (test:eq (string:first "abcdefijkl" 5) "abcde")
+
+    (test:eq (string:last "" 5) "")
+    (test:eq (string:last "abc" 5) "abc")
+    (test:eq (string:last "abcdefijkl" 5) "fijkl") })
+
   (test:case "startsWith?" {
     (test:expect (string:startsWith? "hello world" "hello"))
     (test:expect (not (string:startsWith? "hello world" "Hello")))

@@ -443,6 +443,30 @@
 
   _output }))
 
+# @brief Get the first n chars of a string
+# @param _L the string to work on
+# @param _n the number of char to take
+# =begin
+# (print (string:first "hello world" 4))  # "hell"
+# =end
+# @author https://github.com/SuperFola
+(let first (fun ((ref _L) _n)
+  (if (<= (len _L) _n)
+    _L
+    (builtin__slice _L 0 _n))))
+
+# @brief Get the last n chars of a string
+# @param _L the string to work on
+# @param _n the number of chars to take
+# =begin
+# (print (string:last "hello world" 4))  # "orld"
+# =end
+# @author https://github.com/SuperFola
+(let last (fun ((ref _L) _n)
+  (if (<= (len _L) _n)
+    _L
+    (builtin__slice _L (* -1 _n) nil))))
+
 # @brief Check if a string starts with a given prefix
 # @param _str string
 # @param _prefix prefix to look for
