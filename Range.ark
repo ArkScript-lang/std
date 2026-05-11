@@ -2,6 +2,7 @@
 # @param i the beginning of the range
 # @param _b the end of the range
 # @details Has a field `asList` to compute a list from the current state of the range, and another one `reset`.
+# @deprecated Use list:iota, list:range
 # =begin
 # (let obj (range:range 1 10))
 # (print (obj.asList))  # [1 2 3 4 5 6 7 8 9]
@@ -38,6 +39,7 @@
 # @param _r the range object
 # @param _f the function
 # @details The range is unmodified.
+# @deprecated Use list:forEach
 # =begin
 # (let obj (range:range 1 10))
 # (range:forEach obj (fun (e) (print e)))
@@ -55,6 +57,7 @@
 # @param _range the range object
 # @param _fun the filter function
 # @details The range is unmodified.
+# @deprecated Use list:filter
 # =begin
 # (import std.Math)
 # (let obj (range:range 1 10))
@@ -75,6 +78,7 @@
 # @param _range the range object
 # @param _fun the function to apply
 # @details The range is unmodified.
+# @deprecated Use list:map
 # =begin
 # (let obj (range:range 1 10))
 # (print (range:map obj (fun (e) (* e e))))  # [1 4 9 16 25 36 49 64 81]
@@ -94,6 +98,7 @@
 # @param _range the range object
 # @param _fun the reduction function
 # @details The range is unmodified.
+# @deprecated Use list:reduce, list:foldLeft
 # =begin
 # (let obj (range:range 1 10))
 # (print (range:reduce obj (fun (e) (+ e e))))  # 45
