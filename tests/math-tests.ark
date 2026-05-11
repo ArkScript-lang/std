@@ -80,6 +80,8 @@
 
   (test:case "pow" {
     (test:eq (math:pow 2 2) 4)
+    (test:eq (math:pow 2 3) 8)
+    (test:eq (math:pow 2 -3) 0.125)
     (test:eq (math:pow 4 0.5) 2) })
 
   (test:case "clamp" {
