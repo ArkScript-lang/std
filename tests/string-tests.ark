@@ -52,6 +52,12 @@
     (test:eq (string:utf8len "hello\t") 6)
     (test:eq (string:utf8len "🏳️‍⚧️") 5) })
 
+  (test:case "codepoints" {
+    (test:eq (builtin__string:codepoints "hello") (string:codepoints "hello"))
+    (test:eq (string:codepoints "") [])
+    (test:eq (string:codepoints "hello") ["h" "e" "l" "l" "o"])
+    (test:eq (list:map (string:codepoints "🏳️‍⚧️") string:ord) [127987 65039 8205 9895 65039]) })
+
   (test:case "ord, chr" {
     (test:eq (builtin__string:ord "a") (string:ord "a"))
     (test:eq (string:ord "ø") 248)
