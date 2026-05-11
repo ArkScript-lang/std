@@ -106,6 +106,11 @@
 # @author https://github.com/SuperFola
 (let setAt (fun (_str _index _x) (builtin__string:setAt _str _index _x)))
 
+# @brief Check if a string is only ASCII
+# @param _str String where the lookup occurs
+# @author https://github.com/SuperFola
+(let ascii? (fun (_str) (= (len _str) (builtin__string:utf8len _str))))
+
 # @brief Check if a string contains a word
 # @param _str String where the lookup occurs
 # @param _word Word to look up for

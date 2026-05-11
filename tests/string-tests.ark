@@ -12,6 +12,13 @@
     (test:eq (builtin__string:removeAt "abcd" -1) "abc")
     (test:eq (builtin__string:setAt "abcd" 1 "z") (string:setAt "abcd" 1 "z")) })
 
+  (test:case "ascii?" {
+    (test:expect (string:ascii? ""))
+    (test:expect (string:ascii? string:asciiLetters))
+    (test:expect (string:ascii? string:whitespace))
+    (test:expect (not (string:ascii? "abcdé")))
+    (test:expect (not (string:ascii? "🏳️‍⚧️"))) })
+
   (test:case "contains?" {
     (test:expect (string:contains? "hello, world" "h"))
     (test:expect (string:contains? "hello, world" "hello"))
