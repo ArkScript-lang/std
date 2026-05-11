@@ -77,10 +77,12 @@
 # @author https://github.com/SuperFola
 (let utf8len (fun (_str) (builtin__string:utf8len _str)))
 
-# @brief Compute the UTF8 codepoints that makes a string, and return them as a List
+# @brief Compute the UTF8 codepoints that makes a string, and return them as a List of numbers
 # @param _str String
 # =begin
-# (print (string:codepoints "abc"))  # ["a" "b" "c"]
+# (print (string:codepoints "abc"))  # [97 98 99]
+# # strings can be reassembled from their codepoints:
+# (print (string:join (list:map (string:codepoints "🏳️‍⚧️") string:chr) ""))  # 🏳️‍⚧️
 # =end
 # @author https://github.com/SuperFola
 (let codepoints (fun (_str) (builtin__string:codepoints _str)))
