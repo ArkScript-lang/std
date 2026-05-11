@@ -63,6 +63,21 @@
     (test:eq (list:sum b) (+ 4 5 6))
     (test:eq (list:sum []) 0) })
 
+  (test:case "cumulativeSum" {
+    (test:eq (list:cumulativeSum []) [])
+    (test:eq (list:cumulativeSum [1]) [1])
+    (test:eq (list:cumulativeSum [0 0 0]) [0 0 0])
+    (test:eq (list:cumulativeSum [1 2 3]) [1 3 6]) })
+
+  (test:case "cumulativeProduct" {
+    (test:eq (list:cumulativeProduct []) [])
+    (test:eq (list:cumulativeProduct [1]) [1])
+    (test:eq (list:cumulativeProduct [0]) [0])
+    (test:eq (list:cumulativeProduct [1 1]) [1 1])
+    (test:eq (list:cumulativeProduct [1 0]) [1 0])
+    (test:eq (list:cumulativeProduct [0 1]) [0 0])
+    (test:eq (list:cumulativeProduct [1 2 3 4]) [1 2 6 24]) })
+
   (test:case "min" {
     (test:eq (list:min []) nil)
     (test:eq (list:min b) 4)

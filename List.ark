@@ -158,6 +158,25 @@
     (set _index (+ 1 _index)) })
   _output }))
 
+# @brief Cumulative product of a list
+# @param _L the list to iterate over
+# @details The original list is not modified.
+# =begin
+# (let collection [1 2 3 4])
+# (let p (list:cumulativeProduct collection))  # => [1 2 6 24]
+# =end
+# @author https://github.com/SuperFola
+(let cumulativeProduct (fun ((ref _L)) {
+  (mut _index 0)
+  (mut _output [])
+  (mut _prev 1)
+
+  (while (< _index (len _L)) {
+    (append! _output (* _prev (@ _L _index)))
+    (set _prev (@ _output -1))
+    (set _index (+ 1 _index)) })
+  _output }))
+
 # @brief Iterate over a given list and sum all the elements.
 # @param _L the list to iterate over
 # @details The original list is not modified.
@@ -172,6 +191,25 @@
 
   (while (< _index (len _L)) {
     (set _output (+ _output (@ _L _index)))
+    (set _index (+ 1 _index)) })
+  _output }))
+
+# @brief Cumulative sum of a list
+# @param _L the list to iterate over
+# @details The original list is not modified.
+# =begin
+# (let collection [1 2 5 12])
+# (let p (list:cumulativeSum collection))  # => [1 3 8 20]
+# =end
+# @author https://github.com/SuperFola
+(let cumulativeSum (fun ((ref _L)) {
+  (mut _index 0)
+  (mut _output [])
+  (mut _prev 0)
+
+  (while (< _index (len _L)) {
+    (append! _output (+ _prev (@ _L _index)))
+    (set _prev (@ _output -1))
     (set _index (+ 1 _index)) })
   _output }))
 
