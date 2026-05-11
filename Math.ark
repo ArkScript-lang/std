@@ -214,7 +214,23 @@
 # @param _x the number to pow
 # @param _a the exponent
 # @author https://github.com/SuperFola
-(let pow (fun (_x _a) (exp (* _a (ln _x)))))
+(let pow (fun ((mut _x) (mut _a)) {
+  (if (= 0 (mod _a 1))
+    (if (= 1 _a)
+      _x
+      (if (= 0 _a)
+        1
+        {
+          (let _c _x)
+          (if (> _a 0)
+            (while (> _a 1) {
+              (set _x (* _c _x))
+              (set _a (- _a 1)) })
+            (while (<= _a 0) {
+              (set _x (/ _x _c))
+              (set _a (+ _a 1)) }))
+          _x }))
+    (exp (* _a (ln _x)))) }))
 
 # @brief Get the square root of a number
 # @details Square roots can't be taken for negative numbers for obvious reasons.
