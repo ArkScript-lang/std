@@ -24,6 +24,15 @@
 
     (test:eq (builtin__list:setAt a 0 5) (list:setAt a 0 5)) })
 
+  (test:case "zeros, ones" {
+    (test:eq (list:zeros 0) [])
+    (test:eq (list:zeros 1) [0])
+    (test:eq (list:zeros 5) [0 0 0 0 0])
+
+    (test:eq (list:ones 0) [])
+    (test:eq (list:ones 1) [1])
+    (test:eq (list:ones 5) [1 1 1 1 1]) })
+
   (test:case "contains?" {
     (test:expect (list:contains? [1 2 3] 1))
     (test:expect (not (list:contains? [1 2 3] "1")))

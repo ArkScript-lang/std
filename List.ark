@@ -59,6 +59,22 @@
 # @author https://github.com/SuperFola
 (let fill (fun (_count _val) (builtin__list:fill _count _val)))
 
+# @brief Generate a List of n zeros
+# @param count the number of zeros
+# =begin
+# (list:zeros 4)  # [0 0 0 0]
+# =end
+# @author https://github.com/SuperFola
+(let zeros (fun (_count) (builtin__list:fill _count 0)))
+
+# @brief Generate a List of n ones
+# @param count the number of ones
+# =begin
+# (list:ones 4)  # [1 1 1 1]
+# =end
+# @author https://github.com/SuperFola
+(let ones (fun (_count) (builtin__list:fill _count 1)))
+
 # @brief Modify a given list and return a new one
 # @details The original list is not modified
 # @param list the list to modify
