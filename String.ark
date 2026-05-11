@@ -465,6 +465,34 @@
   (let _end (- (len _str) (len _suffix)))
   (= _end (findAfter _str _suffix _end)) }))
 
+# @brief Return a string left padded by a given character _c to make a string of length _n
+# @param _str string to left pad
+# @param _n width of the final string
+# @param _c char to use for padding
+# =begin
+# (print (string:lpad "42" 4 "a"))  # aa42
+# =end
+# @author https://github.com/SuperFola
+(let lpad (fun (_str _n _c) {
+  (assert (= 1 (len _c)) "string:lpad expected a single character to pad")
+  (if (>= (len _str) _n)
+    _str
+    (+ (repeat _c (- _n (len _str))) _str)) }))
+
+# @brief Return a string right padded by a given character _c to make a string of length _n
+# @param _str string to left pad
+# @param _n width of the final string
+# @param _c char to use for padding
+# =begin
+# (print (string:rpad "42" 4 "a"))  # 42aa
+# =end
+# @author https://github.com/SuperFola
+(let rpad (fun (_str _n _c) {
+  (assert (= 1 (len _c)) "string:rpad expected a single character to pad")
+  (if (>= (len _str) _n)
+    _str
+    (+ _str (repeat _c (- _n (len _str))))) }))
+
 # @brief Return a string filled with '0' digits to make a string of length _n
 # @param _str string to left fill
 # @param _n width of the final string
@@ -472,10 +500,7 @@
 # (print (string:zfill "42" 4))  # 0042
 # =end
 # @author https://github.com/SuperFola
-(let zfill (fun (_str _n)
-  (if (>= (len _str) _n)
-    _str
-    (+ (repeat "0" (- _n (len _str))) _str))))
+(let zfill (fun (_str _n) (lpad _str _n "0")))
 
 # @brief Return a centered string of length _len, using spaces as fill chars
 # @param _str string to center

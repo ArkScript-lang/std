@@ -125,17 +125,17 @@
       (string:stripMargin "   |hello
                               |abc")
       "hello\nabc")
-  (test:eq
-    (string:stripMargin "hello
-                        |abc
-                        |d")
-    "hello\nabc\nd")
-  (test:eq
-    (string:stripMargin "hello
-                        |
-                        |abc
-                        |d")
-    "hello\n\nabc\nd") })
+    (test:eq
+      (string:stripMargin "hello
+                          |abc
+                          |d")
+      "hello\nabc\nd")
+    (test:eq
+      (string:stripMargin "hello
+                          |
+                          |abc
+                          |d")
+      "hello\n\nabc\nd") })
 
   (test:case "startsWith?" {
     (test:expect (string:startsWith? "hello world" "hello"))
@@ -145,11 +145,27 @@
     (test:expect (string:startsWith? "" "")) })
 
   (test:case "endsWith?" {
-      (test:expect (string:endsWith? "hello world" "world"))
-      (test:expect (not (string:endsWith? "hello world" "World")))
-      (test:expect (not (string:endsWith? "hello world" "hello")))
-      (test:expect (not (string:endsWith? "hello world" "worl")))
-      (test:expect (string:endsWith? "" "")) })
+    (test:expect (string:endsWith? "hello world" "world"))
+    (test:expect (not (string:endsWith? "hello world" "World")))
+    (test:expect (not (string:endsWith? "hello world" "hello")))
+    (test:expect (not (string:endsWith? "hello world" "worl")))
+    (test:expect (string:endsWith? "" "")) })
+
+  (test:case "lpad" {
+    (test:eq (string:lpad "" 4 "1") "1111")
+    (test:eq (string:lpad "2" 4 "1") "1112")
+    (test:eq (string:lpad "22" 4 "1") "1122")
+    (test:eq (string:lpad "222" 4 "1") "1222")
+    (test:eq (string:lpad "2222" 4 "1") "2222")
+    (test:eq (string:lpad "22222" 4 "1") "22222") })
+
+  (test:case "rpad" {
+    (test:eq (string:rpad "" 4 "1") "1111")
+    (test:eq (string:rpad "2" 4 "1") "2111")
+    (test:eq (string:rpad "22" 4 "1") "2211")
+    (test:eq (string:rpad "222" 4 "1") "2221")
+    (test:eq (string:rpad "2222" 4 "1") "2222")
+    (test:eq (string:rpad "22222" 4 "1") "22222") })
 
   (test:case "zfill" {
     (test:eq (string:zfill "" 4) "0000")
