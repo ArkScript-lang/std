@@ -126,6 +126,16 @@
     (test:eq (list:flatMap a (fun (a) (* 2 a))) [2 4 6])
     (test:eq (list:flatMap a (fun (a) [a a])) [1 1 2 2 3 3]) })
 
+  (test:case "first" {
+    (test:eq (list:first [] 5) [])
+    (test:eq (list:first [1 2] 5) [1 2])
+    (test:eq (list:first [1 2 3 4 5 6 7] 5) [1 2 3 4 5]) })
+
+  (test:case "last" {
+    (test:eq (list:last [] 4) [])
+    (test:eq (list:last [1 2 3] 4) [1 2 3])
+    (test:eq (list:last [1 2 3 4 5 6] 4) [3 4 5 6]) })
+
   (test:case "take" {
     (test:eq (list:take a 1) [1])
     (test:eq (list:take a 100) a) })

@@ -392,6 +392,33 @@
     (set _index (+ 1 _index)) })
   _output }))
 
+# @brief Get the first n elements of a list
+# @details This is equivalent to `list:take`
+# @param _L the list to work on
+# @param _n the number of elements to take
+# @details The original list is not modified.
+# =begin
+# (print (list:first [1 2 3 4 5 6 7 8 9] 4))  # [1 2 3 4]
+# =end
+# @author https://github.com/SuperFola
+(let first (fun ((ref _L) _n)
+  (if (<= (len _L) _n)
+    _L
+    (builtin__slice _L 0 _n))))
+
+# @brief Get the last n elements of a list
+# @param _L the list to work on
+# @param _n the number of elements to take
+# @details The original list is not modified.
+# =begin
+# (print (list:last [1 2 3 4 5 6 7 8 9] 4))  # [6 7 8 9]
+# =end
+# @author https://github.com/SuperFola
+(let last (fun ((ref _L) _n)
+  (if (<= (len _L) _n)
+    _L
+    (builtin__slice _L (* -1 _n) nil))))
+
 # @brief Take the first n elements of
 # @param _L the list to work on
 # @param _n the number of elements to take
