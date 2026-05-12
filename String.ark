@@ -85,6 +85,7 @@
 # (print (string:join (list:map (string:codepoints "🏳️‍⚧️") string:chr) ""))  # 🏳️‍⚧️
 # =end
 # @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let codepoints (fun (_str) (builtin__string:codepoints _str)))
 
 # @brief Get the ordinal of a given character
@@ -119,6 +120,7 @@
 # @brief Check if a string is only ASCII
 # @param _str String where the lookup occurs
 # @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let ascii? (fun (_str) (= (len _str) (builtin__string:utf8len _str))))
 
 # @brief Check if a string contains a word
@@ -465,6 +467,7 @@
 # (print (string:first "hello world" 4))  # "hell"
 # =end
 # @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let first (fun ((ref _L) _n)
   (if (<= (len _L) _n)
     _L
@@ -477,6 +480,7 @@
 # (print (string:last "hello world" 4))  # "orld"
 # =end
 # @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let last (fun ((ref _L) _n)
   (if (<= (len _L) _n)
     _L
@@ -512,6 +516,7 @@
 # (print (string:lpad "42" 4 "a"))  # aa42
 # =end
 # @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let lpad (fun (_str _n _c) {
   (assert (= 1 (len _c)) "string:lpad expected a single character to pad")
   (if (>= (len _str) _n)
@@ -526,6 +531,7 @@
 # (print (string:rpad "42" 4 "a"))  # 42aa
 # =end
 # @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let rpad (fun (_str _n _c) {
   (assert (= 1 (len _c)) "string:rpad expected a single character to pad")
   (if (>= (len _str) _n)
