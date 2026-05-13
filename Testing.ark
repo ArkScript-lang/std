@@ -261,7 +261,9 @@
   (set testing:_suite (testing:_make_suite ($repr _name)))
 
   (let ($symcat _name "-output") (testing:_runner
-    ($repr _name)
+    ($if (= "String" ($type _name))
+      _name
+      ($repr _name))
     (fun () ($as-is
         {
           _body }))))

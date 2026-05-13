@@ -75,7 +75,7 @@
     (test:eq (string:toUpper "ABCDEFGHIJKLMNOPQRSTUVWXYZ") "ABCDEFGHIJKLMNOPQRSTUVWXYZ") })
 
   (test:case "reverse" {
-    (test:eq (string:reverse "dlrow olleh") "hello world" )
+    (test:eq (string:reverse "dlrow olleh") "hello world")
     (test:eq (string:reverse "") "")
     (test:eq (string:reverse "a") "a") })
 
