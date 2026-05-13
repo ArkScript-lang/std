@@ -29,7 +29,32 @@
     (test:eq (builtin__math:tanh 5) (math:tanh 5))
     (test:eq (builtin__math:acosh 5) (math:acosh 5))
     (test:eq (builtin__math:asinh 5) (math:asinh 5))
-    (test:eq (builtin__math:atanh 0.5) (math:atanh 0.5)) })
+    (test:eq (builtin__math:atanh 0.5) (math:atanh 0.5))
+    (test:eq (builtin__math:countOnes 1234) (math:countOnes 1234))
+    (test:eq (builtin__math:countZeros 1234) (math:countZeros 1234))
+    (test:eq (builtin__math:bitNot 1234) (math:bitNot 1234))
+    (test:eq (builtin__math:bitAnd 1234 5678) (math:bitAnd 1234 5678))
+    (test:eq (builtin__math:bitOr 1234 5678) (math:bitOr 1234 5678))
+    (test:eq (builtin__math:bitXor 1234 5678) (math:bitXor 1234 5678))
+    (test:eq (builtin__math:lshift 1234 2) (math:lshift 1234 2))
+    (test:eq (builtin__math:rshift 1234 6) (math:rshift 1234 6)) })
+
+  (test:case "bitwise" {
+    (test:eq (math:countOnes 5) 2)
+    (test:eq (math:countOnes 63) 6)
+    (test:eq (math:countZeros 63) 58)
+    (test:eq (math:countZeros 65535) 48)
+
+    (test:eq (math:bitNot 5) -6)
+    (test:eq (math:bitAnd 4 12) 4)
+    (test:eq (math:bitAnd 4 10) 0)
+    (test:eq (math:bitOr 4 10) 14)
+    (test:eq (math:bitOr 4 1) 5)
+    (test:eq (math:bitXor 4 12) 8)
+    (test:eq (math:bitXor 4 10) 14)
+    (test:eq (math:lshift 3 2) 12)
+    (test:eq (math:rshift 13 2) 3)
+    (test:eq (math:rshift -14 2) -4) })
 
   (test:case "abs" {
     (test:eq (math:abs -1) 1)
