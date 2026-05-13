@@ -158,6 +158,87 @@
 # @author https://github.com/SuperFola
 (let NaN builtin__math:NaN)
 
+# @brief Count the number of '1' bits in the given value
+# @param value the Number, must be an integer
+# =begin
+# (math:countOnes 5)  # 2
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let countOnes (fun (_x) (builtin__math:countOnes _x)))
+
+# @brief Count the number of '0' bits in the given value
+# @param value the Number, must be an integer
+# =begin
+# (math:countZeros 5)  # 1
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let countZeros (fun (_x) (builtin__math:countZeros _x)))
+
+# @brief Invert a number on 64 bits
+# @param value Number, must be an integer
+# =begin
+# (math:bitNot 5)  # -6
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let bitNot (fun (_x) (builtin__math:bitNot _x)))
+
+# @brief Bitwise and
+# @param lhs Number, must be an integer
+# @param rhs Number, must be an integer
+# =begin
+# (math:bitAnd 4 12)  # 4
+# (math:bitAnd 4 10)  # 0
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let bitAnd (fun (_a _b) (builtin__math:bitAnd _a _b)))
+
+# @brief Bitwise or
+# @param lhs Number, must be an integer
+# @param rhs Number, must be an integer
+# =begin
+# (math:bitOr 4 10)  # 14
+# (math:bitOr 4 1)  # 5
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let bitOr (fun (_a _b) (builtin__math:bitOr _a _b)))
+
+# @brief Bitwise exclusive or of lhs and rhs
+# @param lhs Number, must be an integer
+# @param rhs Number, must be an integer
+# =begin
+# (math:bitXor 4 12)  # 8
+# (math:bitXor 4 10)  # 14
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let bitXor (fun (_a _b) (builtin__math:bitXor _a _b)))
+
+# @brief Left bit shift
+# @param lhs Number, must be an integer
+# @param rhs Number, must be an integer
+# =begin
+# (math:lshift 3 2)  # 12
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let lshift (fun (_a _b) (builtin__math:lshift _a _b)))
+
+# @brief Right bit shift
+# @param lhs Number, must be an integer
+# @param rhs Number, must be an integer
+# =begin
+# (math:rshift 13 2)  # 3
+# (math:rshift -14 2)  # -4
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let rshift (fun (_a _b) (builtin__math:rshift _a _b)))
+
 # @brief Return the absolute value of a number
 # @param _x the number to get the absolute value of
 # @author https://github.com/rstefanic
