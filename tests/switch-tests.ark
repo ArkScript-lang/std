@@ -9,7 +9,7 @@
     (test:expect true))
   called }))
 
-(test:suite switch {
+(test:suite "switch" {
   (switch 12
     0  (test:expect false)
     -1   (test:expect false)
