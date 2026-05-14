@@ -239,6 +239,153 @@
 # @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let rshift (fun (_a _b) (builtin__math:rshift _a _b)))
 
+# @brief Finds the smallest integral power of 2 not less than the given value
+# @param value Number, must be an integer
+# =begin
+# (math:bitCeil 4)  # 4
+# (math:bitCeil 7)  # 8
+# (math:bitCeil 8)  # 8
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let bitCeil (fun (_x) (builtin__math:bitCeil _x)))
+
+# @brief Finds the largest integral power of 2 not greater than the given value
+# @param value Number, must be an integer
+# =begin
+# (math:bitFloor 4)  # 4
+# (math:bitFloor 7)  # 4
+# (math:bitFloor 8)  # 8
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let bitFloor (fun (_x) (builtin__math:bitFloor _x)))
+
+# @brief Finds the smallest number of bits needed to represent the given value
+# @param value Number, must be an integer
+# =begin
+# (math:bitWidth 2)  # 2
+# (math:bitWidth 7)  # 3
+# (math:bitWidth 8)  # 4
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let bitWidth (fun (_x) (builtin__math:bitWidth _x)))
+
+# @brief Counts the number of consecutive 0 bits, starting from the most significant bit
+# @param n Number, must be an integer
+# @param bits Number of bits to represent n in, must be an integer
+# =begin
+# (math:countLeftZeros 30 8)  # 3
+# (math:countLeftZeros 227 8)  # 0
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let countLeftZeros (fun (_n _bits) (builtin__math:countLeftZeros _n _bits)))
+
+# @brief Counts the number of consecutive 1 bits, starting from the most significant bit
+# @param n Number, must be an integer
+# @param bits Number of bits to represent n in, must be an integer
+# =begin
+# (math:countLeftOnes 30 8)  # 4
+# (math:countLeftOnes 227 8)  # 3
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let countLeftOnes (fun (_n _bits) (builtin__math:countLeftOnes _n _bits)))
+
+# @brief Counts the number of consecutive 0 bits, starting from the least significant bit
+# @param n Number, must be an integer
+# @param bits Number of bits to represent n in, must be an integer
+# =begin
+# (math:countRightZeros 30 8)  # 1
+# (math:countRightZeros 227 8)  # 0
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let countRightZeros (fun (_n _bits) (builtin__math:countRightZeros _n _bits)))
+
+# @brief Counts the number of consecutive 1 bits, starting from the least significant bit
+# @param n Number, must be an integer
+# @param bits Number of bits to represent n in, must be an integer
+# =begin
+# (math:countRightOnes 30 8)  # 0
+# (math:countRightOnes 227 8)  # 2
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let countRightOnes (fun (_n _bits) (builtin__math:countRightOnes _n _bits)))
+
+# @brief Computes the result of bitwise left-rotation of _x by _count
+# @param _x Number, must be an integer
+# @param _count Number, must be an integer
+# @param _bytecount Number of bytes to shift on, must be an integer
+# =begin
+# (math:circularLeftShift 29 4 1)  # 209
+# (math:circularLeftShift 29 9 1)  # 58
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let circularLeftShift (fun (_x (mut _count) _bytecount) {
+  (assert (and (>= _bytecount 1) (<= _bytecount 8)) "bytecount must be in [1, 8]")
+  (let _max (- (* 8 _bytecount) 1))
+  (let _mask (- (lshift 1 (* 8 _bytecount)) 1))
+  (set _count (bitAnd _count _max))
+  (bitAnd (bitOr (lshift _x _count) (rshift _x (bitAnd (* -1 _count) _max))) _mask) }))
+
+# @brief Computes the result of bitwise left-rotation of _x by _count
+# @param _x Number, must be an integer
+# @param _count Number, must be an integer
+# @param _bytecount Number of bytes to shift on, must be an integer
+# =begin
+# (math:circularRightShift 29 9 1)  # 142
+# (math:circularRightShift 29 2 1)  # 71
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let circularRightShift (fun (_x (mut _count) _bytecount) {
+  (assert (and (>= _bytecount 1) (<= _bytecount 8)) "bytecount must be in [1, 8]")
+  (let _max (- (* 8 _bytecount) 1))
+  (let _mask (- (lshift 1 (* 8 _bytecount)) 1))
+  (set _count (bitAnd _count _max))
+  (bitAnd (bitOr (rshift _x _count) (lshift _x (bitAnd (* -1 _count) _max))) _mask) }))
+
+(let _base_conversion_alphabet "0123456789abcdefghijklmnopqrstuvwxyz")
+
+# @brief Convert a number in a another base (in [2, 36[)
+# @param _x Number, must be an integer
+# @param _base Number, must be an integer
+# =begin
+# (math:toBase 10 2)  # "1010"
+# (math:toBase 165 16)  # "a5"
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let toBase (fun ((mut _x) _base) {
+  (assert (and (> _base 1) (< _base 36)) "Base must be in [2, 36[")
+  (mut _out "")
+  (while _x {
+    (set _out (+ (@ _base_conversion_alphabet (mod _x _base)) _out))
+    (set _x (floordiv _x _base)) })
+  _out }))
+
+# @brief Count the digits of a number in a given base (in [2, 36[)
+# @param _x Number, must be an integer
+# @param _base Number, must be an integer
+# =begin
+# (math:countDigits 10 2)  # 4
+# (math:countDigits 165 16)  # 2
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let countDigits (fun ((mut _x) _base) {
+  (assert (and (> _base 1) (< _base 36)) "Base must be in [2, 36[")
+  (mut _out 0)
+  (while _x {
+    (set _out (+ 1 _out))
+    (set _x (floordiv _x _base)) })
+  _out }))
+
 # @brief Return the absolute value of a number
 # @param _x the number to get the absolute value of
 # @author https://github.com/rstefanic

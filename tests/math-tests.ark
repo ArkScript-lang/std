@@ -37,7 +37,14 @@
     (test:eq (builtin__math:bitOr 1234 5678) (math:bitOr 1234 5678))
     (test:eq (builtin__math:bitXor 1234 5678) (math:bitXor 1234 5678))
     (test:eq (builtin__math:lshift 1234 2) (math:lshift 1234 2))
-    (test:eq (builtin__math:rshift 1234 6) (math:rshift 1234 6)) })
+    (test:eq (builtin__math:rshift 1234 6) (math:rshift 1234 6))
+    (test:eq (builtin__math:bitCeil 1234) (math:bitCeil 1234))
+    (test:eq (builtin__math:bitFloor 1234) (math:bitFloor 1234))
+    (test:eq (builtin__math:bitWidth 1234) (math:bitWidth 1234))
+    (test:eq (builtin__math:countLeftZeros 1234 32) (math:countLeftZeros 1234 32))
+    (test:eq (builtin__math:countLeftOnes 1234 32) (math:countLeftOnes 1234 32))
+    (test:eq (builtin__math:countRightZeros 1234 32) (math:countRightZeros 1234 32))
+    (test:eq (builtin__math:countRightOnes 1234 32) (math:countRightOnes 1234 32)) })
 
   (test:case "bitwise" {
     (test:eq (math:countOnes 5) 2)
@@ -54,7 +61,33 @@
     (test:eq (math:bitXor 4 10) 14)
     (test:eq (math:lshift 3 2) 12)
     (test:eq (math:rshift 13 2) 3)
-    (test:eq (math:rshift -14 2) -4) })
+    (test:eq (math:rshift -14 2) -4)
+
+    (test:eq (math:countLeftZeros 30 8) 3)
+    (test:eq (math:countLeftZeros 227 8) 0)
+    (test:eq (math:countLeftOnes 30 5) 4)
+    (test:eq (math:countLeftOnes 30 8) 0)
+    (test:eq (math:countLeftOnes 227 8) 3)
+    (test:eq (math:countRightZeros 30 8) 1)
+    (test:eq (math:countRightZeros 227 8) 0)
+    (test:eq (math:countRightOnes 30 8) 0)
+    (test:eq (math:countRightOnes 227 8) 2)
+
+    (test:eq (math:circularLeftShift 29 4 1) 209)
+    (test:eq (math:circularLeftShift 29 9 1) 58)
+    (test:eq (math:circularRightShift 29 9 1) 142)
+    (test:eq (math:circularRightShift 29 2 1) 71) })
+
+  (test:case "toBase" {
+    (test:eq (math:toBase 10 10) "10")
+    (test:eq (math:toBase 10 16) "a")
+    (test:eq (math:toBase 10 2) "1010")
+    (test:eq (math:toBase 165 16) "a5") })
+
+  (test:case "countDigits" {
+    (test:eq (math:countDigits 10 2) 4)
+    (test:eq (math:countDigits 10 10) 2)
+    (test:eq (math:countDigits 165 16) 2) })
 
   (test:case "abs" {
     (test:eq (math:abs -1) 1)
