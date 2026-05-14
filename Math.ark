@@ -362,7 +362,7 @@
 # @author https://github.com/SuperFola
 # @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let toBase (fun ((mut _x) _base) {
-  (assert (and (> _base 1) (< _base 36)) "Base must be in [2, 36[")
+  (assert (and (> _base 1) (<= _base 36)) "Base must be in [2, 36]")
   (mut _out "")
   (while _x {
     (set _out (+ (@ _base_conversion_alphabet (mod _x _base)) _out))
@@ -379,7 +379,7 @@
 # @author https://github.com/SuperFola
 # @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let countDigits (fun ((mut _x) _base) {
-  (assert (and (> _base 1) (< _base 36)) "Base must be in [2, 36[")
+  (assert (and (> _base 1) (<= _base 36)) "Base must be in [2, 36]")
   (mut _out 0)
   (while _x {
     (set _out (+ 1 _out))

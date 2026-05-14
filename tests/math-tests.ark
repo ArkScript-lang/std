@@ -82,12 +82,16 @@
     (test:eq (math:toBase 10 10) "10")
     (test:eq (math:toBase 10 16) "a")
     (test:eq (math:toBase 10 2) "1010")
-    (test:eq (math:toBase 165 16) "a5") })
+    (test:eq (math:toBase 165 16) "a5")
+    (test:eq (math:toBase 35 36) "z")
+    (test:eq (math:toBase 36 36) "10") })
 
   (test:case "countDigits" {
     (test:eq (math:countDigits 10 2) 4)
     (test:eq (math:countDigits 10 10) 2)
-    (test:eq (math:countDigits 165 16) 2) })
+    (test:eq (math:countDigits 165 16) 2)
+    (test:eq (math:countDigits 35 36) 1)
+    (test:eq (math:countDigits 36 36) 2) })
 
   (test:case "abs" {
     (test:eq (math:abs -1) 1)
