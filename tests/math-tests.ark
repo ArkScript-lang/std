@@ -79,6 +79,7 @@
     (test:eq (math:circularRightShift 29 2 1) 71) })
 
   (test:case "toBase" {
+    (test:eq (math:toBase 0 2) "0")
     (test:eq (math:toBase 10 10) "10")
     (test:eq (math:toBase 10 16) "a")
     (test:eq (math:toBase 10 2) "1010")
@@ -86,7 +87,21 @@
     (test:eq (math:toBase 35 36) "z")
     (test:eq (math:toBase 36 36) "10") })
 
+  (test:case "fromBase" {
+    (test:eq (math:fromBase "0" 36) 0)
+    (test:eq (math:fromBase "1010" 2) 10)
+    (test:eq (math:fromBase "a5" 16) 165)
+    (test:eq (math:fromBase "z" 36) 35)
+    (test:eq (math:fromBase "1z" 36) 71)
+
+    (test:eq (math:toBase (math:fromBase "0" 36) 36) "0")
+    (test:eq (math:toBase (math:fromBase "1010" 2) 2) "1010")
+    (test:eq (math:toBase (math:fromBase "a5" 16) 16) "a5")
+    (test:eq (math:toBase (math:fromBase "z" 36) 36) "z")
+    (test:eq (math:toBase (math:fromBase "1z" 36) 36) "1z") })
+
   (test:case "countDigits" {
+    (test:eq (math:countDigits 0 2) 1)
     (test:eq (math:countDigits 10 2) 4)
     (test:eq (math:countDigits 10 10) 2)
     (test:eq (math:countDigits 165 16) 2)

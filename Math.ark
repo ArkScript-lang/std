@@ -363,10 +363,36 @@
 # @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let toBase (fun ((mut _x) _base) {
   (assert (and (> _base 1) (<= _base 36)) "Base must be in [2, 36]")
-  (mut _out "")
+  (if (= 0 _x)
+    "0"
+    {
+      (mut _out "")
+      (while _x {
+        (set _out (+ (@ _base_conversion_alphabet (mod _x _base)) _out))
+        (set _x (floordiv _x _base)) })
+      _out }) }))
+
+# @brief Convert a number from a base to base 10
+# @param _x number in the given base represented as a String
+# @param _base Number, must be an integer
+# =begin
+# (math:fromBase "1010" 2)  # 10
+# (math:fromBase "1z" 36)  # 165
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let fromBase (fun ((mut _x) _base) {
+  (assert (and (> _base 1) (<= _base 36)) "Base must be in [2, 36]")
+  (assert (!= "" _x) "Input string cannot be empty")
+  (mut _out 0)
+  (mut _i 0)
   (while _x {
-    (set _out (+ (@ _base_conversion_alphabet (mod _x _base)) _out))
-    (set _x (floordiv _x _base)) })
+    (let _sym (@ _x -1))
+    (set _x (builtin__string:removeAt _x -1))
+    (let _val (builtin__string:find _base_conversion_alphabet _sym))
+    (assert (and (!= -1 _val) (< _val _base)) "Invalid character when decoding")
+    (set _out (+ _out (* _val (pow _base _i))))
+    (set _i (+ 1 _i)) })
   _out }))
 
 # @brief Count the digits of a number in a given base (in [2, 36[)
@@ -380,11 +406,14 @@
 # @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let countDigits (fun ((mut _x) _base) {
   (assert (and (> _base 1) (<= _base 36)) "Base must be in [2, 36]")
-  (mut _out 0)
-  (while _x {
-    (set _out (+ 1 _out))
-    (set _x (floordiv _x _base)) })
-  _out }))
+  (if (= 0 _x)
+    1
+    {
+      (mut _out 0)
+      (while _x {
+        (set _out (+ 1 _out))
+        (set _x (floordiv _x _base)) })
+      _out }) }))
 
 # @brief Return the absolute value of a number
 # @param _x the number to get the absolute value of
