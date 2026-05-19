@@ -88,6 +88,16 @@
 # @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let codepoints (fun (_str) (builtin__string:codepoints _str)))
 
+# @brief Returns the bytes of a string
+# @param _str String
+# =begin
+# (print (string:bytes "abc"))  # [97 98 99]
+# (print (string:bytes "񐓧"))  # [241 144 147 167]
+# =end
+# @author https://github.com/SuperFola
+# @require 4.6.1 Requires ArkScript 4.6.1 or later
+(let bytes (fun (_str) (builtin__string:bytes _str)))
+
 # @brief Get the ordinal of a given character
 # @param char a String with a single UTF8 character
 # =begin

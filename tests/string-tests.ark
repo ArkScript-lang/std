@@ -58,6 +58,12 @@
     (test:eq (string:codepoints "hello") [104 101 108 108 111])
     (test:eq (string:codepoints "🏳️‍⚧️") [127987 65039 8205 9895 65039]) })
 
+  (test:case "bytes" {
+    (test:eq (builtin__string:bytes "abcdef") (string:bytes "abcdef"))
+    (test:eq (string:bytes "") [])
+    (test:eq (string:bytes "abcd") [97 98 99 100])
+    (test:eq (string:bytes "񐓧") [241 144 147 167]) })
+
   (test:case "ord, chr" {
     (test:eq (builtin__string:ord "a") (string:ord "a"))
     (test:eq (string:ord "ø") 248)
