@@ -133,6 +133,33 @@
 # @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let ascii? (fun (_str) (= (len _str) (builtin__string:utf8len _str))))
 
+# @brief Check if a Unicode character is a surrogate, in the [D800, DFFF] range
+# @param _str Unicode character
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let surrogate? (fun (_str) {
+  (assert (= 1 (utf8len _str)) "Expected a single character")
+  (let _c (ord _str))
+  (and (<= 55296 _c) (<= _c 57343)) }))
+
+# @brief Check if a Unicode character is in a private use area (PUA)
+# =details-begin
+# The ranges that are checked are:
+# - 0xE000 to 0xF8FF
+# - 0xF0000 to 0xFFFFD
+# - 0x100000 to 0x10FFFD
+# =details-end
+# @param _str Unicode character
+# @author https://github.com/SuperFola
+# @require 4.6.0 Requires ArkScript 4.6.0 or later
+(let privateUse? (fun (_str) {
+  (assert (= 1 (utf8len _str)) "Expected a single character")
+  (let _c (ord _str))
+  (or
+    (and (<= 57344 _c) (<= _c 63743))
+    (and (<= 983040 _c) (<= _c 1048573))
+    (and (<= 1048576 _c) (<= _c 1114109))) }))
+
 # @brief Check if a string contains a word
 # @param _str String where the lookup occurs
 # @param _word Word to look up for

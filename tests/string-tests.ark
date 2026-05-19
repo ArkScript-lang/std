@@ -19,6 +19,32 @@
     (test:expect (not (string:ascii? "abcdé")))
     (test:expect (not (string:ascii? "🏳️‍⚧️"))) })
 
+  (test:case "surrogate?" {
+    (test:expect (string:surrogate? (string:chr 55296)))
+    (test:expect (string:surrogate? (string:chr 57343)))
+    (test:expect (not (string:surrogate? "a"))) })
+
+  (test:case "privateUse?" {
+    # \0 is not valid, length is 0
+    (test:expect (not (string:privateUse? (string:chr 1))))
+
+    (test:expect (string:privateUse? (string:chr 57344)))
+    (test:expect (string:privateUse? (string:chr 58344)))
+    (test:expect (string:privateUse? (string:chr 63743)))
+    (test:expect (not (string:privateUse? (string:chr 63744))))
+
+    (test:expect (string:privateUse? (string:chr 983040)))
+    (test:expect (string:privateUse? (string:chr 993040)))
+    (test:expect (string:privateUse? (string:chr 1048573)))
+    (test:expect (not (string:privateUse? (string:chr 1048574))))
+    (test:expect (not (string:privateUse? (string:chr 1048575))))
+
+    (test:expect (string:privateUse? (string:chr 1048576)))
+    (test:expect (string:privateUse? (string:chr 1108576)))
+    (test:expect (string:privateUse? (string:chr 1114109)))
+
+    (test:expect (not (string:privateUse? "a"))) })
+
   (test:case "contains?" {
     (test:expect (string:contains? "hello, world" "h"))
     (test:expect (string:contains? "hello, world" "hello"))
