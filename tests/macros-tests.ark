@@ -51,6 +51,16 @@
     (until true
       (test:expect false "this shouldn't trigger")) })
 
+  (test:case "unpack" {
+    (unpack [1 2 3] a b c)
+    (test:eq a 1)
+    (test:eq b 2)
+    (test:eq c 3)
+
+    (unpack [4 5 6] d e)
+    (test:eq d 4)
+    (test:eq e 5) })
+
   (test:case "++ and --" {
     (mut i 0)
     (test:eq (++ i) 1)
