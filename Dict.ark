@@ -120,6 +120,23 @@
     (set _i (+ 1 _i)) })
   _output }))
 
+# @brief Create a list from a list of pairs (lists of 2 elements, key and value)
+# @param _L list
+# =begin
+# (let data [["a" 1] ["b" 2] ["c" 3]])
+# (let new (dict:fromList data))
+# (print new)  # {a: 1, b:2, c:3}
+# =end
+# @author https://github.com/SuperFola
+(let fromList (fun ((ref _L)) {
+  (mut _output (dict))
+  (mut _i 0)
+  (while (< _i (len _L)) {
+    (assert (= 2 (len (@ _L _i))) "Expected a pair [key value]")
+    (add _output (@@ _L _i 0) (@@ _L _i 1))
+    (set _i (+ 1 _i)) })
+  _output }))
+
 # @brief Map each value in a dictionary with a given function
 # @details The original dictionary is not modified
 # @param _D dictionary
