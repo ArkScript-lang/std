@@ -1,0 +1,16 @@
+(import std.Dict :fromList :get)
+(import std.List :iota :zip)
+
+(let _makeCSV (fun (_data) {
+  (mut headers (head _data))
+  (mut rows (tail _data))
+  (let _headers_to_index (dict:fromList (list:zip headers (list:iota 0 (len headers)))))
+
+  (fun (&_data &headers &_headers_to_index &rows) _data) }))
+
+(let readFile (fun (_filename _sep) ()))
+(let read (fun (_data _sep) ()))
+(let headers (fun (_csv) _csv.headers))
+(let rows (fun (_csv) _csv.rows))
+(let get (fun (_csv _column _row)
+  (@@ _csv.rows _row (dict:get _csv._headers_to_index _column))))
