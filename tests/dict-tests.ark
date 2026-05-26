@@ -81,6 +81,11 @@
     (test:eq (dict:entries d) [["key" "value"] [5 12] [true true] [false false] [foo "yes"] [closure foo]])
     (test:eq (dict:entries empty) []) })
 
+  (test:case "fromList" {
+    (test:expect (empty? (dict:fromList [])))
+    (test:eq (dict:fromList (dict:entries d)) d)
+    (test:eq (dict:fromList [["a" 1]]) (dict "a" 1)) })
+
   (test:case "add" {
     (test:eq (dict:get d "test") nil)
     (dict:add d "test" 5)
