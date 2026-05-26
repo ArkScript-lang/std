@@ -1,0 +1,110 @@
+(let toUTCTimestamp (fun (_year _month _day _hour _minute _second _millisecond _tz)
+  # todo: handle tz
+  (+ _millisecond (builtin__time:dateToTimestamp _second _minute _hour _day _month _year))))
+
+# @brief Convert a timestamp to a UTC date
+# @param _time timestamp
+# =details-begin
+# Returns a Dict with the following keys:
+# - `second` - seconds after the minute – [0, 60]
+# - `minute` - minutes after the hour – [0, 59]
+# - `hour` - hours since midnight – [0, 23]
+# - `day` - day of the month – [1, 31]
+# - `month` - months since January – [1, 12]
+# - `year` - years since 0
+# - `week_day` - days since Sunday – [0, 6]
+# - `year_day` - days since January 1 – [0, 365]
+# - `is_dst` - Daylight Saving Time flag. The value is true if DST is in effect,  false if not or if no information is available.
+# =details-end
+# =begin
+# (print (datetime:fromUTCTime (time)))
+# # {second: 24, minute: 15, hour: 17, day: 26, month: 5, year: 2026, week_day: 2, year_day: 145, is_dst: false}
+# =end
+# @author https://github.com/SuperFola
+(let fromUTCTime (fun (_time)
+  (builtin__time:timeToUTCDate _time)))
+
+# @brief Convert a timestamp to a local date, dependant on your computer timezone
+# @param _time timestamp
+# =details-begin
+# Returns a Dict with the following keys:
+# - `second` - seconds after the minute – [0, 60]
+# - `minute` - minutes after the hour – [0, 59]
+# - `hour` - hours since midnight – [0, 23]
+# - `day` - day of the month – [1, 31]
+# - `month` - months since January – [1, 12]
+# - `year` - years since 0
+# - `week_day` - days since Sunday – [0, 6]
+# - `year_day` - days since January 1 – [0, 365]
+# - `is_dst` - Daylight Saving Time flag. The value is true if DST is in effect,  false if not or if no information is available.
+# =details-end
+# =begin
+# (print (datetime:fromLocalTime (time)))
+# # {second: 24, minute: 15, hour: 179, day: 26, month: 5, year: 2026, week_day: 2, year_day: 145, is_dst: false}
+# =end
+# @author https://github.com/SuperFola
+(let fromLocalTime (fun (_time)
+  (builtin__time:timeToLocalDate _time)))
+
+# plusDays / minusDays, same for seconds, minutes, hours, weeks, months, years?
+(let plusSeconds (fun (_time _quantity) (+ _time _quantity)))
+(let minusSeconds (fun (_time _quantity) (- _time _quantity)))
+
+(let plusMinutes (fun (_time _quantity) (+ _time (* 60 _quantity))))
+(let minusMinutes (fun (_time _quantity) (- (* 60 _quantity))))
+
+(let plusHours (fun (_time _quantity) (+ _time (* 3600 _quantity))))
+(let minusHours (fun (_time _quantity) (- _time (* 3600 _quantity))))
+
+(let plusDays (fun (_time _quantity) (+ _time (* 86400 _quantity))))
+(let minusDays (fun (_time _quantity) (- _time (* 86400 _quantity))))
+
+(let plusWeeks (fun (_time _quantity) (+ _time (* 604800 _quantity))))
+(let minusWeeks (fun (_time _quantity) (- _time (* 604800 _quantity))))
+
+# month = 30 days
+(let plusMonths (fun (_time _quantity) (+ _time (* 2592000 _quantity))))
+(let minusMonths (fun (_time _quantity) (- _time (* 2592000 _quantity))))
+
+# year = 365 days
+(let plusYears (fun (_time _quantity) (+ _time (* 31536000 _quantity))))
+(let minusYears (fun (_time _quantity) (- _time (* 31536000 _quantity))))
+
+(let today (fun () (fromUTCTime (time))))
+(let yesterday (fun () (fromUTCTime (minusDays (time) 1))))
+(let tomorrow (fun () (fromUTCTime (plusDays (time) 1))))
+
+(let nextDay (fun (_time) (plusDays _time 1)))
+(let previousDay (fun (_time) (minusDays _time 1)))
+
+# with timezone?
+(let year (fun (_time) (builtin__dict:get (fromUTCTime _time) "year")))
+(let month (fun (_time) (builtin__dict:get (fromUTCTime _time) "month")))
+(let day (fun (_time) (builtin__dict:get (fromUTCTime _time) "day")))
+(let hour (fun (_time) (builtin__math:floor (/ (mod _time 86400) 3600))))
+(let minute (fun (_time) (builtin__math:floor (/ (mod _time 3600) 60))))
+(let second (fun (_time) (builtin__math:floor (mod _time 60))))
+(let millisecond (fun (_time) (* 1000 (- _time (builtin__math:floor _time)))))
+# day-of-week (starts at 0 for sunday)
+(let dayOfWeek (fun (_time) (builtin__dict:get (fromUTCTime _time) "week_day")))
+# day-of-year ; days since January 1 – [0, 365]
+(let dayOfYear (fun (_time) (builtin__dict:get (fromUTCTime _time) "year_day")))
+
+(let asISO8601 (fun (_time) {
+  (let _data (fromUTCTime _time))
+  # 2007-04-05T12:34:56.789
+  (format
+    "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:03}Z"
+    (builtin__dict:get _data "year")
+    (builtin__dict:get _data "month")
+    (builtin__dict:get _data "day")
+    (builtin__dict:get _data "hour")
+    (builtin__dict:get _data "minute")
+    (builtin__dict:get _data "second")
+    (builtin__dict:get _data "millisecond")
+    ) }))
+
+# Tries to parse as %Y-%m-%dT%H:%M:%S
+(let parse (fun (_str) (builtin__time:parseDate _str)))
+# Uses https://en.cppreference.com/cpp/io/manip/get_time
+(let parseAs (fun (_str _format) (builtin__time:parseDate _str _format)))
