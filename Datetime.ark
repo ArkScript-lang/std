@@ -1,11 +1,420 @@
-(let toUTCTimestamp (fun (_year _month _day _hour _minute _second _millisecond _tz)
-  # todo: handle tz
-  (+ _millisecond (builtin__time:dateToTimestamp _second _minute _hour _day _month _year))))
+(import std.Dict)
+(import std.Math :floordiv)
+
+# @brief Dictionary of time zone offsets to UTC, in minutes
+# =details-begin
+# List obtained from https://github.com/vvo/tzdb/blob/ac6f4cbc6063b9a823a8ee1e4b5dffb6ca0a6c81/raw-time-zones.json,
+# by keeping only `name` -> `rawOffsetInMinutes`.
+# =details-end
+# @author https://github.com/SuperFola
+(let timezoneOffsets (dict
+  "Pacific/Midway" -660
+  "Pacific/Pago_Pago" -660
+  "Pacific/Niue" -660
+  "Pacific/Rarotonga" -600
+  "America/Adak" -600
+  "Pacific/Honolulu" -600
+  "Pacific/Tahiti" -600
+  "Pacific/Marquesas" -570
+  "America/Anchorage" -540
+  "Pacific/Gambier" -540
+  "America/Los_Angeles" -480
+  "America/Tijuana" -480
+  "America/Vancouver" -480
+  "Pacific/Pitcairn" -480
+  "America/Hermosillo" -420
+  "America/Edmonton" -420
+  "America/Ciudad_Juarez" -420
+  "America/Denver" -420
+  "America/Phoenix" -420
+  "America/Whitehorse" -420
+  "America/Belize" -360
+  "America/Chicago" -360
+  "America/Guatemala" -360
+  "America/Managua" -360
+  "America/Mexico_City" -360
+  "America/Matamoros" -360
+  "America/Costa_Rica" -360
+  "America/El_Salvador" -360
+  "America/Regina" -360
+  "America/Tegucigalpa" -360
+  "America/Winnipeg" -360
+  "Pacific/Easter" -360
+  "Pacific/Galapagos" -360
+  "America/Rio_Branco" -300
+  "America/Bogota" -300
+  "America/Havana" -300
+  "America/Atikokan" -300
+  "America/Cancun" -300
+  "America/Cayman" -300
+  "America/Jamaica" -300
+  "America/Nassau" -300
+  "America/New_York" -300
+  "America/Panama" -300
+  "America/Port-au-Prince" -300
+  "America/Grand_Turk" -300
+  "America/Toronto" -300
+  "America/Guayaquil" -300
+  "America/Lima" -300
+  "America/Manaus" -240
+  "America/St_Kitts" -240
+  "America/Blanc-Sablon" -240
+  "America/Montserrat" -240
+  "America/Barbados" -240
+  "America/Port_of_Spain" -240
+  "America/Martinique" -240
+  "America/St_Lucia" -240
+  "America/St_Barthelemy" -240
+  "America/Halifax" -240
+  "Atlantic/Bermuda" -240
+  "America/St_Vincent" -240
+  "America/Kralendijk" -240
+  "America/Guadeloupe" -240
+  "America/Marigot" -240
+  "America/Aruba" -240
+  "America/Lower_Princes" -240
+  "America/Tortola" -240
+  "America/Dominica" -240
+  "America/St_Thomas" -240
+  "America/Grenada" -240
+  "America/Antigua" -240
+  "America/Puerto_Rico" -240
+  "America/Santo_Domingo" -240
+  "America/Anguilla" -240
+  "America/Thule" -240
+  "America/Curacao" -240
+  "America/La_Paz" -240
+  "America/Santiago" -240
+  "America/Guyana" -240
+  "America/Caracas" -240
+  "America/St_Johns" -210
+  "America/Argentina/Buenos_Aires" -180
+  "America/Sao_Paulo" -180
+  "Antarctica/Palmer" -180
+  "America/Punta_Arenas" -180
+  "Atlantic/Stanley" -180
+  "America/Cayenne" -180
+  "America/Asuncion" -180
+  "America/Miquelon" -180
+  "America/Paramaribo" -180
+  "America/Montevideo" -180
+  "America/Noronha" -120
+  "America/Nuuk" -120
+  "Atlantic/South_Georgia" -120
+  "Atlantic/Azores" -60
+  "Atlantic/Cape_Verde" -60
+  "Africa/Abidjan" 0
+  "Africa/Bamako" 0
+  "Africa/Bissau" 0
+  "Africa/Conakry" 0
+  "Africa/Dakar" 0
+  "America/Danmarkshavn" 0
+  "Europe/Isle_of_Man" 0
+  "Europe/Dublin" 0
+  "Africa/Freetown" 0
+  "Atlantic/St_Helena" 0
+  "Africa/Accra" 0
+  "Africa/Lome" 0
+  "Europe/London" 0
+  "Africa/Monrovia" 0
+  "Africa/Nouakchott" 0
+  "Africa/Ouagadougou" 0
+  "Atlantic/Reykjavik" 0
+  "Europe/Jersey" 0
+  "Europe/Guernsey" 0
+  "Africa/Banjul" 0
+  "Africa/Sao_Tome" 0
+  "Antarctica/Troll" 0
+  "Africa/Casablanca" 0
+  "Africa/El_Aaiun" 0
+  "Atlantic/Canary" 0
+  "Europe/Lisbon" 0
+  "Atlantic/Faroe" 0
+  "Africa/Windhoek" 60
+  "Africa/Algiers" 60
+  "Europe/Andorra" 60
+  "Europe/Belgrade" 60
+  "Europe/Berlin" 60
+  "Europe/Bratislava" 60
+  "Europe/Brussels" 60
+  "Europe/Budapest" 60
+  "Europe/Copenhagen" 60
+  "Europe/Gibraltar" 60
+  "Europe/Ljubljana" 60
+  "Arctic/Longyearbyen" 60
+  "Europe/Luxembourg" 60
+  "Europe/Madrid" 60
+  "Europe/Monaco" 60
+  "Europe/Oslo" 60
+  "Europe/Paris" 60
+  "Europe/Podgorica" 60
+  "Europe/Prague" 60
+  "Europe/Rome" 60
+  "Europe/Amsterdam" 60
+  "Europe/San_Marino" 60
+  "Europe/Malta" 60
+  "Europe/Sarajevo" 60
+  "Europe/Skopje" 60
+  "Europe/Stockholm" 60
+  "Europe/Tirane" 60
+  "Africa/Tunis" 60
+  "Europe/Vaduz" 60
+  "Europe/Vatican" 60
+  "Europe/Vienna" 60
+  "Europe/Warsaw" 60
+  "Europe/Zagreb" 60
+  "Europe/Zurich" 60
+  "Africa/Bangui" 60
+  "Africa/Malabo" 60
+  "Africa/Brazzaville" 60
+  "Africa/Porto-Novo" 60
+  "Africa/Douala" 60
+  "Africa/Kinshasa" 60
+  "Africa/Lagos" 60
+  "Africa/Libreville" 60
+  "Africa/Luanda" 60
+  "Africa/Ndjamena" 60
+  "Africa/Niamey" 60
+  "Africa/Bujumbura" 120
+  "Africa/Gaborone" 120
+  "Africa/Harare" 120
+  "Africa/Juba" 120
+  "Africa/Khartoum" 120
+  "Africa/Kigali" 120
+  "Africa/Blantyre" 120
+  "Africa/Lubumbashi" 120
+  "Africa/Lusaka" 120
+  "Africa/Maputo" 120
+  "Europe/Athens" 120
+  "Asia/Beirut" 120
+  "Europe/Bucharest" 120
+  "Africa/Cairo" 120
+  "Europe/Chisinau" 120
+  "Asia/Hebron" 120
+  "Europe/Helsinki" 120
+  "Europe/Kaliningrad" 120
+  "Europe/Kyiv" 120
+  "Europe/Mariehamn" 120
+  "Asia/Nicosia" 120
+  "Europe/Riga" 120
+  "Europe/Sofia" 120
+  "Europe/Tallinn" 120
+  "Africa/Tripoli" 120
+  "Europe/Vilnius" 120
+  "Asia/Jerusalem" 120
+  "Africa/Johannesburg" 120
+  "Africa/Mbabane" 120
+  "Africa/Maseru" 120
+  "Asia/Kuwait" 180
+  "Asia/Bahrain" 180
+  "Asia/Baghdad" 180
+  "Asia/Qatar" 180
+  "Asia/Riyadh" 180
+  "Asia/Aden" 180
+  "Asia/Amman" 180
+  "Asia/Damascus" 180
+  "Africa/Addis_Ababa" 180
+  "Indian/Antananarivo" 180
+  "Africa/Asmara" 180
+  "Africa/Dar_es_Salaam" 180
+  "Africa/Djibouti" 180
+  "Africa/Kampala" 180
+  "Indian/Mayotte" 180
+  "Africa/Mogadishu" 180
+  "Indian/Comoro" 180
+  "Africa/Nairobi" 180
+  "Europe/Minsk" 180
+  "Europe/Moscow" 180
+  "Europe/Simferopol" 180
+  "Antarctica/Syowa" 180
+  "Europe/Istanbul" 180
+  "Asia/Tehran" 210
+  "Asia/Yerevan" 240
+  "Asia/Baku" 240
+  "Asia/Tbilisi" 240
+  "Asia/Dubai" 240
+  "Asia/Muscat" 240
+  "Indian/Mauritius" 240
+  "Indian/Reunion" 240
+  "Europe/Samara" 240
+  "Indian/Mahe" 240
+  "Asia/Kabul" 270
+  "Indian/Kerguelen" 300
+  "Asia/Almaty" 300
+  "Indian/Maldives" 300
+  "Antarctica/Mawson" 300
+  "Asia/Karachi" 300
+  "Asia/Dushanbe" 300
+  "Asia/Ashgabat" 300
+  "Asia/Tashkent" 300
+  "Asia/Yekaterinburg" 300
+  "Asia/Colombo" 330
+  "Asia/Kolkata" 330
+  "Asia/Kathmandu" 345
+  "Asia/Dhaka" 360
+  "Asia/Thimphu" 360
+  "Asia/Urumqi" 360
+  "Indian/Chagos" 360
+  "Asia/Bishkek" 360
+  "Asia/Omsk" 360
+  "Indian/Cocos" 390
+  "Asia/Yangon" 390
+  "Indian/Christmas" 420
+  "Antarctica/Davis" 420
+  "Asia/Bangkok" 420
+  "Asia/Ho_Chi_Minh" 420
+  "Asia/Phnom_Penh" 420
+  "Asia/Vientiane" 420
+  "Asia/Hovd" 420
+  "Asia/Novosibirsk" 420
+  "Asia/Jakarta" 420
+  "Antarctica/Casey" 480
+  "Australia/Perth" 480
+  "Asia/Brunei" 480
+  "Asia/Makassar" 480
+  "Asia/Macau" 480
+  "Asia/Shanghai" 480
+  "Asia/Hong_Kong" 480
+  "Asia/Irkutsk" 480
+  "Asia/Kuala_Lumpur" 480
+  "Asia/Manila" 480
+  "Asia/Singapore" 480
+  "Asia/Taipei" 480
+  "Asia/Ulaanbaatar" 480
+  "Australia/Eucla" 525
+  "Asia/Jayapura" 540
+  "Asia/Tokyo" 540
+  "Asia/Pyongyang" 540
+  "Asia/Seoul" 540
+  "Pacific/Palau" 540
+  "Asia/Dili" 540
+  "Asia/Chita" 540
+  "Australia/Adelaide" 570
+  "Australia/Darwin" 570
+  "Australia/Brisbane" 600
+  "Australia/Sydney" 600
+  "Pacific/Guam" 600
+  "Pacific/Saipan" 600
+  "Pacific/Chuuk" 600
+  "Antarctica/DumontDUrville" 600
+  "Pacific/Port_Moresby" 600
+  "Asia/Vladivostok" 600
+  "Australia/Lord_Howe" 630
+  "Pacific/Bougainville" 660
+  "Pacific/Kosrae" 660
+  "Asia/Sakhalin" 660
+  "Pacific/Noumea" 660
+  "Pacific/Norfolk" 660
+  "Pacific/Guadalcanal" 660
+  "Pacific/Efate" 660
+  "Pacific/Fiji" 720
+  "Pacific/Tarawa" 720
+  "Asia/Kamchatka" 720
+  "Pacific/Majuro" 720
+  "Pacific/Nauru" 720
+  "Pacific/Auckland" 720
+  "Antarctica/McMurdo" 720
+  "Pacific/Funafuti" 720
+  "Pacific/Wake" 720
+  "Pacific/Wallis" 720
+  "Pacific/Chatham" 765
+  "Pacific/Kanton" 780
+  "Pacific/Apia" 780
+  "Pacific/Fakaofo" 780
+  "Pacific/Tongatapu" 780
+  "Pacific/Kiritimati" 840))
+
+# internal, do not use
+(let _cumulativeDays [0 31 59 90 120 151 181 212 243 273 304 334])
+
+# @brief Get the offset to UTC of a time zone by name, in minutes
+# @details Can return 0 if the time zone is not known
+# @param _tz String, time zone name
+# @author https://github.com/SuperFola
+(let timezoneOffset (fun (_tz) {
+  (let timezoneOffset (dict:get timezoneOffsets _tz))
+  (if (nil? timezoneOffset)
+    0
+    timezoneOffset) }))
+
+# @brief Construct a UTC timestamp
+# =details-begin
+# This doesn't handle the timezone changes from 1970 and before,
+# it only uses modern ones which is good enough in most cases.
+# =details-end
+# @param _year Number
+# @param _month Number, in [1, 12] range
+# @param _day Number, in [1, 31] range
+# @param _hour Number, in [0, 23] range
+# @param _minute Number, in [0, 59] range
+# @param _second Number, in [0, 60] range
+# @param _millisecond Number, in [0, 999] range
+# @param _tz String representing a time zone ; can be nil to indicate UTC
+# @param _dst? Bool, true if the given date is in day light saving, false otherwise
+# =begin
+# (print (datetime:makeUTCTimestamp 2026 5 27 14 28 5 300 "Europe/Paris" true))
+# # 1779884885.3
+# =end
+# @author https://github.com/SuperFola
+(let makeUTCTimestamp (fun (_year (mut _month) _day _hour _minute _second _millisecond _tz _dst?) {
+  # _month is between 1 and 12, this algorithm needs it between 0 and 11
+  (set _month (- _month 1))
+  (let year (+ _year (floordiv _month 12)))
+
+  (mut _result (+ (* (- year 1970) 365) (@ _cumulativeDays (mod _month 12))))
+  (set _result (+
+    _result
+    (floordiv (- year 1968) 4)
+    (* -1 (floordiv (- year 1900) 100))
+    (floordiv (- year 1600) 400)))
+  (if (and
+    (= 0 (mod year 4))
+    (or (!= 0 (mod year 100)) (= 0 (mod year 400)))
+    (< (mod _month 12) 2))
+    (set _result (- _result 1)))
+  (+ (* (+ (* (+ (* (+ _result _day -1) 24) _hour (if _dst? -1 0)) 60) _minute (* -1 (timezoneOffset _tz))) 60) _second (/ _millisecond 1000)) }))
+
+# @brief Convert a date to a UTC timestamp
+# =details-begin
+# This doesn't handle the timezone changes from 1970 and before,
+# it only uses modern ones which is good enough in most cases.
+#
+# Keys needed in the Dict:
+# - `millisecond` - milliseconds after the second – [0, 999]
+# - `second` - seconds after the minute – [0, 60]
+# - `minute` - minutes after the hour – [0, 59]
+# - `hour` - hours since midnight – [0, 23]
+# - `day` - day of the month – [1, 31]
+# - `month` - months since January – [1, 12]
+# - `year` - years since 0
+# - `week_day` - days since Sunday – [0, 6]
+# - `year_day` - days since January 1 – [0, 365]
+# - `is_dst` - Daylight Saving Time flag. The value is true if DST is in effect,  false if not or if no information is available.
+# =details-end
+# @param _date Dict, as returned by `datetime:asUTCTime` and `datetime:asLocalTime`
+# =begin
+# (let t (time))
+# (print t)  # 1779908523.389969
+# (print (datetime:toUTCTimestamp (datetime:asUTCTime t))  # 1779908523.389
+# =end
+# @author https://github.com/SuperFola
+(let toUTCTimestamp (fun (_date)
+  (makeUTCTimestamp
+    (dict:get _date "year")
+    (dict:get _date "month")
+    (dict:get _date "day")
+    (dict:get _date "hour")
+    (dict:get _date "minute")
+    (dict:get _date "second")
+    (dict:get _date "millisecond")
+    nil
+    (dict:get _date "is_dst"))))
 
 # @brief Convert a timestamp to a UTC date
 # @param _time timestamp
 # =details-begin
 # Returns a Dict with the following keys:
+# - `millisecond` - milliseconds after the second – [0, 999]
 # - `second` - seconds after the minute – [0, 60]
 # - `minute` - minutes after the hour – [0, 59]
 # - `hour` - hours since midnight – [0, 23]
@@ -17,17 +426,18 @@
 # - `is_dst` - Daylight Saving Time flag. The value is true if DST is in effect,  false if not or if no information is available.
 # =details-end
 # =begin
-# (print (datetime:fromUTCTime (time)))
-# # {second: 24, minute: 15, hour: 17, day: 26, month: 5, year: 2026, week_day: 2, year_day: 145, is_dst: false}
+# (print (datetime:asUTCTime (time)))
+# # {millisecond: 913, second: 24, minute: 15, hour: 17, day: 26, month: 5, year: 2026, week_day: 2, year_day: 145, is_dst: false}
 # =end
 # @author https://github.com/SuperFola
-(let fromUTCTime (fun (_time)
-  (builtin__time:timeToUTCDate _time)))
+(let asUTCTime (fun (_time)
+  (builtin__time:timeToDate _time true)))
 
-# @brief Convert a timestamp to a local date, dependant on your computer timezone
+# @brief Convert a timestamp to a local date, dependent on your computer timezone
 # @param _time timestamp
 # =details-begin
 # Returns a Dict with the following keys:
+# - `millisecond` - milliseconds after the second – [0, 999]
 # - `second` - seconds after the minute – [0, 60]
 # - `minute` - minutes after the hour – [0, 59]
 # - `hour` - hours since midnight – [0, 23]
@@ -39,72 +449,205 @@
 # - `is_dst` - Daylight Saving Time flag. The value is true if DST is in effect,  false if not or if no information is available.
 # =details-end
 # =begin
-# (print (datetime:fromLocalTime (time)))
-# # {second: 24, minute: 15, hour: 179, day: 26, month: 5, year: 2026, week_day: 2, year_day: 145, is_dst: false}
+# (print (datetime:asLocalTime (time)))
+# # {millisecond: 913, second: 24, minute: 15, hour: 19, day: 26, month: 5, year: 2026, week_day: 2, year_day: 145, is_dst: false}
 # =end
 # @author https://github.com/SuperFola
-(let fromLocalTime (fun (_time)
-  (builtin__time:timeToLocalDate _time)))
+(let asLocalTime (fun (_time)
+  (builtin__time:timeToDate _time false)))
 
-# plusDays / minusDays, same for seconds, minutes, hours, weeks, months, years?
+# @brief Add a number of seconds to a timestamp
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to add
+# @author https://github.com/SuperFola
 (let plusSeconds (fun (_time _quantity) (+ _time _quantity)))
+
+# @brief Subtract a number of seconds to a timestamp
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to remove
+# @author https://github.com/SuperFola
 (let minusSeconds (fun (_time _quantity) (- _time _quantity)))
 
+# @brief Add a number of minutes to a timestamp
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to add
+# @author https://github.com/SuperFola
 (let plusMinutes (fun (_time _quantity) (+ _time (* 60 _quantity))))
-(let minusMinutes (fun (_time _quantity) (- (* 60 _quantity))))
 
+# @brief Subtract a number of minutes to a timestamp
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to remove
+# @author https://github.com/SuperFola
+(let minusMinutes (fun (_time _quantity) (- _time (* 60 _quantity))))
+
+# @brief Add a number of hours to a timestamp
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to add
+# @author https://github.com/SuperFola
 (let plusHours (fun (_time _quantity) (+ _time (* 3600 _quantity))))
+
+# @brief Subtract a number of hours to a timestamp
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to remove
+# @author https://github.com/SuperFola
 (let minusHours (fun (_time _quantity) (- _time (* 3600 _quantity))))
 
+# @brief Add a number of days to a timestamp
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to add
+# @author https://github.com/SuperFola
 (let plusDays (fun (_time _quantity) (+ _time (* 86400 _quantity))))
+
+# @brief Subtract a number of days to a timestamp
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to remove
+# @author https://github.com/SuperFola
 (let minusDays (fun (_time _quantity) (- _time (* 86400 _quantity))))
 
+# @brief Add a number of weeks to a timestamp
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to add
+# @author https://github.com/SuperFola
 (let plusWeeks (fun (_time _quantity) (+ _time (* 604800 _quantity))))
+
+# @brief Subtract a number of weeks to a timestamp
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to remove
+# @author https://github.com/SuperFola
 (let minusWeeks (fun (_time _quantity) (- _time (* 604800 _quantity))))
 
-# month = 30 days
+# @brief Add a number of seconds to a timestamp
+# @details A month is considered to be a fixed 30 days
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to add
+# @author https://github.com/SuperFola
 (let plusMonths (fun (_time _quantity) (+ _time (* 2592000 _quantity))))
+
+# @brief Subtract a number of months to a timestamp
+# @details A month is considered to be a fixed 30 days
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to remove
+# @author https://github.com/SuperFola
 (let minusMonths (fun (_time _quantity) (- _time (* 2592000 _quantity))))
 
-# year = 365 days
+# @brief Add a number of seconds to a timestamp
+# @details A year is considered to be a fixed 365 days
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to add
+# @author https://github.com/SuperFola
 (let plusYears (fun (_time _quantity) (+ _time (* 31536000 _quantity))))
+
+# @brief Subtract a number of years to a timestamp
+# @details A year is considered to be a fixed 365 days
+# @param _time Number, timestamp
+# @param _quantity Number, quantity of the unit to remove
+# @author https://github.com/SuperFola
 (let minusYears (fun (_time _quantity) (- _time (* 31536000 _quantity))))
 
-(let today (fun () (fromUTCTime (time))))
-(let yesterday (fun () (fromUTCTime (minusDays (time) 1))))
-(let tomorrow (fun () (fromUTCTime (plusDays (time) 1))))
+# todo: desc
+(let atStartOfDay (fun (_time) {
+  (let _date (asUTCTime _time))
+  (dict:update! _date (dict "millisecond" 0 "second" 0 "minute" 0 "hour" 0))
+  (toUTCTimestamp _date) }))
 
+# todo: desc
+(let atEndOfDay (fun (_time) {
+  (let _date (asUTCTime _time))
+  (dict:update! _date (dict "millisecond" 999 "second" 59 "minute" 59 "hour" 23))
+  (toUTCTimestamp _date) }))
+
+# @brief Compute today's date, at 00H 00M 00s
+# @details Returns a timestamp
+# @author https://github.com/SuperFola
+(let today (fun () (atStartOfDay (time))))
+
+# @brief Compute yesterday's date, at 00H 00M 00s
+# @details Returns a timestamp
+# @author https://github.com/SuperFola
+(let yesterday (fun () (atStartOfDay (minusDays (time) 1))))
+
+# @brief Compute tomorrow's date, at 00H 00M 00s
+# @details Returns a timestamp
+# @author https://github.com/SuperFola
+(let tomorrow (fun () (atStartOfDay (plusDays (time) 1))))
+
+# @brief Return the timestamp of the next day of a given timestamp, keeping the hours, minutes, seconds and milliseconds
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
 (let nextDay (fun (_time) (plusDays _time 1)))
+
+# @brief Return the timestamp of the previous day of a given timestamp, keeping the hours, minutes, seconds and milliseconds
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
 (let previousDay (fun (_time) (minusDays _time 1)))
 
-# with timezone?
-(let year (fun (_time) (builtin__dict:get (fromUTCTime _time) "year")))
-(let month (fun (_time) (builtin__dict:get (fromUTCTime _time) "month")))
-(let day (fun (_time) (builtin__dict:get (fromUTCTime _time) "day")))
-(let hour (fun (_time) (builtin__math:floor (/ (mod _time 86400) 3600))))
-(let minute (fun (_time) (builtin__math:floor (/ (mod _time 3600) 60))))
-(let second (fun (_time) (builtin__math:floor (mod _time 60))))
-(let millisecond (fun (_time) (* 1000 (- _time (builtin__math:floor _time)))))
-# day-of-week (starts at 0 for sunday)
-(let dayOfWeek (fun (_time) (builtin__dict:get (fromUTCTime _time) "week_day")))
-# day-of-year ; days since January 1 – [0, 365]
-(let dayOfYear (fun (_time) (builtin__dict:get (fromUTCTime _time) "year_day")))
+# @brief Return the year component of a timestamp
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let year (fun (_time) (dict:get (asUTCTime _time) "year")))
 
+# @brief Return the month (1-12) component of a timestamp
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let month (fun (_time) (dict:get (asUTCTime _time) "month")))
+
+# @brief Return the day (1-31) of the month component of a timestamp
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let day (fun (_time) (dict:get (asUTCTime _time) "day")))
+
+# @brief Return the hour (0-23) component of a timestamp
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let hour (fun (_time) (floordiv (mod _time 86400) 3600)))
+
+# @brief Return the minute (0-59) component of a timestamp
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let minute (fun (_time) (floordiv (mod _time 3600) 60)))
+
+# @brief Return the second (0-59) component of a timestamp
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let second (fun (_time) (builtin__math:floor (mod _time 60))))
+
+# @brief Return the millisecond (0-999) component of a timestamp
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let millisecond (fun (_time) (* 1000 (- _time (builtin__math:floor _time)))))
+
+# @brief Return the day of the week component of a timestamp (starts at 0 for sunday, 6 for saturday)
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let dayOfWeek (fun (_time) (dict:get (asUTCTime _time) "week_day")))
+
+# @brief Return the day of the year (0-365) component of a timestamp
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let dayOfYear (fun (_time) (dict:get (asUTCTime _time) "year_day")))
+
+# @brief Convert a timestamp to its ISO8601 representation: 2007-04-05T12:34:56.789Z
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
 (let asISO8601 (fun (_time) {
-  (let _data (fromUTCTime _time))
-  # 2007-04-05T12:34:56.789
+  (let _data (asUTCTime _time))
   (format
     "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:03}Z"
-    (builtin__dict:get _data "year")
-    (builtin__dict:get _data "month")
-    (builtin__dict:get _data "day")
-    (builtin__dict:get _data "hour")
-    (builtin__dict:get _data "minute")
-    (builtin__dict:get _data "second")
-    (builtin__dict:get _data "millisecond")
-    ) }))
+    (dict:get _data "year")
+    (dict:get _data "month")
+    (dict:get _data "day")
+    (dict:get _data "hour")
+    (dict:get _data "minute")
+    (dict:get _data "second")
+    (dict:get _data "millisecond")) }))
 
-# Tries to parse as %Y-%m-%dT%H:%M:%S
+# @brief Try to parse a date as `%Y-%m-%dT%H:%M:%S` and return it as a timestamp, or `nil` if it fails
+# @param _str String, date following `%Y-%m-%dT%H:%M:%S`
+# @author https://github.com/SuperFola
 (let parse (fun (_str) (builtin__time:parseDate _str)))
-# Uses https://en.cppreference.com/cpp/io/manip/get_time
+
+# @brief Try to parse a date as a given format and return it as a timestamp, or `nil` if it fails
+# @param _str String, date
+# @param _format String, follows [std::get_time](https://en.cppreference.com/cpp/io/manip/get_time) format
+# @author https://github.com/SuperFola
 (let parseAs (fun (_str _format) (builtin__time:parseDate _str _format)))
