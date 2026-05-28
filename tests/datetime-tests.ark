@@ -1,0 +1,65 @@
+(import std.Datetime)
+(import std.Testing)
+
+(test:suite datetime {
+  (let oneMinuteAfterY0 (dict "millisecond" 0 "second" 0 "minute" 1 "hour" 0 "day" 1 "month" 1 "year" 0 "week_day" 6 "year_day" 0 "is_dst" false))
+
+  (test:case "timezoneOffset" {})
+
+  (test:case "makeUTCTimestamp" {
+    (test:eq (datetime:makeUTCTimestamp 1970 1 1 0 0 0 0 nil false) 0)
+    (test:eq (datetime:makeUTCTimestamp 1000 1 1 0 0 0 0 nil false) -30610224000)
+    (test:eq (datetime:makeUTCTimestamp 400 1 1 0 0 0 0 nil false) -49544438400)
+    (test:eq (datetime:makeUTCTimestamp 0 1 1 0 0 0 0 nil false) -62167219200)
+    (test:eq (datetime:makeUTCTimestamp 4000 1 1 0 0 0 0 nil false) 64060588800)
+    (test:eq (datetime:makeUTCTimestamp 2020 2 29 6 2 4 0 nil false) 1582956124)
+
+    (mut utc (datetime:makeUTCTimestamp 2026 5 28 6 2 4 0 nil false))
+    (test:eq utc 1779948124)
+
+    (mut local (datetime:makeUTCTimestamp 2026 5 28 6 2 4 0 "Europe/Paris" true))
+    (test:eq local 1779940924)
+    # Europe/Paris with DST is 2 hours ahead of UTC
+    (test:eq utc (+ 7200 local)) })
+
+  (test:case "constants" {
+    (test:eq datetime:year0 -62167219200)
+    (test:eq datetime:year1970 0)
+    (test:eq datetime:year2000 946684800) })
+
+  (test:case "toUTCTimestamp" {})
+
+  (test:case "asUTCTime" {
+    (test:eq (datetime:asUTCTime 1779948124) (dict "millisecond" 0 "second" 4 "minute" 2 "hour" 6 "day" 28 "month" 5 "year" 2026 "week_day" 4 "year_day" 147 "is_dst" false))
+    (test:eq (datetime:asUTCTime 1582956124) (dict "millisecond" 0 "second" 4 "minute" 2 "hour" 6 "day" 29 "month" 2 "year" 2020 "week_day" 6 "year_day" 59 "is_dst" false))
+    (test:eq (datetime:asUTCTime 0) (dict "millisecond" 0 "second" 0 "minute" 0 "hour" 0 "day" 1 "month" 1 "year" 1970 "week_day" 4 "year_day" 0 "is_dst" false))
+    (test:eq (datetime:asUTCTime -1) (dict "millisecond" 0 "second" 59 "minute" 59 "hour" 23 "day" 31 "month" 12 "year" 1969 "week_day" 3 "year_day" 364 "is_dst" false)) })
+
+  (test:case "plus/minus unit" {})
+
+  (test:case "atStartOfDay" {})
+
+  (test:case "atEndOfDay" {})
+
+  (test:case "today, yesterday, tomorrow" {})
+
+  (test:case "nextDay, previousDay" {})
+
+  (test:case "delta, asDelta" {
+    (test:eq (datetime:asSeconds (datetime:delta datetime:year1970 datetime:year2000)) 946684800)
+    (test:eq (datetime:asDelta 60) oneMinuteAfterY0)
+  })
+
+  (test:case "asSeconds" {
+    (test:eq (datetime:asSeconds oneMinuteAfterY0) 60)
+  })
+
+  (test:case "plusDelta, minusDelta" {})
+
+  (test:case "extract component from timestamp" {})
+
+  (test:case "asISO8601" {
+    (test:eq (datetime:asISO8601 0) "1970-01-01T00:00:00.000Z")
+  })
+
+  (test:case "parse, parseAs" {}) })
