@@ -374,6 +374,18 @@
     (set _result (- _result 1)))
   (+ (* (+ (* (+ (* (+ _result _day -1) 24) _hour (if _dst? -1 0)) 60) _minute (* -1 (timezoneOffset _tz))) 60) _second (/ _millisecond 1000)) }))
 
+# @brief Precomputed timestamp of 1/1/0000 at 00H 00M 00.000s
+# @author https://github.com/SuperFola
+(let year0 (makeUTCTimestamp 0 1 1 0 0 0 0 nil false))
+
+# @brief Precomputed timestamp of 1/1/1970 at 00H 00M 00.000s
+# @author https://github.com/SuperFola
+(let year1970 0)
+
+# @brief Precomputed timestamp of 1/1/2000 at 00H 00M 00.000s
+# @author https://github.com/SuperFola
+(let year2000 (makeUTCTimestamp 2000 1 1 0 0 0 0 nil false))
+
 # @brief Convert a date to a UTC timestamp
 # =details-begin
 # This doesn't handle the timezone changes from 1970 and before,
@@ -544,13 +556,17 @@
 # @author https://github.com/SuperFola
 (let minusYears (fun (_time _quantity) (- _time (* 31536000 _quantity))))
 
-# todo: desc
+# @brief Put a given timestamp at the start of the day, at 00H 00M 00.000s
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
 (let atStartOfDay (fun (_time) {
   (let _date (asUTCTime _time))
   (dict:update! _date (dict "millisecond" 0 "second" 0 "minute" 0 "hour" 0))
   (toUTCTimestamp _date) }))
 
-# todo: desc
+# @brief Put a given timestamp at the end of the day, at 23H 59M 59.999s
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
 (let atEndOfDay (fun (_time) {
   (let _date (asUTCTime _time))
   (dict:update! _date (dict "millisecond" 999 "second" 59 "minute" 59 "hour" 23))
@@ -580,6 +596,39 @@
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola
 (let previousDay (fun (_time) (minusDays _time 1)))
+
+# @brief Compute the delta between two timestamps, as a Dict with the same shape as `datetime:asUTCTime` and `datetime:asLocalTime`
+# @param _t1 Number, first timestamp
+# @param _t2 Number, second timestamp
+# @author https://github.com/SuperFola
+(let delta (fun (_t1 _t2)
+  (asUTCTime (+ year0 (- _t2 _t1)))))
+
+# @brief Create a delta from a number of seconds, as a Dict with the same shape as `datetime:asUTCTime` and `datetime:asLocalTime`
+# @param _time Number, number of seconds
+# @author https://github.com/SuperFola
+(let asDelta (fun (_time)
+  (asUTCTime (+ year0 _time))))
+
+# @brief Convert a delta or a date to a number of seconds
+# @param _date Dict, with the same shape as `datetime:asUTCTime` and `datetime:asLocalTime`
+# @author https://github.com/SuperFola
+(let asSeconds (fun (_date)
+  (- (toUTCTimestamp _date) year0)))
+
+# @brief Add a delta to a timestamp
+# @param _time Number, timestamp
+# @param _delta Dict, with the same shape as `datetime:asUTCTime` and `datetime:asLocalTime`
+# @author https://github.com/SuperFola
+(let plusDelta (fun (_time _delta)
+  (+ _time (asSeconds _delta))))
+
+# @brief Subtract a delta to a timestamp
+# @param _time Number, timestamp
+# @param _delta Dict, with the same shape as `datetime:asUTCTime` and `datetime:asLocalTime`
+# @author https://github.com/SuperFola
+(let minusDelta (fun (_time _delta)
+  (- _time (asSeconds _delta))))
 
 # @brief Return the year component of a timestamp
 # @param _time Number, timestamp
