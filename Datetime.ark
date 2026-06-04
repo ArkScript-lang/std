@@ -675,6 +675,35 @@
 # @author https://github.com/SuperFola
 (let dayOfYear (fun (_time) (dict:get (asUTCTime _time) "year_day")))
 
+# @brief Check if a year is a leap year
+# @param _year Number, year
+# @author https://github.com/SuperFola
+(let leapYear? (fun (_year) {
+  (or
+    (and (= 0 (mod _year 4)) (!= 0 (mod _year 100)))
+    (= 0 (mod _year 400))) }))
+
+# @brief Return the number of days in the month a timestamp is at
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let monthLength (fun (_time) {
+  (let _month (month _time))
+  (if (or (= 1 _month) (= 3 _month) (= 5 _month) (= 7 _month) (= 8 _month) (= 10 _month) (= 12 _month))
+    31
+    (if (or (= 4 _month) (= 6 _month) (= 9 _month) (= 11 _month))
+      30
+      (if (leapYear? (year _time))
+        29
+        28))) }))
+
+# @brief Return the number of days in the year a timestamp is at
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let yearLength (fun (_time)
+  (if (leapYear? (year _time))
+    366
+    365)))
+
 # @brief Convert a timestamp to its ISO8601 representation: 2007-04-05T12:34:56.789Z
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola

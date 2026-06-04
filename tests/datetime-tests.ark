@@ -58,6 +58,53 @@
 
   (test:case "extract component from timestamp" {})
 
+  (test:case "leapYear?" {
+    (test:expect (datetime:leapYear? 2400))
+    (test:expect (datetime:leapYear? 2004))
+    (test:expect (datetime:leapYear? 2000))
+    (test:expect (datetime:leapYear? 1992))
+    (test:expect (datetime:leapYear? 1600))
+    (test:expect (not (datetime:leapYear? 2600)))
+    (test:expect (not (datetime:leapYear? 2500)))
+    (test:expect (not (datetime:leapYear? 2300)))
+    (test:expect (not (datetime:leapYear? 2200)))
+    (test:expect (not (datetime:leapYear? 2100)))
+    (test:expect (not (datetime:leapYear? 1900)))
+    (test:expect (not (datetime:leapYear? 1800)))
+    (test:expect (not (datetime:leapYear? 1700))) })
+
+  (test:case "month/year length" {
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 1 1 1 1 1 1 nil false)) 31)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 2 1 1 1 1 1 nil false)) 29)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2401 2 1 1 1 1 1 nil false)) 28)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 3 1 1 1 1 1 nil false)) 31)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 4 1 1 1 1 1 nil false)) 30)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 5 1 1 1 1 1 nil false)) 31)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 6 1 1 1 1 1 nil false)) 30)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 7 1 1 1 1 1 nil false)) 31)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 8 1 1 1 1 1 nil false)) 31)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 9 1 1 1 1 1 nil false)) 30)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 10 1 1 1 1 1 nil false)) 31)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 11 1 1 1 1 1 nil false)) 30)
+    (test:eq (datetime:monthLength (datetime:makeUTCTimestamp 2400 12 1 1 1 1 1 nil false)) 31)
+
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 2400 12 1 1 1 1 1 nil false)) 366)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 2000 12 1 1 1 1 1 nil false)) 366)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 2004 12 1 1 1 1 1 nil false)) 366)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 1992 12 1 1 1 1 1 nil false)) 366)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 1600 12 1 1 1 1 1 nil false)) 366)
+
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 2401 12 1 1 1 1 1 nil false)) 365)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 2600 12 1 1 1 1 1 nil false)) 365)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 2500 12 1 1 1 1 1 nil false)) 365)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 2300 12 1 1 1 1 1 nil false)) 365)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 2200 12 1 1 1 1 1 nil false)) 365)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 2100 12 1 1 1 1 1 nil false)) 365)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 2026 12 1 1 1 1 1 nil false)) 365)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 1900 12 1 1 1 1 1 nil false)) 365)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 1800 12 1 1 1 1 1 nil false)) 365)
+    (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 1700 12 1 1 1 1 1 nil false)) 365) })
+
   (test:case "asISO8601" {
     (test:eq (datetime:asISO8601 0) "1970-01-01T00:00:00.000Z")
   })
