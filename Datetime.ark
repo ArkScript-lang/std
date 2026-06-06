@@ -403,11 +403,11 @@
 # - `year_day` - days since January 1 – [0, 365]
 # - `is_dst` - Daylight Saving Time flag. The value is true if DST is in effect,  false if not or if no information is available.
 # =details-end
-# @param _date Dict, as returned by `datetime:asUTCTime` and `datetime:asLocalTime`
+# @param _date Dict, as returned by `datetime:asUTCDate` and `datetime:asLocalDate`
 # =begin
 # (let t (time))
 # (print t)  # 1779908523.389969
-# (print (datetime:toUTCTimestamp (datetime:asUTCTime t))  # 1779908523.389
+# (print (datetime:toUTCTimestamp (datetime:asUTCDate t))  # 1779908523.389
 # =end
 # @author https://github.com/SuperFola
 (let toUTCTimestamp (fun (_date)
@@ -438,11 +438,11 @@
 # - `is_dst` - Daylight Saving Time flag. The value is true if DST is in effect,  false if not or if no information is available.
 # =details-end
 # =begin
-# (print (datetime:asUTCTime (time)))
+# (print (datetime:asUTCDate (time)))
 # # {millisecond: 913, second: 24, minute: 15, hour: 17, day: 26, month: 5, year: 2026, week_day: 2, year_day: 145, is_dst: false}
 # =end
 # @author https://github.com/SuperFola
-(let asUTCTime (fun (_time)
+(let asUTCDate (fun (_time)
   (builtin__time:timeToDate _time true)))
 
 # @brief Convert a timestamp to a local date, dependent on your computer timezone
@@ -461,11 +461,11 @@
 # - `is_dst` - Daylight Saving Time flag. The value is true if DST is in effect,  false if not or if no information is available.
 # =details-end
 # =begin
-# (print (datetime:asLocalTime (time)))
+# (print (datetime:asLocalDate (time)))
 # # {millisecond: 913, second: 24, minute: 15, hour: 19, day: 26, month: 5, year: 2026, week_day: 2, year_day: 145, is_dst: false}
 # =end
 # @author https://github.com/SuperFola
-(let asLocalTime (fun (_time)
+(let asLocalDate (fun (_time)
   (builtin__time:timeToDate _time false)))
 
 # @brief Add a number of seconds to a timestamp
@@ -560,7 +560,7 @@
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola
 (let atStartOfDay (fun (_time) {
-  (let _date (asUTCTime _time))
+  (let _date (asUTCDate _time))
   (dict:update! _date (dict "millisecond" 0 "second" 0 "minute" 0 "hour" 0))
   (toUTCTimestamp _date) }))
 
@@ -568,7 +568,7 @@
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola
 (let atEndOfDay (fun (_time) {
-  (let _date (asUTCTime _time))
+  (let _date (asUTCDate _time))
   (dict:update! _date (dict "millisecond" 999 "second" 59 "minute" 59 "hour" 23))
   (toUTCTimestamp _date) }))
 
@@ -597,35 +597,35 @@
 # @author https://github.com/SuperFola
 (let previousDay (fun (_time) (minusDays _time 1)))
 
-# @brief Compute the delta between two timestamps, as a Dict with the same shape as `datetime:asUTCTime` and `datetime:asLocalTime`
+# @brief Compute the delta between two timestamps, as a Dict with the same shape as `datetime:asUTCDate` and `datetime:asLocalDate`
 # @param _t1 Number, first timestamp
 # @param _t2 Number, second timestamp
 # @author https://github.com/SuperFola
 (let delta (fun (_t1 _t2)
-  (asUTCTime (+ year0 (- _t2 _t1)))))
+  (asUTCDate (+ year0 (- _t2 _t1)))))
 
-# @brief Create a delta from a number of seconds, as a Dict with the same shape as `datetime:asUTCTime` and `datetime:asLocalTime`
+# @brief Create a delta from a number of seconds, as a Dict with the same shape as `datetime:asUTCDate` and `datetime:asLocalDate`
 # @param _time Number, number of seconds
 # @author https://github.com/SuperFola
 (let asDelta (fun (_time)
-  (asUTCTime (+ year0 _time))))
+  (asUTCDate (+ year0 _time))))
 
 # @brief Convert a delta or a date to a number of seconds
-# @param _date Dict, with the same shape as `datetime:asUTCTime` and `datetime:asLocalTime`
+# @param _date Dict, with the same shape as `datetime:asUTCDate` and `datetime:asLocalDate`
 # @author https://github.com/SuperFola
 (let asSeconds (fun (_date)
   (- (toUTCTimestamp _date) year0)))
 
 # @brief Add a delta to a timestamp
 # @param _time Number, timestamp
-# @param _delta Dict, with the same shape as `datetime:asUTCTime` and `datetime:asLocalTime`
+# @param _delta Dict, with the same shape as `datetime:asUTCDate` and `datetime:asLocalDate`
 # @author https://github.com/SuperFola
 (let plusDelta (fun (_time _delta)
   (+ _time (asSeconds _delta))))
 
 # @brief Subtract a delta to a timestamp
 # @param _time Number, timestamp
-# @param _delta Dict, with the same shape as `datetime:asUTCTime` and `datetime:asLocalTime`
+# @param _delta Dict, with the same shape as `datetime:asUTCDate` and `datetime:asLocalDate`
 # @author https://github.com/SuperFola
 (let minusDelta (fun (_time _delta)
   (- _time (asSeconds _delta))))
@@ -633,17 +633,17 @@
 # @brief Return the year component of a timestamp
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola
-(let year (fun (_time) (dict:get (asUTCTime _time) "year")))
+(let year (fun (_time) (dict:get (asUTCDate _time) "year")))
 
 # @brief Return the month (1-12) component of a timestamp
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola
-(let month (fun (_time) (dict:get (asUTCTime _time) "month")))
+(let month (fun (_time) (dict:get (asUTCDate _time) "month")))
 
 # @brief Return the day (1-31) of the month component of a timestamp
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola
-(let day (fun (_time) (dict:get (asUTCTime _time) "day")))
+(let day (fun (_time) (dict:get (asUTCDate _time) "day")))
 
 # @brief Return the hour (0-23) component of a timestamp
 # @param _time Number, timestamp
@@ -665,15 +665,15 @@
 # @author https://github.com/SuperFola
 (let millisecond (fun (_time) (* 1000 (- _time (builtin__math:floor _time)))))
 
-# @brief Return the day of the week component of a timestamp (starts at 0 for sunday, 6 for saturday)
+# @brief Return the day of the week component of a timestamp (starts at 0 for monday, 6 for sunday)
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola
-(let dayOfWeek (fun (_time) (dict:get (asUTCTime _time) "week_day")))
+(let dayOfWeek (fun (_time) (dict:get (asUTCDate _time) "week_day")))
 
 # @brief Return the day of the year (0-365) component of a timestamp
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola
-(let dayOfYear (fun (_time) (dict:get (asUTCTime _time) "year_day")))
+(let dayOfYear (fun (_time) (dict:get (asUTCDate _time) "year_day")))
 
 # @brief Check if a year is a leap year
 # @param _year Number, year
@@ -708,7 +708,7 @@
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola
 (let asISO8601 (fun (_time) {
-  (let _data (asUTCTime _time))
+  (let _data (asUTCDate _time))
   (format
     "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:03}Z"
     (dict:get _data "year")

@@ -2,7 +2,7 @@
 (import std.Testing)
 
 (test:suite datetime {
-  (let oneMinuteAfterY0 (dict "millisecond" 0 "second" 0 "minute" 1 "hour" 0 "day" 1 "month" 1 "year" 0 "week_day" 6 "year_day" 0 "is_dst" false))
+  (let oneMinuteAfterY0 (dict "millisecond" 0 "second" 0 "minute" 1 "hour" 0 "day" 1 "month" 1 "year" 0 "week_day" 5 "year_day" 0 "is_dst" false))
 
   (test:case "timezoneOffset" {})
 
@@ -29,11 +29,11 @@
 
   (test:case "toUTCTimestamp" {})
 
-  (test:case "asUTCTime" {
-    (test:eq (datetime:asUTCTime 1779948124) (dict "millisecond" 0 "second" 4 "minute" 2 "hour" 6 "day" 28 "month" 5 "year" 2026 "week_day" 4 "year_day" 147 "is_dst" false))
-    (test:eq (datetime:asUTCTime 1582956124) (dict "millisecond" 0 "second" 4 "minute" 2 "hour" 6 "day" 29 "month" 2 "year" 2020 "week_day" 6 "year_day" 59 "is_dst" false))
-    (test:eq (datetime:asUTCTime 0) (dict "millisecond" 0 "second" 0 "minute" 0 "hour" 0 "day" 1 "month" 1 "year" 1970 "week_day" 4 "year_day" 0 "is_dst" false))
-    (test:eq (datetime:asUTCTime -1) (dict "millisecond" 0 "second" 59 "minute" 59 "hour" 23 "day" 31 "month" 12 "year" 1969 "week_day" 3 "year_day" 364 "is_dst" false)) })
+  (test:case "asUTCDate" {
+    (test:eq (datetime:asUTCDate 1779948124) (dict "millisecond" 0 "second" 4 "minute" 2 "hour" 6 "day" 28 "month" 5 "year" 2026 "week_day" 3 "year_day" 147 "is_dst" false))
+    (test:eq (datetime:asUTCDate 1582956124) (dict "millisecond" 0 "second" 4 "minute" 2 "hour" 6 "day" 29 "month" 2 "year" 2020 "week_day" 5 "year_day" 59 "is_dst" false))
+    (test:eq (datetime:asUTCDate 0) (dict "millisecond" 0 "second" 0 "minute" 0 "hour" 0 "day" 1 "month" 1 "year" 1970 "week_day" 3 "year_day" 0 "is_dst" false))
+    (test:eq (datetime:asUTCDate -1) (dict "millisecond" 0 "second" 59 "minute" 59 "hour" 23 "day" 31 "month" 12 "year" 1969 "week_day" 2 "year_day" 364 "is_dst" false)) })
 
   (test:case "plus/minus unit" {})
 
@@ -106,7 +106,8 @@
     (test:eq (datetime:yearLength (datetime:makeUTCTimestamp 1700 12 1 1 1 1 1 nil false)) 365) })
 
   (test:case "asISO8601" {
+    (test:eq (datetime:asISO8601 -1) "1969-12-31T23:59:59.000Z")
     (test:eq (datetime:asISO8601 0) "1970-01-01T00:00:00.000Z")
-  })
+    (test:eq (datetime:asISO8601 1) "1970-01-01T00:00:01.000Z") })
 
   (test:case "parse, parseAs" {}) })
