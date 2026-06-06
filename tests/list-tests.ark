@@ -189,6 +189,27 @@
     (test:eq (list:dropWhile a (fun (c) (< c 2))) [2 3])
     (test:eq (list:dropWhile a (fun (c) (< c 5))) []) })
 
+  (test:case "shiftLeft, shiftRight" {
+    (test:eq (list:shiftLeft [] 0) [])
+    (test:eq (list:shiftLeft [1] 0) [1])
+    (test:eq (list:shiftLeft [1 2] 0) [1 2])
+    (test:eq (list:shiftLeft [] 1) [])
+    (test:eq (list:shiftLeft [1] 1) [1])
+    (test:eq (list:shiftLeft [1 2] 1) [2 1])
+    (test:eq (list:shiftLeft [1 2 3 4 5] 2) [3 4 5 1 2])
+    (test:eq (list:shiftLeft [1 2 3 4 5] 5) [1 2 3 4 5])
+    (test:eq (list:shiftLeft [1 2 3 4 5] 11) [2 3 4 5 1])
+
+    (test:eq (list:shiftRight [] 0) [])
+    (test:eq (list:shiftRight [1] 0) [1])
+    (test:eq (list:shiftRight [1 2] 0) [1 2])
+    (test:eq (list:shiftRight [] 1) [])
+    (test:eq (list:shiftRight [1] 1) [1])
+    (test:eq (list:shiftRight [1 2] 1) [2 1])
+    (test:eq (list:shiftRight [1 2 3 4 5] 2) [4 5 1 2 3])
+    (test:eq (list:shiftRight [1 2 3 4 5] 5) [1 2 3 4 5])
+    (test:eq (list:shiftRight [1 2 3 4 5] 11) [5 1 2 3 4]) })
+
   (test:case "filter" {
     (test:eq (list:filter a math:even?) [2])
     (test:eq (list:filter a (fun (e) (> e 100))) [])
