@@ -1,3 +1,5 @@
+(import std.Math)
+
 # @brief Reverse a given list and return a new one
 # @details The original list is not modified
 # @param list the list to reverse
@@ -8,7 +10,7 @@
 (let reverse (fun (_L) (builtin__list:reverse _L)))
 
 # @brief Search an element in a List
-# @details The original list is not modified
+# @details The original list is not modified. Return -1 when not found
 # @param list the List to search in
 # @param value the element to search
 # =begin
@@ -17,6 +19,147 @@
 # =end
 # @author https://github.com/SuperFola
 (let find (fun (_L _x) (builtin__list:find _L _x)))
+
+# @brief Search an element in a List
+# @details The original List is not modified. Return -1 when not found
+# @param list the List to search in
+# @param x the element to search for
+# @param startIndex index to start searching from
+# =begin
+# (list:findAfter [1 2 3] 1 0)  # 0
+# (list:findAfter [1 2 3] 1 1)  # -1
+# =end
+# @author https://github.com/SuperFola
+(let findAfter (fun (_L _x _idx) (builtin__list:find _L _x _idx)))
+
+# @brief Search an element in a List with a predicate
+# @details The original List is not modified. Return nil when not found
+# @param list the List to search in
+# @param pred unary Function returning a boolean
+# =begin
+# (list:findIf [1 2 3] math:even?)  # 1
+# (list:findIf [1 3 5] math:even?)  # nil
+# =end
+# @author https://github.com/SuperFola
+(let findIf (fun (_L _f) {
+  (mut _i 0)
+  (mut _output nil)
+  (while (< _i (len _L)) {
+    (if (_f (@ _L _i))
+      {
+        (set _output _i)
+        (set _i (len _L)) })
+    (set _i (+ 1 _i)) })
+  _output }))
+
+# @brief Search for a set of contiguous elements inside a list
+# @details The original List is not modified. Return nil when not found
+# @param list the List to search in
+# @param sub the elements to search for
+# =begin
+# (list:search [1 2 3 4 5 6] [2 3 4])  # 1
+# (list:search [1 2 3 4 5 6] [2 4])  # nil
+# =end
+# @author https://github.com/SuperFola
+(let search (fun ((ref _L) (ref _s)) {
+  (assert (not (empty? _s)) "The sublist to look for can't be empty")
+  (mut _i (find _L (head _s)))
+  (if (!= -1 _i)
+    {
+      (mut _continue true)
+      (mut _output nil)
+
+      (while _continue {
+        (mut _ii _i)
+        (mut _j 0)
+        (mut _ok true)
+        (while (and _ok (< _j (len _s)) (< _ii (len _L)))
+          (if (!= (@ _L _ii) (@ _s _j))
+            (set _ok false)
+            {
+              (set _j (+ 1 _j))
+              (set _ii (+ 1 _ii)) }))
+        (if (and _ok (= _j (len _s)))
+          {
+            (set _continue false)
+            (set _output _i) })
+        (if (>= _i (len _L))
+          (set _continue false))
+        (set _i (+ 1 _i)) })
+      _output }
+    nil) }))
+
+# @brief Search for the first element in the list which is not ordered before value and return its index
+# @details The original List is not modified. Expect the List to be sorted. Return nil when not found
+# @param list the List to search in
+# @param x element to search for
+# =begin
+# (let prices [100.0 101.5 102.5 102.5 107.3])
+# (list:lowerBound prices 102.5)  # 2
+# (list:lowerBound prices 110)  # nil
+# =end
+# @author https://github.com/SuperFola
+(let lowerBound (fun ((ref _L) _x) {
+  (mut _it nil)
+  (mut _count (len _L))
+  (mut _first 0)
+
+  (while (> _count 0) {
+    (let _step (math:floordiv _count 2))
+    (set _it (+ _first _step))
+    (if (and (< _it (len _L)) (< (@ _L _it) _x))
+      {
+        (set _it (+ 1 _it))
+        (set _first _it)
+        (set _count (+ (- _count _step) 1)) }
+      (set _count _step)) })
+
+  (if (< _first (len _L))
+    _first
+    nil) }))
+
+# @brief Search for the first element in the list which is ordered after value and return its index
+# @details The original List is not modified. Expect the List to be sorted. Return nil when not found
+# @param list the List to search in
+# @param x element to search for
+# =begin
+# (let prices [100.0 101.5 102.5 102.5 107.3])
+# (list:upperBound prices 102.5)  # 4
+# (list:upperBound prices 110)  # nil
+# =end
+# @author https://github.com/SuperFola
+(let upperBound (fun ((ref _L) _x) {
+  (mut _it nil)
+  (mut _count (len _L))
+  (mut _first 0)
+
+  (while (> _count 0) {
+    (let _step (math:floordiv _count 2))
+    (set _it (+ _first _step))
+    (if (and (< _it (len _L)) (>= _x (@ _L _it)))
+      {
+        (set _it (+ 1 _it))
+        (set _first _it)
+        (set _count (+ (- _count _step) 1)) }
+      (set _count _step)) })
+
+  (if (< _first (len _L))
+    _first
+    nil) }))
+
+# @brief Check if an element is in a sorted List
+# @details The original List is not modified. Expect the List to be sorted
+# @param list the List to search in
+# @param x element to search for
+# =begin
+# (let prices [1 3 5 9])
+# (list:binarySearch prices 1)  # true
+# (list:binarySearch prices 2)  # false
+# =end
+# @author https://github.com/SuperFola
+(let binarySearch (fun ((ref _L) _x) {
+  (let _first (lowerBound _L _x))
+  (and (< _first (len _L)) (>= _x (@ _L _first))) }))
 
 # @brief Search if an element is in a List
 # @details The original list is not modified
@@ -61,6 +204,28 @@
 # =end
 # @author https://github.com/SuperFola
 (let sort (fun (_L) (builtin__list:sort _L)))
+
+# @brief Check if a List is sorted
+# @details The original list is not modified
+# @param list List to check
+# =begin
+# (list:sorted? [4 2 3])  # false
+# (list:sorted? [])  # true
+# (list:sorted? [1])  # true
+# (list:sorted? [1 2 5])  # true
+# =end
+# @author https://github.com/SuperFola
+(let sorted? (fun ((ref _L)) {
+  (mut _i 0)
+  (mut _ok true)
+
+  (while (and _ok (< _i (- (len _L) 1))) {
+    (set _ok (<= (@ _L _i) (@ _L (+ 1 _i))))
+    (set _i (+ 1 _i)) })
+
+  (if (<= (len _L) 1)
+    true
+    _ok) }))
 
 # @brief Generate a List of n copies of an element
 # @param count the number of copies
@@ -263,7 +428,28 @@
     (set _index (+ 1 _index)) })
   _output }))
 
-(import std.Math :min :max :even?)
+# @brief Find the minimum and the maximum in a list of numbers
+# @param _L list of numbers
+# @details The original list is not modified.
+# =begin
+# (let value (list:minMax [0 1 2 3 5 8]))  # [0 8]
+# =end
+# @author https://github.com/SuperFola
+(let minMax (fun ((ref _L)) {
+  (mut _index 0)
+  (mut _min nil)
+  (mut _max nil)
+
+  (while (< _index (len _L)) {
+    (let _val (@ _L _index))
+
+    (if (or (nil? _min) (< _val _min))
+        (set _min _val))
+    (if (or (nil? _max) (> _val _max))
+      (set _max _val))
+
+    (set _index (+ 1 _index)) })
+  [_min _max] }))
 
 # @brief Find the median in a list of numbers
 # @param _L list of numbers
