@@ -33,7 +33,10 @@
     (test:eq (datetime:asUTCDate 1779948124) (dict "millisecond" 0 "second" 4 "minute" 2 "hour" 6 "day" 28 "month" 5 "year" 2026 "week_day" 3 "year_day" 147 "is_dst" false))
     (test:eq (datetime:asUTCDate 1582956124) (dict "millisecond" 0 "second" 4 "minute" 2 "hour" 6 "day" 29 "month" 2 "year" 2020 "week_day" 5 "year_day" 59 "is_dst" false))
     (test:eq (datetime:asUTCDate 0) (dict "millisecond" 0 "second" 0 "minute" 0 "hour" 0 "day" 1 "month" 1 "year" 1970 "week_day" 3 "year_day" 0 "is_dst" false))
-    (test:eq (datetime:asUTCDate -1) (dict "millisecond" 0 "second" 59 "minute" 59 "hour" 23 "day" 31 "month" 12 "year" 1969 "week_day" 2 "year_day" 364 "is_dst" false)) })
+    (test:eq (datetime:asUTCDate -1) (dict "millisecond" 0 "second" 59 "minute" 59 "hour" 23 "day" 31 "month" 12 "year" 1969 "week_day" 2 "year_day" 364 "is_dst" false))
+    # largest representable exact integers (2^53 - 1) using doubles)
+    (test:eq (datetime:asUTCDate  9007199254740991) (dict "millisecond" 0 "second" 31 "minute" 36 "hour" 7 "day" 12 "month" 11 "year" 285428751 "week_day" 0 "year_day" 315 "is_dst" false))
+    (test:eq (datetime:asUTCDate -9007199254740991) (dict "millisecond" 0 "second" 29 "minute" 23 "hour" 16 "day" 20 "month" 2 "year" -285424812 "week_day" 5 "year_day" 50 "is_dst" false)) })
 
   (test:case "plus/minus unit" {})
 

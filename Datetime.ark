@@ -332,10 +332,10 @@
 # @param _tz String, time zone name
 # @author https://github.com/SuperFola
 (let timezoneOffset (fun (_tz) {
-  (let timezoneOffset (dict:get timezoneOffsets _tz))
-  (if (nil? timezoneOffset)
+  (let _offset (dict:get timezoneOffsets _tz))
+  (if (nil? _offset)
     0
-    timezoneOffset) }))
+    _offset) }))
 
 # @brief Construct a UTC timestamp
 # =details-begin
@@ -356,20 +356,20 @@
 # # 1779884885.3
 # =end
 # @author https://github.com/SuperFola
-(let makeUTCTimestamp (fun (_year (mut _month) _day _hour _minute _second _millisecond _tz _dst?) {
+(let makeUTCTimestamp (fun ((mut _year) (mut _month) _day _hour _minute _second _millisecond _tz _dst?) {
   # _month is between 1 and 12, this algorithm needs it between 0 and 11
   (set _month (- _month 1))
-  (let year (+ _year (floordiv _month 12)))
+  (set _year (+ _year (floordiv _month 12)))
 
-  (mut _result (+ (* (- year 1970) 365) (@ _cumulativeDays (mod _month 12))))
+  (mut _result (+ (* (- _year 1970) 365) (@ _cumulativeDays (mod _month 12))))
   (set _result (+
     _result
-    (floordiv (- year 1968) 4)
-    (* -1 (floordiv (- year 1900) 100))
-    (floordiv (- year 1600) 400)))
+    (floordiv (- _year 1968) 4)
+    (* -1 (floordiv (- _year 1900) 100))
+    (floordiv (- _year 1600) 400)))
   (if (and
-    (= 0 (mod year 4))
-    (or (!= 0 (mod year 100)) (= 0 (mod year 400)))
+    (= 0 (mod _year 4))
+    (or (!= 0 (mod _year 100)) (= 0 (mod _year 400)))
     (< (mod _month 12) 2))
     (set _result (- _result 1)))
   (+ (* (+ (* (+ (* (+ _result _day -1) 24) _hour (if _dst? -1 0)) 60) _minute (* -1 (timezoneOffset _tz))) 60) _second (/ _millisecond 1000)) }))
