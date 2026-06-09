@@ -257,6 +257,25 @@
   _new }))
 
 # @brief Update a dictionary with (key, value) pairs from a second dictionary
+# @details The original dictionary is not modified
+# @param _D dictionary to update
+# @param _D2 second dictionary
+# =begin
+# (let data (dict "key" "value" "hello" "world"))
+# (let new (dict "key" "new value" 5 12))
+# (print (dict:update data new))  # {key: new value, hello: world, 5: 12}
+# (print data)  # {key: value, hello: world}
+# =end
+# @author https://github.com/SuperFola
+(let update! (fun (_D _D2) {
+  (mut _i 0)
+  (let _keys (keys _D2))
+  (while (< _i (len _keys)) {
+    (let _key (@ _keys _i))
+    (add _D _key (get _D2 _key))
+    (set _i (+ 1 _i)) }) }))
+
+# @brief Update a dictionary with (key, value) pairs from a second dictionary
 # @details The original dictionary is updated in place
 # @param _D dictionary to update
 # @param _D2 second dictionary
@@ -267,13 +286,15 @@
 # (print data)  # {key: new value, hello: world, 5: 12}
 # =end
 # @author https://github.com/SuperFola
-(let update! (fun (_D _D2) {
+(let update (fun (_D _D2) {
   (mut _i 0)
+  (mut _copy (copy _D))
   (let _keys (keys _D2))
   (while (< _i (len _keys)) {
     (let _key (@ _keys _i))
-    (add _D _key (get _D2 _key))
-    (set _i (+ 1 _i)) }) }))
+    (add _copy _key (get _D2 _key))
+    (set _i (+ 1 _i)) })
+  _copy }))
 
 (let _valAsJson (fun (_val)
   (if (= "Dict" (type _val))

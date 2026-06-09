@@ -197,4 +197,12 @@
     (test:eq (len d2) 2)
     (test:eq (dict:get d2 "a") 5)
     (test:eq (dict:get d2 "c") 3)
-    (test:eq (len empty) 0) }) })
+    (test:eq (len empty) 0) })
+
+  (test:case "update" {
+    (mut base_dict (dict
+      "a" 1
+      "b" 2
+      "c" 3))
+    (test:eq (dict:update base_dict (dict "a" 12 "d" 5)) (dict "a" 12 "b" 2 "c" 3 "d" 5))
+    (test:eq base_dict (dict "a" 1 "b" 2 "c" 3)) }) })
