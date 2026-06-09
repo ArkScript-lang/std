@@ -135,8 +135,7 @@
 # internal, do not use
 (macro __unpack (data idx name ...names) {
   (let name (@ data idx))
-  ($if (> ($len names) 0)
-    (__unpack data (+ 1 idx) ...names)) })
+  ($if (> ($len names) 0) (__unpack data (+ 1 idx) ...names)) })
 
 # @brief Unpack a list into multiple variables
 # @param data list of elements to unpack

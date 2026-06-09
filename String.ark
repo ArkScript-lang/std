@@ -155,10 +155,7 @@
 (let privateUse? (fun (_str) {
   (assert (= 1 (utf8len _str)) "Expected a single character")
   (let _c (ord _str))
-  (or
-    (and (<= 57344 _c) (<= _c 63743))
-    (and (<= 983040 _c) (<= _c 1048573))
-    (and (<= 1048576 _c) (<= _c 1114109))) }))
+  (or (and (<= 57344 _c) (<= _c 63743)) (and (<= 983040 _c) (<= _c 1048573)) (and (<= 1048576 _c) (<= _c 1114109))) }))
 
 # @brief Check if a string contains a word
 # @param _str String where the lookup occurs
