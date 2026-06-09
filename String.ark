@@ -322,18 +322,7 @@
         (and (>= _startingIndex 0) (< _startingIndex (len _string)))
         "slice start index must be in range [0, string length[")
 
-      (mut _returnedString "")
-      (mut _index _startingIndex)
-
-      (let _end
-        (if (>= _length (len _string))
-          (len _string)
-          (+ _index _length)))
-
-      (while (< _index _end) {
-        (set _returnedString (+ _returnedString (@ _string _index)))
-        (set _index (+ _index 1)) })
-      _returnedString })))
+      (builtin__slice _string _startingIndex (+ _startingIndex _length)) })))
 
 # @brief Split a string in multiple substrings in a list, given a separator
 # @param _string the string to split
