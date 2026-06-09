@@ -1,0 +1,9 @@
+(import std.Colours)
+(import std.Testing)
+
+(test:suite colours {
+  (test:case "parse" {
+    (test:eq (colours:parse "abcdef") nil)
+    (test:eq (colours:parse "#abc") "#aabbcc")
+    (test:eq (colours:parse "#AAB") "#aaaabb")
+    (test:eq (colours:parse "rebeccapurple") "#663399") }) })

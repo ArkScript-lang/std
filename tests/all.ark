@@ -1,4 +1,5 @@
 (import cli-tests)
+(import colours-tests)
 (import datetime-tests)
 (import dict-tests)
 (import events-tests)
@@ -19,6 +20,7 @@
 
 (let outputs (list:unzip [
     cli-tests:cli-output
+    colours-tests:colours-output
     datetime-tests:datetime-output
     dict-tests:dict-output
     events-tests:events-output
