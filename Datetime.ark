@@ -367,18 +367,29 @@
   (set _year (+ _year (floordiv _month 12)))
 
   (mut _result (+ (* (- _year 1970) 365) (@ _cumulativeDays (mod _month 12))))
-  (set _result (+
-    _result
-    (floordiv (- _year 1968) 4)
-    (* -1 (floordiv (- _year 1900) 100))
-    (floordiv (- _year 1600) 400)))
-  (if (and
-    (= 0 (mod _year 4))
-    (or (!= 0 (mod _year 100)) (= 0 (mod _year 400)))
-    (< (mod _month 12) 2))
+  (set _result (+ _result (floordiv (- _year 1968) 4) (* -1 (floordiv (- _year 1900) 100)) (floordiv (- _year 1600) 400)))
+  (if (and (= 0 (mod _year 4)) (or (!= 0 (mod _year 100)) (= 0 (mod _year 400))) (< (mod _month 12) 2))
     (set _result (- _result 1)))
-  (let _tzOffset (if (nil? _tz) 0 (* -1 (utcOffsetMinutes _tz))))
-  (+ (* (+ (* (+ (* (+ _result _day -1) 24) _hour (if _dst? -1 0)) 60) _minute _tzOffset) 60) _second (/ _millisecond 1000)) }))
+  (let _tzOffset
+    (if (nil? _tz)
+      0
+      (* -1 (utcOffsetMinutes _tz))))
+  (+
+    (*
+      (+
+        (*
+          (+
+            (* (+ _result _day -1) 24)
+            _hour
+            (if _dst?
+              -1
+              0))
+          60)
+        _minute
+        _tzOffset)
+      60)
+    _second
+    (/ _millisecond 1000)) }))
 
 # @brief Precomputed timestamp of 1/1/0000 at 00H 00M 00.000s
 # @author https://github.com/SuperFola
@@ -416,8 +427,7 @@
 # (print (datetime:toUTCTimestamp (datetime:asUTCDate t))  # 1779908523.389
 # =end
 # @author https://github.com/SuperFola
-(let toUTCTimestamp (fun (_date)
-  (makeUTCTimestamp
+(let toUTCTimestamp (fun (_date) (makeUTCTimestamp
     (dict:get _date "year")
     (dict:get _date "month")
     (dict:get _date "day")
@@ -448,8 +458,7 @@
 # # {millisecond: 913, second: 24, minute: 15, hour: 17, day: 26, month: 5, year: 2026, week_day: 2, year_day: 145, is_dst: false}
 # =end
 # @author https://github.com/SuperFola
-(let asUTCDate (fun (_time)
-  (builtin__time:asUTCDate _time)))
+(let asUTCDate (fun (_time) (builtin__time:asUTCDate _time)))
 
 # @brief Add a number of seconds to a timestamp
 # @param _time Number, timestamp
@@ -544,7 +553,13 @@
 # @author https://github.com/SuperFola
 (let atStartOfDay (fun (_time) {
   (let _date (asUTCDate _time))
-  (dict:update! _date (dict "millisecond" 0 "second" 0 "minute" 0 "hour" 0))
+  (dict:update!
+    _date
+    (dict
+      "millisecond" 0
+      "second" 0
+      "minute" 0
+      "hour" 0))
   (toUTCTimestamp _date) }))
 
 # @brief Put a given timestamp at the end of the day, at 23H 59M 59.999s
@@ -552,7 +567,13 @@
 # @author https://github.com/SuperFola
 (let atEndOfDay (fun (_time) {
   (let _date (asUTCDate _time))
-  (dict:update! _date (dict "millisecond" 999 "second" 59 "minute" 59 "hour" 23))
+  (dict:update!
+    _date
+    (dict
+      "millisecond" 999
+      "second" 59
+      "minute" 59
+      "hour" 23))
   (toUTCTimestamp _date) }))
 
 # @brief Compute today's date, at 00H 00M 00s
@@ -609,8 +630,7 @@
 # @brief Create a delta from a number of seconds, as a Dict with the same shape as `datetime:asUTCDate`
 # @param _time Number, number of seconds
 # @author https://github.com/SuperFola
-(let asDelta (fun (_time)
-  (delta 0 _time)))
+(let asDelta (fun (_time) (delta 0 _time)))
 
 # @brief Convert a delta or a date to a number of seconds
 # @param _date Dict, with the same shape as `datetime:asUTCDate`
@@ -630,15 +650,13 @@
 # @param _time Number, timestamp
 # @param _delta Dict, with the same shape as `datetime:asUTCDate`
 # @author https://github.com/SuperFola
-(let plusDelta (fun (_time _delta)
-  (+ _time (asSeconds _delta))))
+(let plusDelta (fun (_time _delta) (+ _time (asSeconds _delta))))
 
 # @brief Subtract a delta to a timestamp
 # @param _time Number, timestamp
 # @param _delta Dict, with the same shape as `datetime:asUTCDate`
 # @author https://github.com/SuperFola
-(let minusDelta (fun (_time _delta)
-  (- _time (asSeconds _delta))))
+(let minusDelta (fun (_time _delta) (- _time (asSeconds _delta))))
 
 # @brief Return the year component of a timestamp
 # @param _time Number, timestamp
@@ -689,9 +707,7 @@
 # @param _year Number, year
 # @author https://github.com/SuperFola
 (let leapYear? (fun (_year) {
-  (or
-    (and (= 0 (mod _year 4)) (!= 0 (mod _year 100)))
-    (= 0 (mod _year 400))) }))
+  (or (and (= 0 (mod _year 4)) (!= 0 (mod _year 100))) (= 0 (mod _year 400))) }))
 
 # @brief Return the number of days in the month a timestamp is at
 # @param _time Number, timestamp
@@ -723,7 +739,13 @@
   (assert (not (nil? _minutes)) "Unknown timezone")
   (let _hoursToUtc (abs (floordiv _minutes 60)))
   (let _minToUtc (mod _minutes 60))
-  (format "{}{:02}:{:02}" (if (< _minutes 0) "-" "+") _hoursToUtc _minToUtc) }))
+  (format
+    "{}{:02}:{:02}"
+    (if (< _minutes 0)
+      "-"
+      "+")
+    _hoursToUtc
+    _minToUtc) }))
 
 # @brief Convert a timestamp to its ISO8601 representation: 2007-04-05T12:34:56.789Z
 # @param _time Number, timestamp

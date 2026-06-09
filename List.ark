@@ -444,7 +444,7 @@
     (let _val (@ _L _index))
 
     (if (or (nil? _min) (< _val _min))
-        (set _min _val))
+      (set _min _val))
     (if (or (nil? _max) (> _val _max))
       (set _max _val))
 
@@ -506,8 +506,7 @@
 
   (while (< _index (len _L)) {
     (let _result (_f (@ _L _index)))
-      (if (not (nil? _result))
-        (append! _output _result))
+    (if (not (nil? _result)) (append! _output _result))
     (set _index (+ 1 _index)) })
   _output }))
 
