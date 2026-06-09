@@ -1,5 +1,5 @@
 (import std.Dict)
-(import std.Math :floordiv)
+(import std.Math :floordiv :round :abs)
 
 # @brief Dictionary of time zone offsets to UTC, in minutes
 # =details-begin
@@ -328,14 +328,13 @@
 (let _cumulativeDays [0 31 59 90 120 151 181 212 243 273 304 334])
 
 # @brief Get the offset to UTC of a time zone by name, in minutes
-# @details Can return 0 if the time zone is not known
+# @details Abort if the timezone is not known
 # @param _tz String, time zone name
 # @author https://github.com/SuperFola
-(let timezoneOffset (fun (_tz) {
+(let utcOffsetMinutes (fun (_tz) {
   (let _offset (dict:get timezoneOffsets _tz))
-  (if (nil? _offset)
-    0
-    _offset) }))
+  (assert (not (nil? _offset)) "Unknown timezone")
+  _offset }))
 
 # @brief Construct a UTC timestamp
 # =details-begin
@@ -357,6 +356,12 @@
 # =end
 # @author https://github.com/SuperFola
 (let makeUTCTimestamp (fun ((mut _year) (mut _month) _day _hour _minute _second _millisecond _tz _dst?) {
+  (assert (and (>= _day 1) (<= _day 31)) "Day must be in [1-31]")
+  (assert (and (>= _month 1) (<= _month 12)) "Month must be in [1-12]")
+  (assert (and (>= _hour 0) (<= _hour 23)) "Hour must be in [0-23]")
+  (assert (and (>= _minute 0) (<= _minute 59)) "Minute must be in [0-59]")
+  (assert (and (>= _second 0) (<= _second 60)) "Second must be in [0-60]")
+
   # _month is between 1 and 12, this algorithm needs it between 0 and 11
   (set _month (- _month 1))
   (set _year (+ _year (floordiv _month 12)))
@@ -372,7 +377,8 @@
     (or (!= 0 (mod _year 100)) (= 0 (mod _year 400)))
     (< (mod _month 12) 2))
     (set _result (- _result 1)))
-  (+ (* (+ (* (+ (* (+ _result _day -1) 24) _hour (if _dst? -1 0)) 60) _minute (* -1 (timezoneOffset _tz))) 60) _second (/ _millisecond 1000)) }))
+  (let _tzOffset (if (nil? _tz) 0 (* -1 (utcOffsetMinutes _tz))))
+  (+ (* (+ (* (+ (* (+ _result _day -1) 24) _hour (if _dst? -1 0)) 60) _minute _tzOffset) 60) _second (/ _millisecond 1000)) }))
 
 # @brief Precomputed timestamp of 1/1/0000 at 00H 00M 00.000s
 # @author https://github.com/SuperFola
@@ -403,7 +409,7 @@
 # - `year_day` - days since January 1 – [0, 365]
 # - `is_dst` - Daylight Saving Time flag. The value is true if DST is in effect,  false if not or if no information is available.
 # =details-end
-# @param _date Dict, as returned by `datetime:asUTCDate` and `datetime:asLocalDate`
+# @param _date Dict, as returned by `datetime:asUTCDate`
 # =begin
 # (let t (time))
 # (print t)  # 1779908523.389969
@@ -443,30 +449,7 @@
 # =end
 # @author https://github.com/SuperFola
 (let asUTCDate (fun (_time)
-  (builtin__time:timeToDate _time true)))
-
-# @brief Convert a timestamp to a local date, dependent on your computer timezone
-# @param _time timestamp
-# =details-begin
-# Returns a Dict with the following keys:
-# - `millisecond` - milliseconds after the second – [0, 999]
-# - `second` - seconds after the minute – [0, 60]
-# - `minute` - minutes after the hour – [0, 59]
-# - `hour` - hours since midnight – [0, 23]
-# - `day` - day of the month – [1, 31]
-# - `month` - months since January – [1, 12]
-# - `year` - years since 0
-# - `week_day` - days since Sunday – [0, 6]
-# - `year_day` - days since January 1 – [0, 365]
-# - `is_dst` - Daylight Saving Time flag. The value is true if DST is in effect,  false if not or if no information is available.
-# =details-end
-# =begin
-# (print (datetime:asLocalDate (time)))
-# # {millisecond: 913, second: 24, minute: 15, hour: 19, day: 26, month: 5, year: 2026, week_day: 2, year_day: 145, is_dst: false}
-# =end
-# @author https://github.com/SuperFola
-(let asLocalDate (fun (_time)
-  (builtin__time:timeToDate _time false)))
+  (builtin__time:asUTCDate _time)))
 
 # @brief Add a number of seconds to a timestamp
 # @param _time Number, timestamp
@@ -597,35 +580,62 @@
 # @author https://github.com/SuperFola
 (let previousDay (fun (_time) (minusDays _time 1)))
 
-# @brief Compute the delta between two timestamps, as a Dict with the same shape as `datetime:asUTCDate` and `datetime:asLocalDate`
+# @brief Compute the delta between two timestamps
+# =details-begin
+# Output Dict has the following keys:
+# - milliseconds
+# - seconds
+# - minutes
+# - hours
+# - days
+# =details-end
 # @param _t1 Number, first timestamp
 # @param _t2 Number, second timestamp
 # @author https://github.com/SuperFola
-(let delta (fun (_t1 _t2)
-  (asUTCDate (+ year0 (- _t2 _t1)))))
+(let delta (fun (_t1 _t2) {
+  (let _t (- _t2 _t1))
 
-# @brief Create a delta from a number of seconds, as a Dict with the same shape as `datetime:asUTCDate` and `datetime:asLocalDate`
+  (mut _days (floordiv _t 86400))
+  (if (< (mod _t 3600) 0)
+    (set _days (- _days 1)))
+
+  (dict
+    "milliseconds" (millisecond _t)
+    "seconds" (second _t)
+    "minutes" (minute _t)
+    "hours" (hour _t)
+    "days" _days) }))
+
+# @brief Create a delta from a number of seconds, as a Dict with the same shape as `datetime:asUTCDate`
 # @param _time Number, number of seconds
 # @author https://github.com/SuperFola
 (let asDelta (fun (_time)
-  (asUTCDate (+ year0 _time))))
+  (delta 0 _time)))
 
 # @brief Convert a delta or a date to a number of seconds
-# @param _date Dict, with the same shape as `datetime:asUTCDate` and `datetime:asLocalDate`
+# @param _date Dict, with the same shape as `datetime:asUTCDate`
 # @author https://github.com/SuperFola
 (let asSeconds (fun (_date)
-  (- (toUTCTimestamp _date) year0)))
+  (if (nil? (dict:get _date "days"))
+    (- (toUTCTimestamp _date) year0)
+    {
+      (+
+        (/ (dict:get _date "milliseconds") 1000)
+        (dict:get _date "seconds")
+        (* 60 (dict:get _date "minutes"))
+        (* 3600 (dict:get _date "hours"))
+        (* 86400 (dict:get _date "days"))) })))
 
 # @brief Add a delta to a timestamp
 # @param _time Number, timestamp
-# @param _delta Dict, with the same shape as `datetime:asUTCDate` and `datetime:asLocalDate`
+# @param _delta Dict, with the same shape as `datetime:asUTCDate`
 # @author https://github.com/SuperFola
 (let plusDelta (fun (_time _delta)
   (+ _time (asSeconds _delta))))
 
 # @brief Subtract a delta to a timestamp
 # @param _time Number, timestamp
-# @param _delta Dict, with the same shape as `datetime:asUTCDate` and `datetime:asLocalDate`
+# @param _delta Dict, with the same shape as `datetime:asUTCDate`
 # @author https://github.com/SuperFola
 (let minusDelta (fun (_time _delta)
   (- _time (asSeconds _delta))))
@@ -663,7 +673,7 @@
 # @brief Return the millisecond (0-999) component of a timestamp
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola
-(let millisecond (fun (_time) (* 1000 (- _time (builtin__math:floor _time)))))
+(let millisecond (fun (_time) (round (* 1000 (- _time (builtin__math:floor _time))))))
 
 # @brief Return the day of the week component of a timestamp (starts at 0 for monday, 6 for sunday)
 # @param _time Number, timestamp
@@ -704,6 +714,17 @@
     366
     365)))
 
+# @brief Convert a timezone to its representation: +05:45
+# @details Abort if the timezone is not known
+# @param _tz String, timezone
+# @author https://github.com/SuperFola
+(let utcOffsetRepr (fun (_tz) {
+  (let _minutes (utcOffsetMinutes _tz))
+  (assert (not (nil? _minutes)) "Unknown timezone")
+  (let _hoursToUtc (abs (floordiv _minutes 60)))
+  (let _minToUtc (mod _minutes 60))
+  (format "{}{:02}:{:02}" (if (< _minutes 0) "-" "+") _hoursToUtc _minToUtc) }))
+
 # @brief Convert a timestamp to its ISO8601 representation: 2007-04-05T12:34:56.789Z
 # @param _time Number, timestamp
 # @author https://github.com/SuperFola
@@ -725,6 +746,70 @@
 (let parse (fun (_str) (builtin__time:parseDate _str)))
 
 # @brief Try to parse a date as a given format and return it as a timestamp, or `nil` if it fails
+# =details-begin
+# Format spec for `_format`:
+# - `%` 	matches a literal `%`. The full conversion specification must be `%%`
+# - `t` 	matches any whitespace
+# - `n` 	matches any whitespace
+#
+# **Year**
+# - `Y` 	parses full year as a 4 digit decimal number, leading zeroes permitted but not required
+# - `EY` 	parses year in the alternative representation, e.g. `平成23年` (year Heisei 23) which writes 2011 to year in ja_JP locale
+# - `y` 	parses last 2 digits of year as a decimal number. Range [69,99] results in values 1969 to 1999, range [00,68] results in 2000-2068
+# - `Oy` 	parses last 2 digits of year using the alternative numeric system, e.g. `十一` is parsed as 11 in ja_JP locale
+# - `Ey` 	parses year as offset from locale's alternative calendar period `%EC`
+# - `C` 	parses the first 2 digits of year as a decimal number (range [00,99])
+# - `EC` 	parses the name of the base year (period) in the locale's alternative representation, e.g. `平成` (Heisei era) in ja_JP
+#
+# **Month**
+# - `b` 	parses the month name, either full or abbreviated, e.g. `Oct`
+# - `h` 	synonym of `b`
+# - `B` 	synonym of `b`
+# - `m` 	parses the month as a decimal number (range [01,12]), leading zeroes permitted but not required
+# - `Om` 	parses the month using the alternative numeric system, e.g. `十二` parses as 12 in ja_JP locale
+#
+# **Week**
+# - `U` 	parses the week of the year as a decimal number (Sunday is the first day of the week) (range [00,53]), leading zeroes permitted but not required
+# - `OU` 	parses the week of the year, as by `%U`, using the alternative numeric system, e.g. `五十二` parses as 52 in ja_JP locale
+# - `W` 	parses the week of the year as a decimal number (Monday is the first day of the week) (range [00,53]), leading zeroes permitted but not required
+# - `OW` 	parses the week of the year, as by `%W`, using the alternative numeric system, e.g. `五十二` parses as 52 in ja_JP locale
+#
+# **Day of the year/month**
+# - `j` 	parses day of the year as a decimal number (range [001,366]), leading zeroes permitted but not required
+# - `d` 	parses the day of the month as a decimal number (range [01,31]), leading zeroes permitted but not required
+# - `Od` 	parses the day of the month using the alternative numeric system, e.g. `二十七` parses as 27 in ja_JP locale, leading zeroes permitted but not required
+# - `e` 	synonym of `d`
+# - `Oe` 	synonym of `Od`
+#
+# **Day of the week**
+# - `a` 	parses the name of the day of the week, either full or abbreviated, e.g. `Fri`
+# - `A` 	synonym of `a`
+# - `w` 	parses weekday as a decimal number, where Sunday is 0 (range [0-6])
+# - `Ow` 	parses weekday as a decimal number, where Sunday is 0, using the alternative numeric system, e.g. `二` parses as 2 in ja_JP locale
+#
+# **Hour, minute, second**
+# - `H` 	parses the hour as a decimal number, 24 hour clock (range [00-23]), leading zeroes permitted but not required
+# - `OH` 	parses hour from 24-hour clock using the alternative numeric system, e.g. `十八` parses as 18 in ja_JP locale
+# - `I` 	parses hour as a decimal number, 12 hour clock (range [01,12]), leading zeroes permitted but not required
+# - `OI` 	parses hour from 12-hour clock using the alternative numeric system, e.g. `六` reads as 06 in ja_JP locale
+# - `M` 	parses minute as a decimal number (range [00,59]), leading zeroes permitted but not required
+# - `OM` 	parses minute using the alternative numeric system, e.g. `二十五` parses as 25 in ja_JP locale
+# - `S` 	parses second as a decimal number (range [00,60]), leading zeroes permitted but not required
+# - `OS` 	parses second using the alternative numeric system, e.g. `二十四` parses as 24 in ja_JP locale
+#
+# **Other**
+# - `c` 	parses the locale's standard date and time string format, e.g. `Sun Oct 17 04:41:13 2010` (locale dependent)
+# - `Ec` 	parses the locale's alternative date and time string format, e.g. expecting `平成23年` (year Heisei 23) instead of `2011年` (year 2011) in ja_JP locale
+# - `x` 	parses the locale's standard date representation
+# - `Ex` 	parses the locale's alternative date representation, e.g. expecting `平成23年` (year Heisei 23) instead of `2011年` (year 2011) in ja_JP locale
+# - `X` 	parses the locale's standard time representation
+# - `EX` 	parses the locale's alternative time representation
+# - `D` 	equivalent to `"%m / %d / %y "`
+# - `r` 	parses locale's standard 12-hour clock time (in POSIX, `"%I : %M : %S %p"`)
+# - `R` 	equivalent to `"%H : %M"`
+# - `T` 	equivalent to `"%H : %M : %S"`
+# - `p` 	parses the locale's equivalent of `a.m.` or `p.m.`
+# =details-end
 # @param _str String, date
 # @param _format String, follows [std::get_time](https://en.cppreference.com/cpp/io/manip/get_time) format
 # @author https://github.com/SuperFola
