@@ -769,7 +769,7 @@
 # @author https://github.com/SuperFola
 (let binomialCoeff (fun (_n _k)
   (if (<= _k _n)
-    (/ (factorial _n) (* (factorial _k) (factorial (- _n _k))))
+    (/ (permutations _n _k) (factorial _k))
     0)))
 
 # @brief Compute the number of ways to choose k items from n items without repetition and with order
@@ -779,7 +779,12 @@
 # @author https://github.com/SuperFola
 (let permutations (fun (_n _k)
   (if (<= _k _n)
-    (/ (factorial _n) (factorial (- _n _k)))
+    {
+      (mut _res 1)
+      (while (> _n k) {
+        (set _res (* _res _n))
+        (set _n (- _n 1)) })
+      _res }
     0)))
 
 # @brief Compare two real numbers and return true if the first one is near the second one (1e-7 precision)
