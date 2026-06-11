@@ -777,11 +777,12 @@
 # @param _n total number of items
 # @param _k number of items to pick
 # @author https://github.com/SuperFola
-(let permutations (fun (_n _k)
+(let permutations (fun ((mut _n) _k)
   (if (<= _k _n)
     {
       (mut _res 1)
-      (while (> _n k) {
+      (let _lower (- _n _k))
+      (while (> _n _lower) {
         (set _res (* _res _n))
         (set _n (- _n 1)) })
       _res }
