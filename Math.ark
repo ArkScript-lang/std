@@ -766,7 +766,7 @@
 # @details Evaluates to n! / (k! * (n - k)!) when k <= n and evaluates to zero when k > n.
 # @param _n total number of items
 # @param _k number of items that will be picked
-# @author https://github.com/SuperFola
+# @author https://github.com/SuperFola, https://github.com/kg583
 (let binomialCoeff (fun (_n _k)
   (if (<= _k _n)
     (/ (permutations _n _k) (factorial _k))
@@ -776,7 +776,7 @@
 # @details Evaluates to n! / (n - k)! when k <= n and evaluates to zero when k > n.
 # @param _n total number of items
 # @param _k number of items to pick
-# @author https://github.com/SuperFola
+# @author https://github.com/SuperFola, https://github.com/kg583
 (let permutations (fun ((mut _n) _k)
   (if (<= _k _n)
     {
