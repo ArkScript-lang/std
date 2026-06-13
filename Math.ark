@@ -766,20 +766,26 @@
 # @details Evaluates to n! / (k! * (n - k)!) when k <= n and evaluates to zero when k > n.
 # @param _n total number of items
 # @param _k number of items that will be picked
-# @author https://github.com/SuperFola
+# @author https://github.com/SuperFola, https://github.com/kg583
 (let binomialCoeff (fun (_n _k)
   (if (<= _k _n)
-    (/ (factorial _n) (* (factorial _k) (factorial (- _n _k))))
+    (/ (permutations _n _k) (factorial _k))
     0)))
 
 # @brief Compute the number of ways to choose k items from n items without repetition and with order
 # @details Evaluates to n! / (n - k)! when k <= n and evaluates to zero when k > n.
 # @param _n total number of items
 # @param _k number of items to pick
-# @author https://github.com/SuperFola
-(let permutations (fun (_n _k)
+# @author https://github.com/SuperFola, https://github.com/kg583
+(let permutations (fun ((mut _n) _k)
   (if (<= _k _n)
-    (/ (factorial _n) (factorial (- _n _k)))
+    {
+      (mut _res 1)
+      (let _lower (- _n _k))
+      (while (> _n _lower) {
+        (set _res (* _res _n))
+        (set _n (- _n 1)) })
+      _res }
     0)))
 
 # @brief Compare two real numbers and return true if the first one is near the second one (1e-7 precision)

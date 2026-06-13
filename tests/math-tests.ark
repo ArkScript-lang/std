@@ -298,7 +298,8 @@
     (test:eq (math:binomialCoeff 4 1) 4)
     (test:eq (math:binomialCoeff 4 2) 6)
     (test:eq (math:binomialCoeff 4 3) 4)
-    (test:eq (math:binomialCoeff 4 4) 1) })
+    (test:eq (math:binomialCoeff 4 4) 1)
+    (test:eq (math:binomialCoeff 90 13) 1643385429346680) })
 
   (test:case "permutations" {
     (test:eq (math:permutations 5 3) 60)
