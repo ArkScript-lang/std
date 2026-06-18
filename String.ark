@@ -399,12 +399,13 @@
   (mut _index 0)
 
   (while (< _index (len _list)) {
-    (set _output (+
-      _output
-      (toString (@ _list _index))
-      (if (!= _index (- (len _list) 1))
-        _delim
-        "")))
+    (set _output
+      (+
+        _output
+        (toString (@ _list _index))
+        (if (!= _index (- (len _list) 1))
+          _delim
+          "")))
     (set _index (+ 1 _index)) })
   _output }))
 

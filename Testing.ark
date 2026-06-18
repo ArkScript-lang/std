@@ -260,11 +260,13 @@
   (assert (or (nil? testing:_suite) (not testing:_suite.active)) "Can not nest multiple test suites together!")
   (set testing:_suite (testing:_make_suite ($repr _name)))
 
-  (let ($symcat _name "-output") (testing:_runner
-    ($if (= "String" ($type _name))
-      _name
-      ($repr _name))
-    (fun () ($as-is
-        {
-          _body }))))
+  (let ($symcat _name "-output")
+    (testing:_runner
+      ($if (= "String" ($type _name))
+        _name
+        ($repr _name))
+      (fun ()
+        ($as-is
+          {
+            _body }))))
   (let ($symcat _name "-status") (= 0 (@ ($symcat _name "-output") 1))) })

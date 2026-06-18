@@ -45,12 +45,13 @@
       (while (< i (len partially_fmt)) {
         (let e (@ partially_fmt i))
         (if (= (type e) "String")
-          (set options (map
-            options
-            (fun (alt)
-              (if (empty? alt)
-                e
-                (format "{} {}" alt e)))))
+          (set options
+            (map
+              options
+              (fun (alt)
+                (if (empty? alt)
+                  e
+                  (format "{} {}" alt e)))))
           # if we have a list, add (@ options 0) to each element of the list, then added to options
           (concat! options (map e (fun (alt) (format "{} {}" (@ options 0) alt)))))
         (set i (+ 1 i)) })
@@ -87,17 +88,18 @@
 
   (let params (dict))
   (_get_options params cli)
-  (let options (join
-    (map
-      (dict:keys params)
-      (fun (name) {
-        (let param (dict:get params name))
-        (let fmt_name
-          (if (= param.kind "value")
-            (format "<{}>" name)
-            name))
-        (format "\t{:<28} {}" fmt_name param.desc) }))
-    "\n"))
+  (let options
+    (join
+      (map
+        (dict:keys params)
+        (fun (name) {
+          (let param (dict:get params name))
+          (let fmt_name
+            (if (= param.kind "value")
+              (format "<{}>" name)
+              name))
+          (format "\t{:<28} {}" fmt_name param.desc) }))
+      "\n"))
 
   (+ headers synopsis "\n\nOPTIONS\n" options) }))
 
