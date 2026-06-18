@@ -1155,6 +1155,25 @@
 
   (builtin__dict:keys _vals) }))
 
+# @brief Count the occurrences of the elements of a List, and return them a Dict (elem -> count)
+# @details The original list is not modified.
+# @param _L List
+# =begin
+# (let data [1 1 2 3 4 3 4 5])
+# (print (list:countOccurrences data))  # {1: 2, 2: 1, 3: 2, 4: 2, 5: 1}
+# =end
+# @author https://github.com/SuperFola
+(let countOccurrences (fun ((ref _L)) {
+  (mut _items (dict))
+  (mut _i 0)
+  (while (< _i (len _L)) {
+    (let v (@ _L _i))
+    (if (not (builtin__dict:contains _items v))
+      (builtin__dict:add _items v 1)
+      (builtin__dict:add _items v (+ 1 (builtin__dict:get _items v))))
+    (set _i (+ 1 _i)) })
+  _items }))
+
 # @brief Create a new list from a list of values and indices to get from the first list
 # @details The original list is not modified.
 # @param _L list to get values from

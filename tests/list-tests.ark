@@ -374,6 +374,11 @@
     (test:eq (list:unique [1 -1 1 -1]) [1 -1])
     (test:eq (list:unique ["a" "b" "a" "b" "c" "d"]) ["a" "b" "c" "d"]) })
 
+  (test:case "countOccurrences" {
+    (test:eq (list:countOccurrences []) (dict))
+    (test:eq (list:countOccurrences ["1" 1 "1"]) (dict 1 1 "1" 2))
+    (test:eq (list:countOccurrences [1 1 2 3 4 3 4 5]) (dict 1 2 2 1 3 2 4 2 5 1)) })
+
   (test:case "select" {
     (test:eq (list:select [] [0 1 2]) [])
     (test:eq (list:select [1 2 3] [0 0 0]) [1 1 1])
