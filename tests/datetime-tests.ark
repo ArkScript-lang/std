@@ -260,6 +260,8 @@
     (test:eq (datetime:asISO8601 (datetime:parseAs "01-01-1905" dmy)) "1905-01-01T00:00:00.000Z")
     (test:eq (datetime:asISO8601 (datetime:parseAs "18-03-1905" dmy)) "1905-03-18T00:00:00.000Z")
     (test:eq (datetime:asISO8601 (datetime:parseAs "31-12-1905" dmy)) "1905-12-31T00:00:00.000Z")
+    (test:eq (datetime:asISO8601 (datetime:parseAs "01-01-1906" dmy)) "1906-01-01T00:00:00.000Z")
+    (test:eq (datetime:asISO8601 (datetime:parseAs "31-12-1969" dmy)) "1969-12-31T00:00:00.000Z")
     (test:eq (datetime:asISO8601 (datetime:parseAs "01-01-2200" dmy)) "2200-01-01T00:00:00.000Z")
     (test:eq (datetime:asISO8601 (datetime:parseAs "01-01-2400" dmy)) "2400-01-01T00:00:00.000Z")
     (test:eq (datetime:asISO8601 (datetime:parseAs "01-01-2500" dmy)) "2500-01-01T00:00:00.000Z")
