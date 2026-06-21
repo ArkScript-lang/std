@@ -374,6 +374,31 @@
     (test:eq (list:unique [1 -1 1 -1]) [1 -1])
     (test:eq (list:unique ["a" "b" "a" "b" "c" "d"]) ["a" "b" "c" "d"]) })
 
+  (test:case "intersection" {
+    (test:eq (list:intersection [] []) [])
+    (test:eq (list:intersection [1] []) [])
+    (test:eq (list:intersection [1] [2]) [])
+    (test:eq (list:intersection [1 2 3] [3 2 1]) [1 2 3])
+    (test:eq (list:intersection [3 2 1] [1 2 3]) [3 2 1])
+    (test:eq (list:intersection [1 2 2 1] [2 2]) [2 2])
+    (test:eq (list:intersection [1 1 1 1] [1 1 1]) [1 1 1])
+    (test:eq (list:intersection [1 1 2 3 5 8 13 21 34 55 89] [1 2 3 4 5 6 7 8 9 10 11 12 13]) [1 2 3 5 8 13])
+    (test:eq (list:intersection [true true false] [false true]) [true false])
+    (test:eq (list:intersection [true true false] [false]) [false])
+    (test:eq (list:intersection [true true true] [false]) []) })
+
+  (test:case "difference" {
+    (test:eq (list:difference [] []) [])
+    (test:eq (list:difference [1 2 3] [3 2 1]) [])
+    (test:eq (list:difference [1 2 3] [1 2 3 4]) [4])
+    (test:eq (list:difference [1 2 3] [1 4 2 3]) [4])
+    (test:eq (list:difference [1 2 2 1] [2 2]) [1 1])
+    (test:eq (list:difference [1 2 2 1] [true false]) [1 2 2 1 true false])
+    (test:eq (list:difference [1 2] ["a" "b"]) [1 2 "a" "b"])
+    (test:eq (list:difference [1 2 3 4 5] [1 2 3 4 4]) [5 4])
+    (test:eq (list:difference [1 2 3 4 4] [1 2 3 4 5]) [4 5])
+    (test:eq (list:difference [1 2 3] [4 5 6 7]) [4 5 6 7 1 2 3]) })
+
   (test:case "countOccurrences" {
     (test:eq (list:countOccurrences []) (dict))
     (test:eq (list:countOccurrences ["1" 1 "1"]) (dict 1 1 "1" 2))

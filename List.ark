@@ -1155,6 +1155,67 @@
 
   (builtin__dict:keys _vals) }))
 
+# @brief Compute the intersection of two lists
+# =details-begin
+# - The original lists are not modified.
+# - The elements appear in the same order they are in _L1.
+# - Duplicates are kept: if one list has two `1`, and the other has three, two `1` will be in the output.
+# =details-end
+# @param _L1 List
+# @param _L2 List
+# =begin
+# (print (list:intersection [1] [2]))  # []
+# (print (list:intersection [3 2 1] [1 2 3]))  # [3 2 1]
+# (print (list:intersection [1 2 2 1] [2 2]))  # [2 2]
+# =end
+# @author https://github.com/SuperFola
+(let intersection (fun ((ref _L1) (ref _L2)) {
+  (mut _target (if (> (len _L2) (len _L1)) _L1 _L2))
+  (let _iterate (if (> (len _L2) (len _L1)) _L2 _L1))
+
+  (mut _i 0)
+  (mut _output [])
+  (while (< _i (len _iterate)) {
+    (let _el (@ _iterate _i))
+    (let _idx (find _target _el))
+    (if (!= -1 _idx)
+      {
+        (append! _output _el)
+        (pop! _target _idx) })
+    (set _i (+ _i 1)) })
+  _output }))
+
+# @brief Compute the difference of two lists
+# =details-begin
+# - The original lists are not modified.
+# - Elements that are only in one of the two lists are kept.
+# - Elements from the longest list are picked first:
+# `(print (list:difference [1 2 3] [4 5 6 7]))  # => [4 5 6 7 1 2 3]`
+# =details-end
+# @param _L1 List
+# @param _L2 List
+# =begin
+# (print (list:difference [1 2 3] [3 2 1]))  # []
+# (print (list:difference [1 2 3 4 5] [1 2 3 4 4]))  # [5 4]
+# (print (list:difference [1 2] ["a" "b"]))  # [1 2 "a" "b"]
+# =end
+# @author https://github.com/SuperFola
+(let difference (fun ((ref _L1) (ref _L2)) {
+  (mut _target (if (> (len _L2) (len _L1)) _L1 _L2))
+  (let _iterate (if (> (len _L2) (len _L1)) _L2 _L1))
+
+  (mut _i 0)
+  (mut _output [])
+  (while (< _i (len _iterate)) {
+    (let _el (@ _iterate _i))
+    (let _idx (find _target _el))
+    (if (= -1 _idx)
+      (append! _output _el)
+      (pop! _target _idx))
+    (set _i (+ _i 1)) })
+
+  (concat _output _target) }))
+
 # @brief Count the occurrences of the elements of a List, and return them a Dict (elem -> count)
 # @details The original list is not modified.
 # @param _L List
