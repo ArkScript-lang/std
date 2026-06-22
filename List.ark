@@ -977,16 +977,13 @@
 # =end
 # @author https://github.com/SuperFola
 (let countIf (fun ((ref _L) _f) {
-  (let _inner (fun (lst cond acc)
-    (if (not (empty? lst))
-      (_inner
-        (tail lst)
-        cond
-        (if (cond (head lst))
-          (+ 1 acc)
-          acc))
-      acc)))
-  (_inner _L _f 0) }))
+  (mut _i 0)
+  (mut _count 0)
+  (while (< _i (len _L)) {
+    (if (_f (@ _L _i))
+      (set _count (+ 1 _count)))
+    (set _i (+ 1 _i)) })
+  _count }))
 
 # @brief Generate a sequence based on a unary function, initial value and length
 # @param _init initial value of the sequence
