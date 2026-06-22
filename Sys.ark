@@ -36,3 +36,7 @@
 # @brief Name of the running program (file only, not the fullpath)
 # @author https://github.com/SuperFola
 (let programName builtin__sys:programName)
+
+# @brief Version of the ArkScript VM
+# @author https://github.com/SuperFola
+(let version builtin__sys:version)
