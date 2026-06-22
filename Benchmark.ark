@@ -1,16 +1,15 @@
-# @brief Measure the time it takes to run some given code, in milliseconds
-# @param tag Identifier for the code block (string)
+# @brief Measure the time it takes to run some given code, in milliseconds, and print the result
 # @param code Node of code to run
 # @author https://github.com/SuperFola
-(macro measureOnce (tag code) {
+(macro measureOnce (code) {
   (mut _start (time))
   {
     code }
-  (print (format "{} took {:.4} ms" tag (* 1000 (- (time) _start)))) })
+  (print (format "{} took {:.4} ms" ($repr code) (* 1000 (- (time) _start)))) })
 
 (import std.List)
 
-# @brief Benchmark some given code by running it a given number of times
+# @brief Benchmark some given code by running it a given number of times, and print a report
 # @param code code to run, eg. a function call
 # @param times number of times to run the code
 # =begin
