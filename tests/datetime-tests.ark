@@ -105,17 +105,17 @@
     (test:eq (datetime:hour d) 0)
     (test:eq (datetime:minute d) 0)
     (test:eq (datetime:second d) 0)
-    (test:eq (datetime:year d) (datetime:year now))
-    (test:eq (datetime:month d) (datetime:month now))
-    (test:eq (datetime:day d) (- (datetime:day now) 1))
+    (test:eq (datetime:year d) (datetime:year (datetime:minusDays now 1)))
+    (test:eq (datetime:month d) (datetime:month (datetime:minusDays now 1)))
+    (test:eq (datetime:day d) (datetime:day (datetime:minusDays now 1)))
 
     (mut d (datetime:tomorrow))
     (test:eq (datetime:hour d) 0)
     (test:eq (datetime:minute d) 0)
     (test:eq (datetime:second d) 0)
-    (test:eq (datetime:year d) (datetime:year now))
-    (test:eq (datetime:month d) (datetime:month now))
-    (test:eq (datetime:day d) (+ (datetime:day now) 1)) })
+    (test:eq (datetime:year d) (datetime:year (datetime:plusDays now 1)))
+    (test:eq (datetime:month d) (datetime:month (datetime:plusDays now 1)))
+    (test:eq (datetime:day d) (datetime:day (datetime:plusDays now 1))) })
 
   (test:case "nextDay, previousDay" {
     (mut d (datetime:nextDay t))
