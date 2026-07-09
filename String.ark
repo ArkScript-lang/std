@@ -432,7 +432,7 @@
 
 # @brief Removes whitespaces from the left side of a string
 # @details The original string isn't modified
-# @param _str string to sanitize
+# @param _str string to sanitise
 # =begin
 # (print (string:lstrip " a b c"))  # "a b c"
 # =end
@@ -441,7 +441,7 @@
 
 # @brief Removes whitespaces from the right side of a string
 # @details The original string isn't modified
-# @param _str string to sanitize
+# @param _str string to sanitise
 # =begin
 # (print (string:rstrip " a b c     "))  # " a b c"
 # =end
@@ -450,7 +450,7 @@
 
 # @brief Removes whitespaces from both sides of a string
 # @details The original string isn't modified
-# @param _str string to sanitize
+# @param _str string to sanitise
 # =begin
 # (print (string:strip " a b c    "))  # "a b c"
 # =end
@@ -572,13 +572,13 @@
 (let zfill (fun (_str _n) (lpad _str _n "0")))
 
 # @brief Return a centered string of length _len, using spaces as fill chars
-# @param _str string to center
+# @param _str string to centre
 # @param _len width of the final string
 # =begin
-# (print (string:center "ArkScript" 15))  # "   ArkScript   "
+# (print (string:centre "ArkScript" 15))  # "   ArkScript   "
 # =end
 # @author https://github.com/SuperFola
-(let center (fun (_str _len)
+(let centre (fun (_str _len)
   (if (>= (len _str) _len)
     _str
     {
@@ -592,6 +592,16 @@
           (/ (+ _fill 1) 2)
           (/ _fill 2)))
       (+ (repeat " " _fill_left) _str (repeat " " _fill_right)) })))
+
+# @brief Return a centered string of length _len, using spaces as fill chars
+# @param _str string to centre
+# @param _len width of the final string
+# =begin
+# (print (string:center "ArkScript" 15))  # "   ArkScript   "
+# =end
+# @author https://github.com/SuperFola
+# @deprecated Use string:centre instead
+(let center centre)
 
 # @brief If a string starts with a given prefix, remove it
 # @param _str string

@@ -168,7 +168,7 @@
 # (import std.Cli)
 # (let command_line
 #   (cli:oneOf [
-#     (cli:flag "--help" "Display an help message")
+#     (cli:flag "--help" "Display a help message")
 #     (cli:flag "--repl" "Start the REPL")
 #     (cli:group [
 #       (cli:flag "-c" "Compile a given file")

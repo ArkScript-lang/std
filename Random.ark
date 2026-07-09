@@ -18,7 +18,7 @@
 # @param _L list to shuffle
 # =begin
 # (let data [1 2 3 4 5])
-# (let randomized (random:shuffle data))
+# (let randomised (random:shuffle data))
 # =end
 # @author https://github.com/SuperFola
 (let shuffle (fun ((mut _L)) {

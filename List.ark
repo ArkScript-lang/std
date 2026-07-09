@@ -936,7 +936,7 @@
     (set _index (+ 1 _index)) })
   _verified }))
 
-# @brief Check if a condition if verified for one or more elements of a list
+# @brief Check if a condition is verified for one or more elements of a list
 # @param _L the list to work on
 # @param _f the condition
 # =begin

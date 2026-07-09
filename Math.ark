@@ -48,7 +48,7 @@
 # @author https://github.com/SuperFola
 (let NaN? (fun (_x) (builtin__math:NaN? _x)))
 
-# @brief Check if a Number if Inf
+# @brief Check if a Number is Inf
 # @param value the Number
 # =begin
 # (math:Inf? 1)  # false
@@ -574,7 +574,7 @@
 # @author https://github.com/Gryfenfer97
 (let log10 (fun (x) (log x 10)))
 
-# @brief Returns the quotient of the euclidean division of a and b
+# @brief Returns the quotient of the Euclidean division of a and b
 # @param a the dividend
 # @param b the divisor
 # =begin
@@ -797,7 +797,7 @@
   (let _epsilon 1e-07)
   (and (< (- _target _epsilon) _n) (< _n (+ _target _epsilon))) }))
 
-# @brief Compute the euclidean distance between two vectors of the same size
+# @brief Compute the Euclidean distance between two vectors of the same size
 # @param _a first vector, eg [1 4]
 # @param _b second vector, eg [5 8]
 # =begin
