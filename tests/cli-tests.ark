@@ -34,4 +34,3 @@
   (test:eq (cli:parseArgs ["--help" "--repl"] command_line) (dict "--help" true))
   (test:eq (cli:parseArgs ["--repl"] command_line) (dict "--help" false "--repl" true))
   (test:eq (cli:parseArgs ["-c" "path.ark"] command_line) (dict "--help" false "--repl" false "-c" true "file" "path.ark")) })
-

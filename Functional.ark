@@ -33,7 +33,7 @@
 
 # @brief Flip the arguments of a function
 # @param _f the function
-# @details Returns a function taking 2 arguments a and b, calling (f b a) 
+# @details Returns a function taking 2 arguments a and b, calling (f b a)
 # =begin
 # (let foo (fun (a b) (- a b)))
 # ((flip foo) 14 12) # will call (foo 12 14) instead of (foo 14 12)

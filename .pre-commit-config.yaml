@@ -18,6 +18,7 @@ repos:
         name: Format ArkScript code
         description: This hook formats ArkScript code
         entry: scripts/check-ark-format.sh
-        files: '^.+\.ark'
+        files: '.+\.ark'
+        exclude: 'tests/'
         language: script
         types: [ text ]

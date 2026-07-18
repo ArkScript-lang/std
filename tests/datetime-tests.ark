@@ -87,6 +87,42 @@
     (test:eq (datetime:month d) (datetime:month now))
     (test:eq (datetime:day d) (datetime:day now)) })
 
+  (test:case "atFirstDayOfMonth" {
+    (mut d (datetime:atFirstDayOfMonth t))
+    (test:eq (datetime:hour d) 6)
+    (test:eq (datetime:minute d) 2)
+    (test:eq (datetime:second d) 4)
+    (test:eq (datetime:millisecond d) 0)
+    (test:eq (datetime:year d) 2020)
+    (test:eq (datetime:month d) 2)
+    (test:eq (datetime:day d) 1)
+
+    (mut d (datetime:atFirstDayOfMonth (datetime:makeUTCTimestamp 2021 11 1 6 2 4 0 nil false)))
+    (test:eq (datetime:month d) 11)
+    (test:eq (datetime:day d) 1) })
+
+  (test:case "atLastDayOfMonth" {
+    (mut d (datetime:atLastDayOfMonth t))
+    (test:eq (datetime:hour d) 6)
+    (test:eq (datetime:minute d) 2)
+    (test:eq (datetime:second d) 4)
+    (test:eq (datetime:millisecond d) 0)
+    (test:eq (datetime:year d) 2020)
+    (test:eq (datetime:month d) 2)
+    (test:eq (datetime:day d) 29)
+
+    (mut d (datetime:atLastDayOfMonth (datetime:makeUTCTimestamp 2021 2 1 6 2 4 0 nil false)))
+    (test:eq (datetime:month d) 2)
+    (test:eq (datetime:day d) 28)
+
+    (mut d (datetime:atLastDayOfMonth (datetime:makeUTCTimestamp 2021 11 1 6 2 4 0 nil false)))
+    (test:eq (datetime:month d) 11)
+    (test:eq (datetime:day d) 30)
+
+    (mut d (datetime:atLastDayOfMonth (datetime:makeUTCTimestamp 2021 12 1 6 2 4 0 nil false)))
+    (test:eq (datetime:month d) 12)
+    (test:eq (datetime:day d) 31) })
+
   (test:case "today, yesterday, tomorrow" {
     # returns the same value each day, the start of the day
     (test:eq (datetime:today) (datetime:today))

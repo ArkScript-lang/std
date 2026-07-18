@@ -577,6 +577,18 @@
       "hour" 23))
   (toUTCTimestamp _date) }))
 
+# @brief Put a given timestamp at the first day of the month
+# @details Hours, minutes, seconds and milliseconds are untouched
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let atFirstDayOfMonth (fun (_time) (minusDays _time (- (day _time) 1))))
+
+# @brief Put a given timestamp at the last day of the month
+# @details Hours, minutes, seconds and milliseconds are untouched
+# @param _time Number, timestamp
+# @author https://github.com/SuperFola
+(let atLastDayOfMonth (fun (_time) (plusDays _time (- (monthLength _time) (day _time)))))
+
 # @brief Compute today's date, at 00H 00M 00s
 # @details Returns a timestamp
 # @author https://github.com/SuperFola
