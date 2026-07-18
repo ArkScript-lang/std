@@ -87,6 +87,41 @@
     (test:eq (datetime:month d) (datetime:month now))
     (test:eq (datetime:day d) (datetime:day now)) })
 
+  (test:case "atDay" {
+    (mut d (datetime:atDay t 1))
+    (test:eq (datetime:hour d) 6)
+    (test:eq (datetime:minute d) 2)
+    (test:eq (datetime:second d) 4)
+    (test:eq (datetime:millisecond d) 0)
+    (test:eq (datetime:year d) 2020)
+    (test:eq (datetime:month d) 2)
+    (test:eq (datetime:day d) 1)
+
+    (mut d (datetime:atDay t 5))
+    (test:eq (datetime:year d) 2020)
+    (test:eq (datetime:month d) 2)
+    (test:eq (datetime:day d) 5)
+
+    (mut d (datetime:atDay t 14))
+    (test:eq (datetime:year d) 2020)
+    (test:eq (datetime:month d) 2)
+    (test:eq (datetime:day d) 14)
+
+    (mut d (datetime:atDay t 15))
+    (test:eq (datetime:year d) 2020)
+    (test:eq (datetime:month d) 2)
+    (test:eq (datetime:day d) 15)
+
+    (mut d (datetime:atDay t 16))
+    (test:eq (datetime:year d) 2020)
+    (test:eq (datetime:month d) 2)
+    (test:eq (datetime:day d) 16)
+
+    (mut d (datetime:atDay t 29))
+    (test:eq (datetime:year d) 2020)
+    (test:eq (datetime:month d) 2)
+    (test:eq (datetime:day d) 29) })
+
   (test:case "atFirstDayOfMonth" {
     (mut d (datetime:atFirstDayOfMonth t))
     (test:eq (datetime:hour d) 6)

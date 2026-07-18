@@ -577,6 +577,15 @@
       "hour" 23))
   (toUTCTimestamp _date) }))
 
+# @brief Put a given timestamp at a specific day in a month
+# @details Hours, minutes, seconds and milliseconds are untouched
+# @param _time Number, timestamp
+# @param _day Number, day number (between 1 and the last day of the given month (could be 28, 29, 30 or 31))
+# @author https://github.com/SuperFola
+(let atDay (fun (_time _day) {
+  (assert (and (>= _day 1) (<= _day (monthLength _time))) "Given day is outside the valid range for the chosen month")
+  (plusDays _time (- _day (day _time))) }))
+
 # @brief Put a given timestamp at the first day of the month
 # @details Hours, minutes, seconds and milliseconds are untouched
 # @param _time Number, timestamp
