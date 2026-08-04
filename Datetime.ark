@@ -3,7 +3,7 @@
 
 # @brief Dictionary of time zone offsets to UTC, in minutes
 # =details-begin
-# List obtained from https://github.com/vvo/tzdb/blob/ac6f4cbc6063b9a823a8ee1e4b5dffb6ca0a6c81/raw-time-zones.json,
+# List obtained from [vvo/tzdb](https://github.com/vvo/tzdb/blob/ac6f4cbc6063b9a823a8ee1e4b5dffb6ca0a6c81/raw-time-zones.json),
 # by keeping only `name` -> `rawOffsetInMinutes`.
 # =details-end
 # @author https://github.com/SuperFola
