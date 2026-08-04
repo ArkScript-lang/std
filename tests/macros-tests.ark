@@ -69,4 +69,22 @@
     (test:eq (-- i) 2)
     (test:eq (-- i) 1)
     (test:eq (-- i) 0)
-    (test:eq (-- i) -1) }) })
+    (test:eq (-- i) -1) })
+
+  (test:case "let* and mut*" {
+    (let* (m1 1) (m2 (+ m1 2)) (m3 (+ m2 m1)))
+    (test:eq m1 1)
+    (test:eq m2 3)
+    (test:eq m3 4)
+
+    (mut* (m4 1) (m5 (+ m4 2)) (m6 m4))
+    (test:eq m4 1)
+    (test:eq m5 3)
+    (test:eq m6 1)
+    (mut m6 2)
+    (test:eq m6 2)
+
+    (set* (m4 2) (m5 3) (m6 4))
+    (test:eq m4 2)
+    (test:eq m5 3)
+    (test:eq m6 4) }) })

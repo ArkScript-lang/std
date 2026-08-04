@@ -175,3 +175,40 @@
 # =end
 # @author https://github.com/SuperFola
 (macro -- (value) (set value (- value 1)))
+
+# @brief Declare multiple constants in a single statement
+# @param pairs pairs of `(var-name value)`, where `value` can depend on the previous declarations
+# =begin
+# (let* (a 1) (b (+ a 2)) (c (+ a b)))
+# (print (format "a={}, b={}, c={}" a b c))
+# # a=1, b=3, c=4
+# =end
+# @author https://github.com/SuperFola
+(macro let* (first ...pairs) {
+  (let ($head first) ($at first 1))
+  ($if (> ($len pairs) 0) (let* ...pairs)) })
+
+# @brief Declare multiple variables in a single statement
+# @param pairs pairs of `(var-name value)`, where `value` can depend on the previous declarations
+# =begin
+# (mut* (a 1) (b (+ a 2)) (c (+ a b)))
+# (print (format "a={}, b={}, c={}" a b c))
+# # a=1, b=3, c=4
+# =end
+# @author https://github.com/SuperFola
+(macro mut* (first ...pairs) {
+  (mut ($head first) ($at first 1))
+  ($if (> ($len pairs) 0) (mut* ...pairs)) })
+
+# @brief Set multiple variables in a single statement
+# @param pairs pairs of `(var-name value)`, where `value` can depend on the previous declarations
+# =begin
+# (mut* (a 1) (b (+ a 2)) (c (+ a b)))
+# (set* (a 2) (b 3) (c 4))
+# (print (format "a={}, b={}, c={}" a b c))
+# # a=2, b=3, c=4
+# =end
+# @author https://github.com/SuperFola
+(macro set* (first ...pairs) {
+  (set ($head first) ($at first 1))
+  ($if (> ($len pairs) 0) (set* ...pairs)) })
