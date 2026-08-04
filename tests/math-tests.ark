@@ -328,5 +328,4 @@
     (test:eq (math:gcd 42 56) 14)
 
     (test:eq (math:lcm 4 6) 12)
-    (test:eq (math:lcm 48 180) 720) })
-})
+    (test:eq (math:lcm 48 180) 720) }) })
