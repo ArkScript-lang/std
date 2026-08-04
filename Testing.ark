@@ -132,10 +132,10 @@
 # because it updates _failed and _failures, which are defined by
 # test:suite call to _runner
 (let _report_error (fun (_lhs _rhs _lhs_repr _rhs_repr _desc) {
-  (let _test_desc (fun (_desc)
+  (let _test_desc
     (if (empty? _desc)
       ""
-      (format " for test '{}'" (head _desc)))))
+      (format " for test '{}'" (head _desc))))
 
   (_suite.inc_failed)
 
@@ -151,7 +151,7 @@
       ""))
 
   # Add the error message
-  (_suite.register_failure (format "{}expected '{}' but got '{}'{}" _indent _lhs_repr _rhs_repr (_test_desc _desc)))
+  (_suite.register_failure (format "{}expected '{}' but got '{}'{}" _indent _lhs_repr _rhs_repr _test_desc))
 
   (let _rhs_start (+ (len _lhs_repr) (len "expected ''")))
   (let _lhs_align (len _lhs_repr))
