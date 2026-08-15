@@ -6,7 +6,6 @@
 (import std.Macros)
 (import std.Math)
 (import std.Random)
-(import std.Range)
 (import std.String)
 (import std.Switch)
 (import std.Sys)
