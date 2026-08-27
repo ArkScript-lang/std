@@ -39,13 +39,20 @@
     (test:neq d3 d2)
     (test:neq d3 d4) })
 
-  (test:case "get" {
+  (test:case "get, @" {
     (test:eq (dict:get d "key") "value")
     (test:eq (dict:get d 5) 12)
     (test:eq (dict:get d true) true)
     (test:eq (dict:get d false) false)
     (test:eq (dict:get d foo) "yes")
-    (test:eq (dict:get d closure) foo) })
+    (test:eq (dict:get d closure) foo)
+
+    (test:eq (@ d "key") "value")
+    (test:eq (@ d 5) 12)
+    (test:eq (@ d true) true)
+    (test:eq (@ d false) false)
+    (test:eq (@ d foo) "yes")
+    (test:eq (@ d closure) foo) })
 
   (test:case "getOrElse" {
     (test:eq (dict:getOrElse d "key" 5) "value")
