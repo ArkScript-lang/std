@@ -93,14 +93,21 @@
     (test:eq (dict:fromList (dict:entries d)) d)
     (test:eq (dict:fromList [["a" 1]]) (dict "a" 1)) })
 
-  (test:case "add" {
+  (test:case "add, @=" {
     (test:eq (dict:get d "test") nil)
     (dict:add d "test" 5)
     (test:eq (dict:get d "test") 5)
 
     (test:eq (dict:get d "key") "value")
     (dict:add d "key" 2)
-    (test:eq (dict:get d "key") 2) })
+    (test:eq (dict:get d "key") 2)
+
+    (mut d_add (dict))
+    (test:eq d_add empty)
+    (@= d_add 1 2)
+    (test:eq (dict:get d_add 1) 2)
+    (@= d_add 1 4)
+    (test:eq (dict:get d_add 1) 4) })
 
   (test:case "updateOrDefault" {
     (let d5 (dict))
