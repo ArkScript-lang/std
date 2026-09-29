@@ -283,10 +283,18 @@
     (test:eq (list:zipLongest a [4 5] nil) [[1 4] [2 5] [3 nil]])
     (test:eq (list:zipLongest [] [] nil) []) })
 
-  (test:case "foldLeft" {
+  (test:case "fold, foldLeft" {
+    (test:eq (list:fold [] 0 (fun (x y) (+ x y))) 0)
     (test:eq (list:foldLeft [] 0 (fun (x y) (+ x y))) 0)
+    (test:eq (list:fold ["1" "2" "3"] "" (fun (x y) (+ x y))) "123")
     (test:eq (list:foldLeft ["1" "2" "3"] "" (fun (x y) (+ x y))) "123")
+    (test:eq (list:fold a 0 (fun (x y) (+ x y))) 6)
     (test:eq (list:foldLeft a 0 (fun (x y) (+ x y))) 6) })
+
+  (test:case "foldRight" {
+    (test:eq (list:foldRight [] 0 (fun (x y) (+ x y))) 0)
+    (test:eq (list:foldRight ["1" "2" "3"] "" (fun (x y) (+ x y))) "321")
+    (test:eq (list:foldRight a 0 (fun (x y) (+ x y))) 6) })
 
   (test:case "zipWithIndex" {
     (test:eq (list:zipWithIndex a) [[0 1] [1 2] [2 3]])
