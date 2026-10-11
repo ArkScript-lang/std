@@ -352,7 +352,7 @@
 
 (let _base_conversion_alphabet "0123456789abcdefghijklmnopqrstuvwxyz")
 
-# @brief Convert a number in a another base (in [2, 36[)
+# @brief Convert a number in a another base (in [2, 36])
 # @param _x Number, must be an integer
 # @param _base Number, must be an integer
 # =begin
@@ -395,7 +395,7 @@
     (set _i (+ 1 _i)) })
   _out }))
 
-# @brief Count the digits of a number in a given base (in [2, 36[)
+# @brief Count the digits of a number in a given base (in [2, inf[)
 # @param _x Number, must be an integer
 # @param _base Number, must be an integer
 # =begin
@@ -405,7 +405,7 @@
 # @author https://github.com/SuperFola
 # @require 4.6.0 Requires ArkScript 4.6.0 or later
 (let countDigits (fun ((mut _x) _base) {
-  (assert (and (> _base 1) (<= _base 36)) "Base must be in [2, 36]")
+  (assert (> _base 1) "Base must be in [2, inf[")
   (if (= 0 _x)
     1
     {
