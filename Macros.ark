@@ -23,12 +23,65 @@
 # =end
 # @author https://github.com/SuperFola
 (macro -> (arg fn1 ...fns) {
-  ($if (= "Symbol" ($type fn1))
-    (macro call (fn1 arg))
-    (macro call ((__replace_all_placeholders_with arg ...fn1))))
+  (macro call ($if (= "Symbol" ($type fn1))
+      (fn1 arg)
+      ((__replace_all_placeholders_with arg ...fn1))))
   ($if (> ($len fns) 0)
     (-> call ...fns)
     call) })
+
+# internal, do not use
+(macro __some-> (tmp val fn1 ...fns) {
+  (macro call ($if (= "Symbol" ($type fn1))
+      (fn1 tmp)
+      ((__replace_all_placeholders_with tmp ...fn1))))
+
+  (mut tmp val)
+  (if (not (nil? tmp))
+    {
+      ($if (> ($len fns) 0)
+        (__some-> tmp call ...fns)
+        (set tmp call)) }) })
+
+# @brief Threading with nil short-circuiting. If any step produces nil, the chain stops and returns the nil value.
+# @param arg value to transform
+# @param ...fns series of functions to apply one by one to `arg`
+# =begin
+# (import std.Macros)
+# (mut db (dict
+#   "tables" (dict
+#     "users" (dict
+#       "lexy" "dev"))))
+# (print (some-> db
+#   (@ _ "tables")
+#   (@ _ "users")
+#   (@ _ "lexy")))
+# # "dev"
+# (print (some-> nil))  # nil
+# (print (some-> (dict "tables" nil)))  # nil
+# =end
+# @author https://github.com/SuperFola
+(macro some-> (arg fn1 ...fns) {
+  {
+    (macro tmp ($gensym))
+    (__some-> tmp arg fn1 ...fns)
+    tmp } })
+
+# @brief Represent a pipeline of calls as a function
+# @param ...fns series of functions to apply one by one to `arg`
+# =begin
+# (import std.Macros)
+# # equivalent to (f1 "f0")
+# (let a (fun-> f1)) (a "f0")
+# # equivalent to (f3 (f2 (f1 "f0")))
+# (let b (fun-> f1 f2 f3)) (b "f0")
+# # equivalent to (bar (foo (f1 "f0") f2) f3)
+# (let c (fun-> f1 (foo _ f2) (bar _ f3))) (c "f0")
+# =end
+# @author https://github.com/SuperFola
+(macro fun-> (fn1 ...fns) {
+  (macro arg ($gensym))
+  (fun (arg) (-> arg fn1 ...fns)) })
 
 # internal, do not use
 (macro __suffix-dup (sym x) {

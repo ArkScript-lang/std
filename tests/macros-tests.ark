@@ -15,12 +15,37 @@
 (let test_func2 (partial test_func1 2))
 (let test_func3 (partial2 test_func 1 _ 3))
 (let test_func4 (partial2 test_func _ 2 _))
+(let db (dict
+  "tables" (dict
+    "users" (dict
+      "lexy" "dev"))))
+(let db2 (dict
+  "tables" (dict
+    "users" nil)))
+(let db3 (dict
+  "tables" nil))
 
 (test:suite macros {
   (test:case "->" {
     (test:eq (-> "f0" f1) "f0-f1")
     (test:eq (-> "f0" f1 f2 f3) "f0-f1-f2-f3")
     (test:eq (-> "f0" f1 (foo _ f2) (foo _ f3)) "f0-f1-f2-f3") })
+
+  (test:case "some->" {
+    (test:eq (some-> db (@ _ "tables") (@ _ "users") (@ _ "lexy")) "dev")
+    (test:eq (some-> db2 (@ _ "tables") (@ _ "users") (@ _ "lexy")) nil)
+    (test:eq (some-> db3 (@ _ "tables") (@ _ "users") (@ _ "lexy")) nil)
+    (test:eq (some-> nil (@ _ "tables") (@ _ "users") (@ _ "lexy")) nil) })
+
+  (test:case "fun->" {
+    (mut fun_thread (fun-> f1))
+    (test:eq (fun_thread "f0") "f0-f1")
+
+    (mut fun_thread (fun-> f1 f2 f3))
+    (test:eq (fun_thread "f0") "f0-f1-f2-f3")
+
+    (mut fun_thread (fun-> f1 (foo _ f2) (foo _ f3)))
+    (test:eq (fun_thread "f0") "f0-f1-f2-f3") })
 
   (test:case "partial & partial2" {
     (test:eq (test_func1 2 3) 6)
