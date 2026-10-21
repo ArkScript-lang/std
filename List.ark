@@ -1098,6 +1098,43 @@
 
   _output }))
 
+# @brief Compute consecutive keys and groups from the given List. Similar to `uniq` filter on Unix.
+# =details-begin
+# It generates a new group every time the value of the key function changes,
+# which is why it is usually necessary to have sorted data in input.
+# =details-end
+# @param _L list to group
+# @param _get_key_f key function, take one element and return the corresponding key
+# @param _f function to run on each group
+# =begin
+# (let key (fun (x) x))
+# (list:groupBy "AAAABBBCCDAABBB" key (fun (key group) (print (format "{}->{}" key group))))
+# # A->[A A A A]
+# # B->[B B B]
+# # C->[C C]
+# # D->[D]
+# # A->[A A]
+# # B->[B B B]
+# =end
+# @author https://github.com/SuperFola
+(let groupBy (fun ((ref _L) _get_key_f _f) {
+  (if (not (empty? _L))
+    {
+      (mut _key (_get_key_f (head _L)))
+      (mut _group [(head _L)])
+      (mut _i 1)
+      (while (< _i (len _L)) {
+        (let _val (@ _L _i))
+        (let _current_key (_get_key_f _val))
+        (if (= _current_key _key)
+          (append! _group _val)
+          {
+            (_f _key _group)
+            (set _key _current_key)
+            (set _group [_val]) })
+        (set _i (+ 1 _i)) })
+       (_f _key _group) }) }))
+
 # @brief Insert an element (or expand a list) at a given position inside a list
 # @details The original list is not modified
 # @param _L list to insert element(s) in

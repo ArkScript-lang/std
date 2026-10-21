@@ -345,6 +345,25 @@
     (test:eq (list:chunkBy [1 2 3 4 5] 3) [[1 2 3] [4 5]])
     (test:eq (list:chunkBy [1 2 3 4 5 6] 3) [[1 2 3] [4 5 6]]) })
 
+  (test:case "groupBy" {
+    (let key (fun (x) x))
+    (mut out [])
+
+    (list:groupBy "AAAABBBCCDAABBB" key (fun (key group) (append! out (format "{}->{}" key group))))
+    (test:eq out ["A->[A A A A]" "B->[B B B]" "C->[C C]" "D->[D]" "A->[A A]" "B->[B B B]"])
+
+    (set out [])
+    (list:groupBy "AAAABBBCCD" key (fun (key group) (append! out (format "{}->{}" key group))))
+    (test:eq out ["A->[A A A A]" "B->[B B B]" "C->[C C]" "D->[D]"])
+
+    (set out [])
+    (list:groupBy "A" key (fun (key group) (append! out (format "{}->{}" key group))))
+    (test:eq out ["A->[A]"])
+
+    (set out [])
+    (list:groupBy "" key (fun (key group) (append! out (format "{}->{}" key group))))
+    (test:eq out []) })
+
   (test:case "insert" {
     (test:eq (list:insert [0] 1 4) [0 4])
     (test:eq (list:insert [0] 0 4) [4 0])
