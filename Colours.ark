@@ -1,6 +1,8 @@
 (import std.Dict)
 (import std.String)
 
+# @brief Dict of CSS colours, lowercase name to hex code (format: `#abcdef`)
+# @author https://github.com/SuperFola
 (let colours (dict
   "black" "#000000"
   "silver" "#c0c0c0"
@@ -169,6 +171,10 @@
 
 # @brief Parse a CSS colour. Can convert a name to a colour code, a 3 digits code to a 6 digits one (eg `#abc` to `#aabbcc`)
 # @param _name String, colour name or colour code
+# =begin
+# (print (colours:parse "Black"))  # #000000
+# (print (colours:parse "#fff"))  # #ffffff
+# =end
 # @author https://github.com/SuperFola
 (let parse (fun (_name) {
   (if (and (not (empty? _name)) (= "#" (head _name)))
