@@ -1,3 +1,6 @@
+# @section
+# @brief The following macros require `std.Macros` to be imported to be used.
+
 # internal, do not use
 (macro __replace_all_placeholders_with (replacement x ...xs) {
   ($if ($empty? xs)

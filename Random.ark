@@ -1,3 +1,6 @@
+# @section
+# @brief The following functions require `std.Random` to be imported to be used.
+
 # @brief Select a random element from a list
 # @details If the list is empty, returns nil
 # @param _L list of elements

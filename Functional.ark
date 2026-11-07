@@ -1,3 +1,6 @@
+# @section
+# @brief The following functions require `std.Functional` to be imported to be used.
+
 # @brief Compose function calls
 # @param _f the first function
 # @param _g the second function

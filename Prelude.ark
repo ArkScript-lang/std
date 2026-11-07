@@ -1,3 +1,19 @@
+# @section
+# @brief Importing `std.Prelude` will automatically import a few important files from the standard library.
+# =details-begin
+# - Colours
+# - Datetime
+# - Dict
+# - IO
+# - List
+# - Macros
+# - Math
+# - Random
+# - String
+# - Switch
+# - Sys
+# =details-end
+
 (import std.Colours)
 (import std.Datetime)
 (import std.Dict)

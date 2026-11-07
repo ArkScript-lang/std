@@ -1,3 +1,6 @@
+# @section
+# @brief The following functions require `std.CSV` to be imported to be used.
+
 (import std.Dict :fromList :get)
 (import std.List :iota :zip)
 

@@ -1,3 +1,6 @@
+# @section
+# @brief The following functions require `std.Benchmark` to be imported to be used.
+
 # @brief Measure the time it takes to run some given code, in milliseconds, and print the result
 # @param code Node of code to run
 # @author https://github.com/SuperFola

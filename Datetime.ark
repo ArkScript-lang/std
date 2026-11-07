@@ -1,3 +1,6 @@
+# @section
+# @brief The following functions require `std.Datetime` to be imported to be used.
+
 (import std.Dict)
 (import std.Math :floordiv :round :abs)
 

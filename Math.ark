@@ -1,3 +1,6 @@
+# @section
+# @brief The following functions require `std.Math` to be imported to be used.
+
 # @brief Calculate e^number
 # @param value the Number
 # =begin

@@ -1,3 +1,6 @@
+# @section
+# @brief The following functions require `std.List` to be imported to be used.
+
 (import std.Math)
 
 # @brief Reverse a given list and return a new one

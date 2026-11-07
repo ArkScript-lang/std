@@ -1,3 +1,6 @@
+# @section
+# @brief The following functions require `std.Exceptions` to be imported to be used.
+
 # @brief throw takes a value as its argument and return it to be used by try
 # @param _x the value to return
 # =begin

@@ -1,3 +1,6 @@
+# @section
+# @brief The following functions require `std.String` to be imported to be used.
+
 # @brief Upper and lowercase ASCII letters
 # @author https://github.com/SuperFola
 (let asciiLetters "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -184,8 +187,8 @@
 # @brief Check if a string is empty or only consists of whitespaces
 # @param _str the string to check
 # =begin
-# (print (string:emtpyOrWhitespace? "hello"))  # false
-# (print (string:emtpyOrWhitespace? " \t"))  # true
+# (print (string:emptyOrWhitespace? "hello"))  # false
+# (print (string:emptyOrWhitespace? " \t"))  # true
 # =end
 # @author https://github.com/SuperFola
 (let emptyOrWhitespace? (fun (_str)
